@@ -1,31 +1,19 @@
 package pieces;
 
 import java.util.List;
+import chessboard.*;
 
-public class Pawn implements Piece {
+/** Represents a pawn */
+public class Pawn extends AbstractPiece {
 
-	@Override
-	public void move() {
-		// TODO Auto-generated method stub
-
+	
+	public Pawn(BoardSimulator bSim, PieceColor color) {
+		super(bSim, color);
 	}
-
+	
 	@Override
-	public void setPosition(int col, int row) {
+	public void move(int col, int row) {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getRow() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getCol() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

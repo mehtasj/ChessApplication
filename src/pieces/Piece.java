@@ -1,4 +1,5 @@
 package pieces;
+
 import java.util.List;
 
 /** Represents a piece on the chess board */
@@ -7,7 +8,7 @@ public interface Piece {
 	/** Moves the piece to a new position on the board
 	 * Requires: decision is a valid move
 	 */
-	public void move();
+	public void move(int col, int row);
 	
 	/** Sets the position of a piece on the board 
 	 * @param col

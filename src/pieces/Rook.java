@@ -2,30 +2,18 @@ package pieces;
 
 import java.util.List;
 
-public class Rook implements Piece {
+import chessboard.BoardSimulator;
 
-	@Override
-	public void move() {
-		// TODO Auto-generated method stub
+public class Rook extends AbstractPiece {
 
+	public Rook(BoardSimulator bSim, PieceColor color) {
+		super(bSim, color);
 	}
-
+	
 	@Override
-	public void setPosition(int col, int row) {
+	public void move(int col, int row) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public int getRow() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getCol() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
