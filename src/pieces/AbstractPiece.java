@@ -1,6 +1,6 @@
 package pieces;
 
-import java.util.List;
+import java.util.HashMap;
 
 import chessboard.BoardSimulator;
 
@@ -10,8 +10,8 @@ public abstract class AbstractPiece implements Piece {
 	/** The piece's color */
 	private PieceColor pc;
 	
-	/** The piece's row and column location */
-	private int row, col;
+	/** The piece's column and row location */
+	private int col, row;
 	
 	/** The piece's parent simulator (i.e. the board it is on) */
 	private BoardSimulator pSim;
@@ -28,11 +28,31 @@ public abstract class AbstractPiece implements Piece {
 		pSim = bSim;
 		pc = color;
 	}
+	
+	@Override
+	public void moveTo(int col, int row) {
+		this.setPosition(col, row);
+	}
+	
+	@Override
+	public Integer[] storeMoveTo(int c, int r) {
+		Integer[] coordinate = new Integer[2];
+		coordinate[0] = c;
+		coordinate[1] = r;
+		return coordinate;
+	}
 
 	@Override
 	public void setPosition(int col, int row) {
 		this.col = col;
 		this.row = row;
+	}
+	
+	@Override 
+	public boolean isWhite() {
+		if (pc == PieceColor.WHITE)
+			return true;
+		return false;
 	}
 
 	@Override
@@ -44,11 +64,15 @@ public abstract class AbstractPiece implements Piece {
 	public int getCol() { 
 		return col; 
 	}
-
-	@Override
-	public List getValidMoves() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	@Override 
+	public BoardSimulator getBoard() {
+		return pSim;
+	}
+	
+	@Override 
+	public PieceColor getColor() {
+		return pc;
 	}
 
 }
