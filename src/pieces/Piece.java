@@ -73,4 +73,30 @@ public interface Piece {
 	 * 		in that order
 	 */
 	public Integer[] storeMoveTo(int c, int r);
+	
+	/** 
+	 * Checks if this pawn can move to an empty tile
+	 * @param b
+	 * 		The board this pawn is on
+	 * @param c
+	 * 		The column coordinate
+	 * @param r
+	 * 		The row coordinate
+	 * @return
+	 * 		true if this piece can move to the specified tile
+	 */
+	public boolean canMoveToEmptySpaceAt(BoardSimulator b, int c, int r);
+	
+	/** 
+	 * Checks if this piece can capture at the specified tile
+	 * @param b
+	 * 		The board this piece is on
+	 * @param c
+	 * 		The column coordinate
+	 * @param r
+	 * 		The row coordinate
+	 * @return
+	 * 		true if this piece can capture at the specified tile
+	 */
+	public boolean canCaptureAt(BoardSimulator b, int c, int r);
 }
