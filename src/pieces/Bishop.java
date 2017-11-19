@@ -13,7 +13,6 @@ public class Bishop extends AbstractPiece {
 
 	@Override
 	public ArrayList<Integer[]> getValidMoves() {
-		// TODO Auto-generated method stub
 		ArrayList<Integer[]> moves = new ArrayList<>();
 		BoardSimulator board = this.getBoard();
 		int col = this.getCol();

@@ -1,8 +1,7 @@
 package pieces;
 
-import java.util.HashMap;
-
-import chessboard.BoardSimulator;
+import java.util.ArrayList;
+import chessboard.*;
 
 /** Contains common implementations among all pieces */ 
 public abstract class AbstractPiece implements Piece {
@@ -62,7 +61,7 @@ public abstract class AbstractPiece implements Piece {
 	/** 
 	 * Checks if the specified tile contains a piece of the same
 	 * color as this piece, which would mean that this piece cannot move to 
-	 * that tile
+	 * that tile (used for all pieces except for pawn)
 	 * @param b
 	 * 		The board this piece is on
 	 * @param c

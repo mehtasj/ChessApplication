@@ -23,7 +23,6 @@ public interface Piece {
 	 * Checks if the piece's color is white
 	 * @return
 	 * 		true if the piece is white
-	 * 		false if the piece is black 
 	 */
 	public boolean isWhite();
 	
