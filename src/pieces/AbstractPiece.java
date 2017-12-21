@@ -28,9 +28,16 @@ public abstract class AbstractPiece implements Piece {
 		pc = color;
 	}
 	
+	// Deprecated
 	@Override
 	public void moveTo(int col, int row) {
 		this.setPosition(col, row);
+	}
+	
+	@Override
+	public void moveTo(Tile t) {
+		pSim.getTile(this.col, this.row).removePiece(this);
+		this.setTile(t);
 	}
 	
 	@Override
@@ -87,10 +94,18 @@ public abstract class AbstractPiece implements Piece {
 		return false;
 	}
 
+	// Deprecated
 	@Override
 	public void setPosition(int col, int row) {
 		this.col = col;
 		this.row = row;
+	}
+	
+	@Override
+	public void setTile(Tile t) {
+		this.col = t.getCol();
+		this.row = t.getRow();
+		t.setPiece(this);
 	}
 
 	@Override

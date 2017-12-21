@@ -6,55 +6,67 @@ import chessboard.*;
 /** Represents a piece on the chess board */
 public interface Piece {
 
-	/** Moves the piece to a new position on the board
+	/** Moves this piece to a new position on the board
 	 * Requires: move is valid
 	 */
 	public void moveTo(int col, int row);
 	
+	/** Moves this piece to a new tile on the board
+	 * and removes it from its previous tile
+	 * Requires: move is valid
+	 */
+	public void moveTo(Tile t);
+	
 	/** Sets the position of a piece on the board 
 	 * @param col
-	 * 		The column the piece is now in
+	 * 		The column this piece is now in
 	 * @param row
-	 * 		The row the piece is now in
+	 * 		The row this piece is now in
 	 */
 	public void setPosition(int col, int row);
 	
+	/** Sets the tile of a piece on the board 
+	 * @param t
+	 * 		The tile on which to set this piece
+	 */
+	public void setTile(Tile t);
+	
 	/**
-	 * Checks if the piece's color is white
+	 * Checks if this piece's color is white
 	 * @return
-	 * 		true if the piece is white
+	 * 		true if this piece is white
 	 */
 	public boolean isWhite();
 	
 	/**
 	 * @return
-	 * 		The row the piece is currently in
+	 * 		The row this piece is currently in
 	 */
 	public int getRow();
 	
 	/**
 	 * @return
-	 * 		The column the piece is currently in
+	 * 		The column this piece is currently in
 	 */
 	public int getCol();
 	
 	/**
 	 * 
 	 * @return
-	 * 		The board the piece is on (parent)
+	 * 		The board this piece is on (parent)
 	 */
 	public BoardSimulator getBoard();
 	
 	/**
 	 * 
 	 * @return
-	 * 		The color of the piece
+	 * 		The color of this piece
 	 */
 	public PieceColor getColor();
 	
 	/** 
 	 * @return
-	 * 		A list of valid moves that a given piece can make
+	 * 		A list of valid moves that this piece can make
 	 * 		The ArrayList contains Integer arrays of length 2 
 	 * 		to represent a (col, row) coordinate; assumes the board can be flipped 
 	 */
@@ -74,9 +86,9 @@ public interface Piece {
 	public Integer[] storeMoveTo(int c, int r);
 	
 	/** 
-	 * Checks if this pawn can move to an empty tile
+	 * Checks if this piece can move to an empty tile
 	 * @param b
-	 * 		The board this pawn is on
+	 * 		The board this piece is on
 	 * @param c
 	 * 		The column coordinate
 	 * @param r

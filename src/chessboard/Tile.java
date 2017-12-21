@@ -11,6 +11,9 @@ public class Tile {
 	/** The piece on this tile */
 	private Piece piece;
 	
+	/** The column and row this tile is on */
+	private int col, row;
+	
 	/**
 	 * Constructs a tile with a simulator parent node 
 	 * and a potential piece on the tile
@@ -24,6 +27,22 @@ public class Tile {
 		piece = p;
 	}
 	
+	/**
+	 * Constructs a tile with a simulator parent node 
+	 * at a specific (col, row) location on the board
+	 * @param bSim
+	 * 			Board simulator node
+	 * @param col
+	 * 			The column value
+	 * @param row
+	 * 			The row value
+	 */
+	public Tile(BoardSimulator bSim, int col, int row) {
+		pSim = bSim;
+		this.col = col;
+		this.row = row;
+	}
+	
 	/** Checks to see if the tile is open */
 	public boolean isEmpty() {
 		if (piece == null)
@@ -31,9 +50,35 @@ public class Tile {
 		return false;
 	}
 	
+	/** Removes piece from the tile to make it empty */
+	public void removePiece(Piece p) {
+		p = null;
+	}
+	
+	/** Represents a piece moving to this tile */
+	public void setPiece(Piece p) {
+		piece = p;
+	}
+	
 	/** Returns the piece occupying the tile */
 	public Piece getPiece() {
+		if (piece == null)
+			return null;
 		return piece;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * 		The row this tile is located in
+	 */
+	public int getRow() { return row; }
+
+	/** 
+	 * 
+	 * @return
+	 * 		The column this tile is is in
+	 */
+	public int getCol() { return col; }
 	
 }
