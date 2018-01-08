@@ -2,7 +2,7 @@ package pieces;
 
 import chessboard.*;
 
-/** Testing and debugging method */ 
+/** Testing and debugging class */ 
 public class Main {
 	
 	public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class Main {
 			}
 		}
 
-		b.flipBoard();
+		b.flipBoard(); // checking if flipBoard method works properly
 		
 		System.out.println();
 		
