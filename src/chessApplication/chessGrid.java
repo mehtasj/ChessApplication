@@ -1,20 +1,32 @@
 package chessApplication;
 
 import chessboard.BoardSimulator;
+import chessboard.Tile;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import pieces.*;
 import javafx.scene.image.*;
 
 /** Draws objects on the canvas to simulate a chess board game */
 public class chessGrid {
 
+	/** Simulates the chess board */
 	private BoardSimulator model;
-	private GraphicsContext gc;
-	private Image[] whitePieces, blackPieces;
-	// two arrays of images for black and white pieces
 	
+	/** Draws elements on the canvas */
+	private GraphicsContext gc;
+	
+	/** Store white and black piece image files respectively */
+	private Image[] whitePieces, blackPieces;
+	
+	/** Constructs a chess board
+	 * @param model
+	 * 		The BoardSimulator used in the chessController class
+	 * @param canvas
+	 * 		The canvas on which to draw the board and pieces
+	 */
 	public chessGrid(BoardSimulator model, Canvas canvas) {
 		this.model = model;
 		gc = canvas.getGraphicsContext2D();
@@ -61,10 +73,42 @@ public class chessGrid {
 		pieces[4] = new Image("file:" + color + "Queen.png", 90, 90, true, true);
 		pieces[5] = new Image("file:" + color + "King.png", 90, 90, true, true);
 	}
+	
+	/** Draws a piece on its respective location on the chess board
+	 * @param p
+	 * 		The piece to be drawn
+	 * @param pieces
+	 * 		The image array to which the piece corresponds (white or black)
+	 */
+	public void drawPiece(Piece p, Image[] pieces) {
+		if (p instanceof Pawn)
+			gc.drawImage(pieces[0], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+		else if (p instanceof Rook)
+			gc.drawImage(pieces[1], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+		else if (p instanceof Knight)
+			gc.drawImage(pieces[2], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+		else if (p instanceof Bishop)
+			gc.drawImage(pieces[3], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+		else if (p instanceof Queen)
+			gc.drawImage(pieces[4], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+		else if (p instanceof King)
+			gc.drawImage(pieces[5], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+	}
 
+	/** Iterates through the 64 chess board tiles and draws pieces 
+	 *  at their current locations
+	 */
 	public void drawPieces() {
 		// TODO
-		//gc.drawImage(whitePieces[0], 5, 5, 80, 80);
-		//gc.drawImage(blackPieces[0], 95, 95, 80, 80);
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				Tile t = model.getTile(c, r);
+				if (!t.isEmpty()) {
+					Piece p = t.getPiece();
+					if (p.isWhite()) { drawPiece(p, whitePieces); }
+					else { drawPiece(p, blackPieces); }
+				}
+			}
+		}
 	}
 }
