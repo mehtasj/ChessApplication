@@ -1,7 +1,7 @@
 package chessApplication;
 
+import chessboard.BoardSimulator;
 import java.util.Optional;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,18 +23,23 @@ import javafx.scene.paint.Color;
 /** Includes code corresponding to specific moves on the canvas / chess GUI */
 public class chessController {
 
-	@FXML private Menu newGameMenu, restartMenu;
+	@FXML private Menu gameMenu;
+	@FXML private MenuItem newGameMenuItem, restartMenuItem;
 	@FXML private Label player1Label, player2Label;
-	
 	@FXML private Canvas canvas;
 	
+	private BoardSimulator model;
+	private chessGrid chessGrid;
+	
 	/** Executes immediately after the GUI loads */
+	@FXML
 	public void initialize() {
 		
 		player1Label.setVisible(true);
 		player2Label.setVisible(true);
-		player1Label.setText("Player 1: ");
-		player2Label.setText("Player 2 ");
+		player1Label.setText("Player 1 (White): ");
+		player2Label.setText("Player 2 (Black): ");
+		canvas.setVisible(false);
 		
 		equipButtons(); 
 	}
@@ -42,9 +47,10 @@ public class chessController {
 	/** Implementing event handlers for all the components in the scene */
 	private void equipButtons() {
 		
-		newGameMenu.setOnAction(new EventHandler<ActionEvent>() {
+		newGameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				TextInputDialog player1 = new TextInputDialog();
 				player1.setTitle("Player 1 Name");
 				player1.setHeaderText("White");
@@ -54,22 +60,32 @@ public class chessController {
 				player1Label.setText("Player 1 (White): " + p1.get());
 				
 				TextInputDialog player2 = new TextInputDialog();
-				player1.setTitle("Player 2 Name");
-				player1.setHeaderText("Black");
-				player1.setContentText("Please enter Player 2's name:");
-				Optional<String> p2 = player1.showAndWait();
+				player2.setTitle("Player 2 Name");
+				player2.setHeaderText("Black");
+				player2.setContentText("Please enter Player 2's name:");
+				Optional<String> p2 = player2.showAndWait();
 				
-				player1Label.setText("Player 2 (Black): " + p2.get());
+				player2Label.setText("Player 2 (Black): " + p2.get());
+				
+				canvas.setVisible(true);
+				model = new BoardSimulator();
+				chessGrid = new chessGrid(model, canvas);
+				
 			}
 		});
 		
-		restartMenu.setOnAction(new EventHandler<ActionEvent>() {
+		restartMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				initialize();
 			}
 		});
 		
-		
+		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) { 
+				// TODO
+			}
+		});
 	}
 }
