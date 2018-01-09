@@ -1,6 +1,7 @@
 package chessApplication;
 
 import chessboard.BoardSimulator;
+import chessboard.Tile;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -85,6 +86,11 @@ public class chessController {
 			@Override
 			public void handle(MouseEvent event) { 
 				// TODO
+				int currCol = (int) (event.getX() / 90);
+				int currRow = (int) (event.getY() / 90);
+				Tile clickedTile = model.getTile(currCol, currRow);
+				//player1Label.setText(clickedTile.getPiece().toString());
+				//player2Label.setText(clickedTile.getPiece().getCol() + " " + clickedTile.getPiece().getRow());
 			}
 		});
 	}
