@@ -41,6 +41,7 @@ public class chessController {
 	private Tile clickedTile;
 	private Piece clickedPiece;
 	private ArrayList<Integer[]> validMoves;
+	private Piece[] deadWhitePieces, deadBlackPieces;
 	
 	/** Executes immediately after the GUI loads */
 	@FXML
@@ -112,22 +113,8 @@ public class chessController {
 				if (timesClicked == 1) { 
 					currCol = (int) (event.getX() / 90);
 					currRow = (int) (event.getY() / 90);
-					clickedTile = model.getTile(currCol, currRow);
-					clickedPiece = clickedTile.getPiece();
 					
-					if (clickedPiece != null) 
-						validMoves = clickedPiece.getValidMoves();
-					
-					if (turnNumber % 2 == 1) {
-						if (clickedPiece != null && clickedPiece.isWhite())
-							chessGrid.highlightReachableTiles(clickedPiece, validMoves);
-						else timesClicked = 0;
-					}
-					else {
-						if (clickedPiece != null && !clickedPiece.isWhite())
-							chessGrid.highlightReachableTiles(clickedPiece, validMoves);
-						else timesClicked = 0;
-					}
+					highlightTiles(currCol, currRow);
 					
 					//player1Label.setText(clickedTile.getPiece().toString());
 					//player2Label.setText(clickedTile.getPiece().getCol() + " " + clickedTile.getPiece().getRow());
@@ -150,25 +137,10 @@ public class chessController {
 						
 						if (moved == false) {
 							chessGrid.drawGridAndPieces();
-							
 							currCol = (int) (event.getX() / 90);
 							currRow = (int) (event.getY() / 90);
-							clickedTile = model.getTile(currCol, currRow);
-							clickedPiece = clickedTile.getPiece();
 							
-							if (clickedPiece != null) 
-								validMoves = clickedPiece.getValidMoves();
-							
-							if (turnNumber % 2 == 1) {
-								if (clickedPiece != null && clickedPiece.isWhite())
-									chessGrid.highlightReachableTiles(clickedPiece, validMoves);
-								else timesClicked = 0;
-							}
-							else {
-								if (clickedPiece != null && !clickedPiece.isWhite())
-									chessGrid.highlightReachableTiles(clickedPiece, validMoves);
-								else timesClicked = 0;
-							}
+							highlightTiles(currCol, currRow);
 							
 							//player1Label.setText(clickedTile.getPiece().toString());
 							//player2Label.setText(clickedTile.getPiece().getCol() + " " + clickedTile.getPiece().getRow());
@@ -178,5 +150,24 @@ public class chessController {
 				}
 			}
 		});
+	}
+	
+	public void highlightTiles(int currCol, int currRow) {
+		clickedTile = model.getTile(currCol, currRow);
+		clickedPiece = clickedTile.getPiece();
+		
+		if (clickedPiece != null) 
+			validMoves = clickedPiece.getValidMoves();
+		
+		if (turnNumber % 2 == 1) {
+			if (clickedPiece != null && clickedPiece.isWhite())
+				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
+			else timesClicked = 0;
+		}
+		else {
+			if (clickedPiece != null && !clickedPiece.isWhite())
+				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
+			else timesClicked = 0;
+		}
 	}
 }

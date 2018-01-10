@@ -25,12 +25,12 @@ public class Bishop extends AbstractPiece {
 			rowTracker -= 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
 			else if (this.canMoveToEmptySpaceAt(board, c, rowTracker))
-				moves.add(storeMoveTo(c, rowTracker));	
+				moves.add(storeMoveTo(c, rowTracker));
 		}
 		
 		// Checks if this bishop can move to / capture at any space diagonally left and above it
@@ -39,7 +39,7 @@ public class Bishop extends AbstractPiece {
 			rowTracker -= 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
@@ -53,7 +53,7 @@ public class Bishop extends AbstractPiece {
 			rowTracker += 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
@@ -67,7 +67,7 @@ public class Bishop extends AbstractPiece {
 			rowTracker += 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}

@@ -35,19 +35,19 @@ public class King extends AbstractPiece {
 			moves.add(storeMoveTo(col - 1, row));
 		
 		// Checks if this king can move to / capture at one space diagonally right and above it
-		if (this.canCaptureAt(board, col + 1, row - 1) || this.canCaptureAt(board, col + 1, row - 1))
+		if (this.canMoveToEmptySpaceAt(board, col + 1, row - 1) || this.canCaptureAt(board, col + 1, row - 1))
 			moves.add(storeMoveTo(col + 1, row - 1));
 		
 		// Checks if this king can move to / capture at one space diagonally left and above it
-		if (this.canCaptureAt(board, col - 1, row - 1) || this.canCaptureAt(board, col - 1, row - 1))
+		if (this.canMoveToEmptySpaceAt(board, col - 1, row - 1) || this.canCaptureAt(board, col - 1, row - 1))
 			moves.add(storeMoveTo(col - 1, row - 1));
 		
 		// Checks if this king can move to / capture at one space diagonally right and below it
-		if (this.canCaptureAt(board, col + 1, row + 1) || this.canCaptureAt(board, col + 1, row + 1))
+		if (this.canMoveToEmptySpaceAt(board, col + 1, row + 1) || this.canCaptureAt(board, col + 1, row + 1))
 			moves.add(storeMoveTo(col + 1, row + 1));
 				
 		// Checks if this king can move to / capture at one space diagonally left and below it
-		if (this.canCaptureAt(board, col - 1, row + 1) || this.canCaptureAt(board, col - 1, row + 1))
+		if (this.canMoveToEmptySpaceAt(board, col - 1, row + 1) || this.canCaptureAt(board, col - 1, row + 1))
 			moves.add(storeMoveTo(col - 1, row + 1));
 		
 		return moves;

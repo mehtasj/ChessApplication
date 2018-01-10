@@ -77,7 +77,7 @@ public class Queen extends AbstractPiece {
 			rowTracker -= 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
@@ -91,7 +91,7 @@ public class Queen extends AbstractPiece {
 			rowTracker -= 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
@@ -105,7 +105,7 @@ public class Queen extends AbstractPiece {
 			rowTracker += 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
@@ -119,7 +119,7 @@ public class Queen extends AbstractPiece {
 			rowTracker += 1;
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
-			else if (this.canCaptureAt(board, col, rowTracker)) {
+			else if (this.canCaptureAt(board, c, rowTracker)) {
 				moves.add(storeMoveTo(c, rowTracker));
 				break;
 			}
