@@ -2,7 +2,6 @@ package chessApplication;
 
 import chessboard.BoardSimulator;
 import chessboard.Tile;
-
 import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Platform;
@@ -34,9 +33,8 @@ public class chessController {
 	
 	private BoardSimulator model;
 	private chessGrid chessGrid;
-	private int timesClicked;
-	private int turnNumber;
 	
+	private int timesClicked, turnNumber;
 	private int currCol, currRow;
 	private Tile clickedTile;
 	private Piece clickedPiece;
@@ -46,20 +44,11 @@ public class chessController {
 	/** Executes immediately after the GUI loads */
 	@FXML
 	public void initialize() {
-		
 		player1Label.setVisible(true);
 		player2Label.setVisible(true);
 		player1Label.setText("Player 1 (White): ");
 		player2Label.setText("Player 2 (Black): ");
-		timesClicked = 0;
-		turnNumber = 1; // odd number = white's turn; even number = black's turn
-		
-		currCol = 0;
-		currRow = 0;
-		clickedTile = null;
-		clickedPiece = null;
-		validMoves = null;
-		
+		turnNumber = 1;
 		equipButtons(); 
 	}
 
@@ -69,7 +58,6 @@ public class chessController {
 		newGameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
 				TextInputDialog player1 = new TextInputDialog();
 				player1.setTitle("Player 1 Name");
 				player1.setHeaderText("White");
@@ -88,14 +76,12 @@ public class chessController {
 				
 				model = new BoardSimulator();
 				chessGrid = new chessGrid(model, canvas);
-				
 			}
 		});
 		
 		restartMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
 				// Add a TextInputDialog that asks if you are sure you want to restart
 				// model = new BoardSimulator();
 				// chessGrid = new chessGrid(model, canvas);
@@ -106,68 +92,77 @@ public class chessController {
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) { 
-				// TODO
 				timesClicked++;
 				
-				// if it is white's turn or if it is black's turn
 				if (timesClicked == 1) { 
 					currCol = (int) (event.getX() / 90);
 					currRow = (int) (event.getY() / 90);
-					
 					highlightTiles(currCol, currRow);
-					
-					//player1Label.setText(clickedTile.getPiece().toString());
-					//player2Label.setText(clickedTile.getPiece().getCol() + " " + clickedTile.getPiece().getRow());
 				}
 				
 				if (timesClicked >= 2) {
-					if (turnNumber % 2 == 1) {
-						int destCol = (int) (event.getX() / 90);
-						int destRow = (int) (event.getY() / 90);
-						Tile destTile = model.getTile(destCol, destRow);
-						boolean moved = false;
+					int destCol = (int) (event.getX() / 90);
+					int destRow = (int) (event.getY() / 90);
+					Tile destTile = model.getTile(destCol, destRow);
+					boolean moved = false;
 						
-						for (int i = 0; i < validMoves.size(); i++) {
-							if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
-								clickedPiece.moveTo(destTile);
-								moved = true;
-								chessGrid.drawGridAndPieces();
-							}
-						}
-						
-						if (moved == false) {
-							chessGrid.drawGridAndPieces();
-							currCol = (int) (event.getX() / 90);
-							currRow = (int) (event.getY() / 90);
+					for (int i = 0; i < validMoves.size(); i++) {
+						if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
+							clickedPiece.moveTo(destTile);
+							moved = true;
+							updateBoardAppearance();
 							
-							highlightTiles(currCol, currRow);
+							try { Thread.sleep(500); } 
+							catch (InterruptedException e) { System.out.println("Interruption!"); }
 							
-							//player1Label.setText(clickedTile.getPiece().toString());
-							//player2Label.setText(clickedTile.getPiece().getCol() + " " + clickedTile.getPiece().getRow());
+							model.flipBoard();
+							updateBoardAppearance();
+							
+							turnNumber++;
+							timesClicked = 0;
+							break;
 						}
+					}
 						
+					if (moved == false) {
+						updateBoardAppearance(); // gets rid of highlights on any tiles
+						currCol = (int) (event.getX() / 90);
+						currRow = (int) (event.getY() / 90);
+						highlightTiles(currCol, currRow);
 					}
 				}
 			}
 		});
 	}
 	
+	/** Highlights the tiles only if a tile with a piece of the current
+	 *  turn's color is selected
+	 * @param currCol
+	 * 			The column selected on the board
+	 * @param currRow
+	 * 			The row selected on the board
+	 */
 	public void highlightTiles(int currCol, int currRow) {
 		clickedTile = model.getTile(currCol, currRow);
 		clickedPiece = clickedTile.getPiece();
 		
-		if (clickedPiece != null) 
-			validMoves = clickedPiece.getValidMoves();
+		if (clickedPiece != null) { validMoves = clickedPiece.getValidMoves(); }
 		
+		// if it is white's turn or if it is black's turn
 		if (turnNumber % 2 == 1) {
 			if (clickedPiece != null && clickedPiece.isWhite())
 				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
-			else timesClicked = 0;
+			else { timesClicked = 0; }
 		}
 		else {
 			if (clickedPiece != null && !clickedPiece.isWhite())
 				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
-			else timesClicked = 0;
+			else { timesClicked = 0; }
 		}
 	}
+	
+	/** Redraws the chess board to depict its most updated appearance
+	 *  based on the moves made
+	 */
+	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 }
