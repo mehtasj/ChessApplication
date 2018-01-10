@@ -1,5 +1,7 @@
 package chessApplication;
 
+import java.util.ArrayList;
+
 import chessboard.BoardSimulator;
 import chessboard.Tile;
 import javafx.scene.SnapshotParameters;
@@ -37,6 +39,29 @@ public class chessGrid {
 		drawGridAndPieces();
 	}
 	
+	/** Colors the tiles to which the selected piece can move
+	 * 	and outlines the currently selected tile on which the piece currently sits
+	 * @param selectedPiece
+	 * 			The currently selected piece
+	 * @param moves
+	 * 			A list of valid tile positions to which the selectedPiece can move
+	 */
+	public void highlightReachableTiles(Piece selectedPiece, ArrayList<Integer[]> moves) {
+		// outlines the currently selected tile
+		gc.setLineWidth(3.0);
+		gc.setStroke(Color.color(1.0, 0.933, 0.259));
+		gc.strokeRect(selectedPiece.getCol() * 90, selectedPiece.getRow() * 90, 90, 90);
+		
+		// colors the potential destination tiles
+		for (int i = 0; i < moves.size(); i++) {
+			int col = moves.get(i)[0];
+			int row = moves.get(i)[1];
+			gc.setLineWidth(1.0);
+			gc.setFill(Color.color(1.0, 0.933, 0.259, 0.55));
+			gc.fillRect(90 * col, 90 * row, 90, 90);
+		}
+	}
+	
 	/** Draws the chess board and the pieces on the board
 	 *  in their appropriate locations based on the game play 
 	 */
@@ -53,7 +78,7 @@ public class chessGrid {
 					gc.setFill(Color.color(0.976, 0.804, 0.635));
 				else
 					gc.setFill(Color.color(0.788, 0.529, 0.275));
-				gc.fillRect(90 * r, 90 * c, 90, 90);
+				gc.fillRect(90 * c, 90 * r, 90, 90);
 			}
 		}
 	}

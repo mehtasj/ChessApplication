@@ -115,10 +115,8 @@ public class BoardSimulator {
 			for (int c = 0; c < board[r].length / 2; c++) {
 				Piece p = board[r][c].getPiece();
 				Piece p2 = board[7-r][7-c].getPiece();
-				if (p != null) 
-					p.setTile(board[7-r][7-c]);
-				if (p2 != null)
-					p2.setTile(board[r][c]);
+				if (p != null) { p.setTile(board[7-r][7-c]); }
+				if (p2 != null) { p2.setTile(board[r][c]); }
 			}
 		}
 	}

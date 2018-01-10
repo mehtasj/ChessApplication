@@ -36,7 +36,7 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override
 	public void moveTo(Tile t) {
-		pSim.getTile(this.col, this.row).removePiece(this);
+		pSim.getTile(this.col, this.row).setPiece(null);
 		this.setTile(t);
 	}
 	

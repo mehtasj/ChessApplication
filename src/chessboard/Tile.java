@@ -50,12 +50,9 @@ public class Tile {
 		return false;
 	}
 	
-	/** Removes piece from the tile to make it empty */
-	public void removePiece(Piece p) {
-		p = null;
-	}
-	
-	/** Represents a piece moving to this tile */
+	/** Represents a piece moving to this tile 
+	 *  or null if piece is removed from tile
+	 */
 	public void setPiece(Piece p) {
 		piece = p;
 	}

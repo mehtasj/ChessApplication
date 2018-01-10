@@ -35,19 +35,19 @@ public class Knight extends AbstractPiece {
 			moves.add(storeMoveTo(col - 1, row + 2));
 		
 		// Checks if this knight can move to / capture at two spaces to the right and one space above it
-		if (this.canCaptureAt(board, col + 2, row - 1) || this.canCaptureAt(board, col + 2, row - 1))
+		if (this.canMoveToEmptySpaceAt(board, col + 2, row - 1) || this.canCaptureAt(board, col + 2, row - 1))
 			moves.add(storeMoveTo(col + 2, row - 1));
 		
 		// Checks if this knight can move to / capture at two spaces to the right and one space below it
-		if (this.canCaptureAt(board, col + 2, row + 1) || this.canCaptureAt(board, col + 2, row + 1))
+		if (this.canMoveToEmptySpaceAt(board, col + 2, row + 1) || this.canCaptureAt(board, col + 2, row + 1))
 			moves.add(storeMoveTo(col + 2, row + 1));
 		
 		// Checks if this knight can move to / capture at two spaces to the left and one space above it
-		if (this.canCaptureAt(board, col - 2, row - 1) || this.canCaptureAt(board, col - 2, row - 1))
+		if (this.canMoveToEmptySpaceAt(board, col - 2, row - 1) || this.canCaptureAt(board, col - 2, row - 1))
 			moves.add(storeMoveTo(col - 2, row - 1));
 				
 		// Checks if this knight can move to / capture at two spaces to the left and one space below it
-		if (this.canCaptureAt(board, col - 2, row + 1) || this.canCaptureAt(board, col - 2, row + 1))
+		if (this.canMoveToEmptySpaceAt(board, col - 2, row + 1) || this.canCaptureAt(board, col - 2, row + 1))
 			moves.add(storeMoveTo(col - 2, row + 1));
 		
 		return moves;

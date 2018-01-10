@@ -20,7 +20,7 @@ public class Pawn extends AbstractPiece {
 		int row = this.getRow();
 		
 		// Special Case: Checks if this pawn can move two spaces forward from its home tile
-		if (col == 6 && board.getTile(col, 4).isEmpty())
+		if (row == 6 && board.getTile(col, 4).isEmpty() && board.getTile(col, 5).isEmpty())
 			moves.add(storeMoveTo(col, 4));
 		
 		// Checks if this pawn can move one space forward
