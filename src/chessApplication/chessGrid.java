@@ -106,18 +106,16 @@ public class chessGrid {
 	 * 		The image array to which the piece corresponds (white or black)
 	 */
 	public void drawPiece(Piece p, Image[] pieces) {
-		if (p instanceof Pawn)
-			gc.drawImage(pieces[0], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
-		else if (p instanceof Rook)
-			gc.drawImage(pieces[1], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
-		else if (p instanceof Knight)
-			gc.drawImage(pieces[2], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
-		else if (p instanceof Bishop)
-			gc.drawImage(pieces[3], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
-		else if (p instanceof Queen)
-			gc.drawImage(pieces[4], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
-		else if (p instanceof King)
-			gc.drawImage(pieces[5], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
+		int pieceIndex = 0;
+		
+		if (p instanceof Pawn) { pieceIndex = 0; }
+		else if (p instanceof Rook) { pieceIndex = 1; }
+		else if (p instanceof Knight) { pieceIndex = 2; }
+		else if (p instanceof Bishop) { pieceIndex = 3; }
+		else if (p instanceof Queen) { pieceIndex = 4; }
+		else if (p instanceof King) { pieceIndex = 5; }
+		
+		gc.drawImage(pieces[pieceIndex], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
 	}
 
 	/** Iterates through the 64 chess board tiles and draws pieces 

@@ -1,6 +1,5 @@
 package pieces;
 
-import java.util.ArrayList;
 import chessboard.*;
 
 /** Contains common implementations among all pieces */ 

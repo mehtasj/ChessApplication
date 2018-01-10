@@ -15,11 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.paint.Color;
 import pieces.Piece;
 
@@ -82,7 +79,7 @@ public class chessController {
 		restartMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				// Add a TextInputDialog that asks if you are sure you want to restart
+				// Add an Alert that asks if you are sure you want to restart
 				// model = new BoardSimulator();
 				// chessGrid = new chessGrid(model, canvas);
 				initialize();
@@ -147,8 +144,7 @@ public class chessController {
 		clickedPiece = clickedTile.getPiece();
 		
 		if (clickedPiece != null) { validMoves = clickedPiece.getValidMoves(); }
-		
-		// if it is white's turn or if it is black's turn
+
 		if (turnNumber % 2 == 1) {
 			if (clickedPiece != null && clickedPiece.isWhite())
 				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
