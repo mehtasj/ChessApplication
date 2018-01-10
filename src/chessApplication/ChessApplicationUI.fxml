@@ -26,7 +26,85 @@
             </menus>
           </MenuBar>
             <Canvas fx:id="canvas" height="720.0" layoutX="40.0" layoutY="40.0" width="720.0" />
-            <Text layoutX="15.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
+            <Text fx:id="text8" layoutX="15.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font></Text>
+            <Text fx:id="text7" layoutX="15.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="text6" layoutX="15.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="text5" layoutX="15.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="text4" layoutX="15.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="text3" layoutX="15.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="text2" layoutX="15.0" layoutY="633.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="text1" layoutX="15.0" layoutY="723.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textA" layoutX="78.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textB" layoutX="168.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textC" layoutX="258.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textD" layoutX="348.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textE" layoutX="438.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textF" layoutX="528.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="F" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textG" layoutX="618.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textH" layoutX="708.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="H" visible="false">
+               <font>
+                  <Font name="Helvetica Bold" size="18.0" />
+               </font>
+            </Text>
             <TableView layoutX="810.0" layoutY="510.0" prefHeight="251.0" prefWidth="412.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="#" />
@@ -35,11 +113,11 @@
             </TableView>
             <Label fx:id="player1Label" layoutX="820.0" layoutY="40.0" prefHeight="50.0" prefWidth="300.0" text="Player 1: ">
                <font>
-                  <Font name="Helvetica Bold" size="14.0" />
+                  <Font name="Helvetica Bold" size="20.0" />
                </font></Label>
-            <Label fx:id="player2Label" layoutX="820.0" layoutY="275.0" prefHeight="50.0" prefWidth="300.0" text="Player 2: ">
+            <Label fx:id="player2Label" layoutX="820.0" layoutY="270.0" prefHeight="50.0" prefWidth="300.0" text="Player 2: ">
                <font>
-                  <Font name="Helvetica Bold" size="14.0" />
+                  <Font name="Helvetica Bold" size="20.0" />
                </font></Label>
       </children>
     </AnchorPane>

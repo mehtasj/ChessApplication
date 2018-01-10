@@ -2,8 +2,18 @@ package chessApplication;
 
 import chessboard.BoardSimulator;
 import chessboard.Tile;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.Timer;
+
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,14 +28,19 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import pieces.Piece;
 
 /** Includes code corresponding to specific moves on the canvas / chess GUI */
 public class chessController {
 
+	// Add javadocs for each of the following 
+	
 	@FXML private Menu gameMenu;
 	@FXML private MenuItem newGameMenuItem, restartMenuItem;
 	@FXML private Label player1Label, player2Label;
+	@FXML private Text text1, text2, text3, text4, text5, text6, text7, text8;
+	@FXML private Text textA, textB, textC, textD, textE, textF, textG, textH;
 	@FXML private Canvas canvas;
 	
 	private BoardSimulator model;
@@ -36,7 +51,7 @@ public class chessController {
 	private Tile clickedTile;
 	private Piece clickedPiece;
 	private ArrayList<Integer[]> validMoves;
-	private Piece[] deadWhitePieces, deadBlackPieces;
+	private Piece[] capturedWhitePieces, capturedBlackPieces;
 	
 	/** Executes immediately after the GUI loads */
 	@FXML
@@ -46,6 +61,7 @@ public class chessController {
 		player1Label.setText("Player 1 (White): ");
 		player2Label.setText("Player 2 (Black): ");
 		turnNumber = 1;
+		
 		equipButtons(); 
 	}
 
@@ -73,6 +89,8 @@ public class chessController {
 				
 				model = new BoardSimulator();
 				chessGrid = new chessGrid(model, canvas);
+				
+				showTextNumbersAndLetters();
 			}
 		});
 		
@@ -109,12 +127,16 @@ public class chessController {
 							moved = true;
 							updateBoardAppearance();
 							
-							try { Thread.sleep(500); } 
-							catch (InterruptedException e) { System.out.println("Interruption!"); }
-							
-							model.flipBoard();
-							updateBoardAppearance();
-							
+							// flips the board after a 1.5 second delay 
+							ScheduledExecutorService boardFlip = Executors.newSingleThreadScheduledExecutor();
+						    boardFlip.schedule(() -> {
+						        Platform.runLater(() -> {
+						        		model.flipBoard();
+									updateBoardAppearance();
+									flipTextNumbersAndLetters();
+						        });
+						    }, 1200, TimeUnit.MILLISECONDS);
+					
 							turnNumber++;
 							timesClicked = 0;
 							break;
@@ -161,4 +183,48 @@ public class chessController {
 	 *  based on the moves made
 	 */
 	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
+	
+	/** Shows the numbers 1 - 8 on the left side of the chess board
+	 *  and the letters A - H on the bottom of the chess board
+	 */
+	public void showTextNumbersAndLetters() {
+		text1.setVisible(true); text2.setVisible(true);
+		text3.setVisible(true); text4.setVisible(true);
+		text5.setVisible(true); text6.setVisible(true);
+		text7.setVisible(true); text8.setVisible(true);
+		
+		textA.setVisible(true); textB.setVisible(true);
+		textC.setVisible(true); textD.setVisible(true);
+		textE.setVisible(true); textF.setVisible(true);
+		textG.setVisible(true); textH.setVisible(true);
+	}
+	
+	/** Rearranges the numbers 1 - 8 and the letters A - H
+	 *  when the chess board is flipped 
+	 */
+	public void flipTextNumbersAndLetters() {
+		if (text1.getText().equals("1")) { text1.setText("8"); textA.setText("H"); }
+		else { text1.setText("1"); textA.setText("A"); }
+		
+		if (text2.getText().equals("2")) { text2.setText("7"); textB.setText("G"); }
+		else { text2.setText("2"); textB.setText("B"); }
+		
+		if (text3.getText().equals("3")) { text3.setText("6"); textC.setText("F"); }
+		else { text3.setText("3"); textC.setText("C"); }
+		
+		if (text4.getText().equals("4")) { text4.setText("5"); textD.setText("E"); }
+		else { text4.setText("4"); textD.setText("D"); }
+		
+		if (text5.getText().equals("5")) { text5.setText("4"); textE.setText("D"); }
+		else { text5.setText("5"); textE.setText("E"); }
+		
+		if (text6.getText().equals("6")) { text6.setText("3"); textF.setText("C"); }
+		else { text6.setText("6"); textF.setText("F"); }
+		
+		if (text7.getText().equals("7")) { text7.setText("2"); textG.setText("B"); }
+		else { text7.setText("7"); textG.setText("G"); }
+		
+		if (text8.getText().equals("8")) { text8.setText("1"); textH.setText("A"); }
+		else { text8.setText("8"); textH.setText("H"); }
+	}
 }
