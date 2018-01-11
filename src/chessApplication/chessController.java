@@ -3,17 +3,11 @@ package chessApplication;
 import chessboard.BoardSimulator;
 import chessboard.Tile;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import javax.swing.Timer;
-
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -71,25 +66,9 @@ public class chessController {
 		newGameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				TextInputDialog player1 = new TextInputDialog();
-				player1.setTitle("Player 1 Name");
-				player1.setHeaderText("White");
-				player1.setContentText("Please enter Player 1's name:");
-				Optional<String> p1 = player1.showAndWait();
-				
-				player1Label.setText("Player 1 (White): " + p1.get());
-				
-				TextInputDialog player2 = new TextInputDialog();
-				player2.setTitle("Player 2 Name");
-				player2.setHeaderText("Black");
-				player2.setContentText("Please enter Player 2's name:");
-				Optional<String> p2 = player2.showAndWait();
-				
-				player2Label.setText("Player 2 (Black): " + p2.get());
-				
+				requestPlayerNames();
 				model = new BoardSimulator();
 				chessGrid = new chessGrid(model, canvas);
-				
 				showTextNumbersAndLetters();
 			}
 		});
@@ -97,10 +76,17 @@ public class chessController {
 		restartMenuItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				// Add an Alert that asks if you are sure you want to restart
-				// model = new BoardSimulator();
-				// chessGrid = new chessGrid(model, canvas);
-				initialize();
+				Alert restart = new Alert(AlertType.CONFIRMATION);
+				restart.setContentText("Are you sure you want to restart the game?");
+				Optional<ButtonType> result = restart.showAndWait();
+				
+				if (result.get().equals(ButtonType.OK)) {
+					initialize();
+					requestPlayerNames();
+					model = new BoardSimulator();
+					chessGrid = new chessGrid(model, canvas);
+					if (!text1.getText().equals("1")) { flipTextNumbersAndLetters(); }
+				}
 			}
 		});
 		
@@ -126,24 +112,14 @@ public class chessController {
 							clickedPiece.moveTo(destTile);
 							moved = true;
 							updateBoardAppearance();
-							
-							// flips the board after a 1.5 second delay 
-							ScheduledExecutorService boardFlip = Executors.newSingleThreadScheduledExecutor();
-						    boardFlip.schedule(() -> {
-						        Platform.runLater(() -> {
-						        		model.flipBoard();
-									updateBoardAppearance();
-									flipTextNumbersAndLetters();
-						        });
-						    }, 1200, TimeUnit.MILLISECONDS);
-					
+							delayThenFlip();
 							turnNumber++;
 							timesClicked = 0;
 							break;
 						}
 					}
-						
-					if (moved == false) {
+					
+					if (!moved) {
 						updateBoardAppearance(); // gets rid of highlights on any tiles
 						currCol = (int) (event.getX() / 90);
 						currRow = (int) (event.getY() / 90);
@@ -179,28 +155,57 @@ public class chessController {
 		}
 	}
 	
+	/** Flips the board after a 1.5 second delay */
+	public void delayThenFlip() {
+		ScheduledExecutorService boardFlip = Executors.newSingleThreadScheduledExecutor();
+	    boardFlip.schedule(() -> {
+	        Platform.runLater(() -> {
+	        		model.flipBoard();
+				updateBoardAppearance();
+				flipTextNumbersAndLetters();
+	        });
+	    }, 1000, TimeUnit.MILLISECONDS);
+	}
+	
 	/** Redraws the chess board to depict its most updated appearance
 	 *  based on the moves made
 	 */
 	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 	
+	/** Prompts the players to enter their names for Player 1 (White) 
+	 *  and Player 2 (Black)
+	 */
+	public void requestPlayerNames() {
+		TextInputDialog player1 = new TextInputDialog();
+		player1.setTitle("Player 1 Name");
+		player1.setHeaderText("White");
+		player1.setContentText("Please enter Player 1's name:");
+		Optional<String> p1 = player1.showAndWait();
+		
+		player1Label.setText("Player 1 (White): " + p1.get());
+		
+		TextInputDialog player2 = new TextInputDialog();
+		player2.setTitle("Player 2 Name");
+		player2.setHeaderText("Black");
+		player2.setContentText("Please enter Player 2's name:");
+		Optional<String> p2 = player2.showAndWait();
+		
+		player2Label.setText("Player 2 (Black): " + p2.get());
+	}
+	
 	/** Shows the numbers 1 - 8 on the left side of the chess board
 	 *  and the letters A - H on the bottom of the chess board
 	 */
 	public void showTextNumbersAndLetters() {
-		text1.setVisible(true); text2.setVisible(true);
-		text3.setVisible(true); text4.setVisible(true);
-		text5.setVisible(true); text6.setVisible(true);
-		text7.setVisible(true); text8.setVisible(true);
+		text1.setVisible(true); text2.setVisible(true); text3.setVisible(true); text4.setVisible(true);
+		text5.setVisible(true); text6.setVisible(true); text7.setVisible(true); text8.setVisible(true);
 		
-		textA.setVisible(true); textB.setVisible(true);
-		textC.setVisible(true); textD.setVisible(true);
-		textE.setVisible(true); textF.setVisible(true);
-		textG.setVisible(true); textH.setVisible(true);
+		textA.setVisible(true); textB.setVisible(true); textC.setVisible(true); textD.setVisible(true);
+		textE.setVisible(true); textF.setVisible(true); textG.setVisible(true); textH.setVisible(true);
 	}
 	
 	/** Rearranges the numbers 1 - 8 and the letters A - H
-	 *  when the chess board is flipped 
+	 *  when the chess board flips
 	 */
 	public void flipTextNumbersAndLetters() {
 		if (text1.getText().equals("1")) { text1.setText("8"); textA.setText("H"); }
