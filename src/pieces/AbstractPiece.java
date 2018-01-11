@@ -5,26 +5,29 @@ import chessboard.*;
 /** Contains common implementations among all pieces */ 
 public abstract class AbstractPiece implements Piece {
 
-	/** The piece's color */
+	/** This piece's color */
 	private PieceColor pc;
 	
-	/** The piece's column and row location */
+	/** This piece's column and row location */
 	private int col, row;
+	
+	/** Keeps track of how many times this piece has successfully moved */
+	private int moveNumber;
 	
 	/** The piece's parent simulator (i.e. the board it is on) */
 	private BoardSimulator pSim;
 	
 	/**
-	 * Constructs a piece with a simulator parent node 
-	 * and a color
+	 * Constructs a piece with a simulator parent node and a color
 	 * @param bSim
 	 * 			Board simulator node
 	 * @param color
 	 * 			Color of the piece (black or white)
 	 */
 	public AbstractPiece(BoardSimulator bSim, PieceColor color) {
-		pSim = bSim;
-		pc = color;
+		this.pSim = bSim;
+		this.pc = color;
+		this.moveNumber = 0;
 	}
 	
 	@Override
@@ -32,6 +35,9 @@ public abstract class AbstractPiece implements Piece {
 		pSim.getTile(this.col, this.row).setPiece(null);
 		this.setTile(t);
 	}
+	
+	@Override
+	public void incrementMoveNumber() { this.moveNumber++; }
 	
 	@Override
 	public Integer[] storeMoveTo(int c, int r) {
@@ -91,16 +97,19 @@ public abstract class AbstractPiece implements Piece {
 	}
 
 	@Override
-	public int getRow() { return row; }
+	public int getRow() { return this.row; }
 
 	@Override
-	public int getCol() { return col; }
+	public int getCol() { return this.col; }
+	
+	@Override
+	public int getMoveNumber() { return this.moveNumber; }
 	
 	@Override 
-	public BoardSimulator getBoard() { return pSim; }
+	public BoardSimulator getBoard() { return this.pSim; }
 	
 	@Override 
-	public PieceColor getColor() { return pc; }
+	public PieceColor getColor() { return this.pc; }
 	
 	// Deprecated
 	@Override

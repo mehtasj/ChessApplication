@@ -24,7 +24,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import pieces.Piece;
+import pieces.*;
 
 /** Includes code corresponding to specific moves on the canvas / chess GUI */
 public class chessController {
@@ -110,9 +110,15 @@ public class chessController {
 					for (int i = 0; i < validMoves.size(); i++) {
 						if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
 							clickedPiece.moveTo(destTile);
+							clickedPiece.incrementMoveNumber();
 							moved = true;
+							
+							if (clickedPiece instanceof King)
+								((King) clickedPiece).checkIfCastle((King) clickedPiece, clickedTile, destTile); 
+							
 							updateBoardAppearance();
 							delayThenFlip();
+							
 							turnNumber++;
 							timesClicked = 0;
 							break;
