@@ -7,9 +7,17 @@ import chessboard.Tile;
 /** Represents a king */
 public class King extends AbstractPiece {
 
+	/** 
+	 * Keeps track of whether this king can castle 
+	 * and if it has already castled
+	 */
+	private boolean canCastle, isAlreadyCastled;
+	
 	/** Constructs a king */
 	public King(BoardSimulator bSim, PieceColor color) { 
-		super(bSim, color); 
+		super(bSim, color);
+		this.canCastle = true;
+		this.isAlreadyCastled = false;
 	}
 
 	@Override
@@ -111,23 +119,25 @@ public class King extends AbstractPiece {
 	 * @param currTile
 	 * 		The current tile the king is on
 	 */
-	public void checkIfCastle(King k, Tile prevTile, Tile currTile) {
+	public void checkIfCastle(Tile prevTile, Tile currTile) {
 		int prevCol = prevTile.getCol();
 		int prevRow = prevTile.getRow();
 		int currCol = currTile.getCol();
 		int currRow = currTile.getRow();
 		
-		if (k.isWhite()) {
+		if (this.isWhite()) {
 			if (prevCol == 4 && prevRow == 7 && currCol == 6 && currRow == 7)
-				moveAppropriateRook(k.getBoard(), 7, 5);
+				moveAppropriateRook(this.getBoard(), 7, 5);
 			else if (prevCol == 4 && prevRow == 7 && currCol == 2 && currRow == 7)
-				moveAppropriateRook(k.getBoard(), 0, 3);
+				moveAppropriateRook(this.getBoard(), 0, 3);
+			else { this.canCastle = false; }
 		}
 		else {
 			if (prevCol == 3 && prevRow == 7 && currCol == 1 && currRow == 7)
-				moveAppropriateRook(k.getBoard(), 0, 2);
+				moveAppropriateRook(this.getBoard(), 0, 2);
 			else if (prevCol == 3 && prevRow == 7 && currCol == 5 && currRow == 7)
-				moveAppropriateRook(k.getBoard(), 7, 4);
+				moveAppropriateRook(this.getBoard(), 7, 4);
+			else { this.canCastle = false; }
 		}
 	}
 	
@@ -146,6 +156,14 @@ public class King extends AbstractPiece {
 		if (p instanceof Rook && p.getMoveNumber() == 0) {
 			p.moveTo(board.getTile(newCol, 7));
 			p.incrementMoveNumber();
+			this.isAlreadyCastled = true;
+			this.canCastle = false;
 		}
 	}
+	
+	/** @return true if this king can still castle */
+	public boolean canCastle() { return canCastle; }
+	
+	/** @return true if this king is already castled */
+	public boolean isAlreadyCastled() { return isAlreadyCastled; }
 }

@@ -113,12 +113,14 @@ public class chessController {
 							clickedPiece.incrementMoveNumber();
 							moved = true;
 							
-							if (clickedPiece instanceof King)
-								((King) clickedPiece).checkIfCastle((King) clickedPiece, clickedTile, destTile); 
+							if (clickedPiece instanceof King) {
+								King king = (King) clickedPiece;
+								if (!king.isAlreadyCastled() && king.canCastle())
+									king.checkIfCastle(clickedTile, destTile);
+							} 
 							
 							updateBoardAppearance();
 							delayThenFlip();
-							
 							turnNumber++;
 							timesClicked = 0;
 							break;
