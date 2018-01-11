@@ -102,7 +102,8 @@ public class King extends AbstractPiece {
 	}
 	
 	/** 
-	 * Moves the correct rook to its new position during a castle
+	 * Checks if the king castled; 
+	 * if true, then the appropriate rook is moved to its new position
 	 * @param k
 	 * 		The king that castles
 	 * @param prevTile
@@ -117,40 +118,34 @@ public class King extends AbstractPiece {
 		int currRow = currTile.getRow();
 		
 		if (k.isWhite()) {
-			if (prevCol == 4 && prevRow == 7 && currCol == 6 && currRow == 7) {
-				Tile t = k.getBoard().getTile(7, 7);
-				Piece p = t.getPiece();
-				if (p instanceof Rook && p.isWhite() && p.getMoveNumber() == 0) {
-					p.moveTo(k.getBoard().getTile(5, 7));
-					p.incrementMoveNumber();
-				}
-			}
-			else if (prevCol == 4 && prevRow == 7 && currCol == 2 && currRow == 7) {
-				Tile t = k.getBoard().getTile(0, 7);
-				Piece p = t.getPiece();
-				if (p instanceof Rook && p.isWhite() && p.getMoveNumber() == 0) {
-					p.moveTo(k.getBoard().getTile(3, 7));
-					p.incrementMoveNumber();
-				}
-			}
+			if (prevCol == 4 && prevRow == 7 && currCol == 6 && currRow == 7)
+				moveAppropriateRook(k.getBoard(), 7, 5);
+			else if (prevCol == 4 && prevRow == 7 && currCol == 2 && currRow == 7)
+				moveAppropriateRook(k.getBoard(), 0, 3);
 		}
 		else {
-			if (prevCol == 3 && prevRow == 7 && currCol == 1 && currRow == 7) {
-				Tile t = k.getBoard().getTile(0, 7);
-				Piece p = t.getPiece();
-				if (p instanceof Rook && !p.isWhite() && p.getMoveNumber() == 0) {
-					p.moveTo(k.getBoard().getTile(2, 7));
-					p.incrementMoveNumber();
-				}
-			}
-			else if (prevCol == 3 && prevRow == 7 && currCol == 5 && currRow == 7) {
-				Tile t = k.getBoard().getTile(7, 7);
-				Piece p = t.getPiece();
-				if (p instanceof Rook && !p.isWhite() && p.getMoveNumber() == 0) {
-					p.moveTo(k.getBoard().getTile(4, 7));
-					p.incrementMoveNumber();
-				}
-			}
+			if (prevCol == 3 && prevRow == 7 && currCol == 1 && currRow == 7)
+				moveAppropriateRook(k.getBoard(), 0, 2);
+			else if (prevCol == 3 && prevRow == 7 && currCol == 5 && currRow == 7)
+				moveAppropriateRook(k.getBoard(), 7, 4);
+		}
+	}
+	
+	/** 
+	 * Moves the correct rook to its new position on the board during the castle 
+	 * @param board
+	 * 		The board Simulator on which the pieces are located
+	 * @param oldCol
+	 * 		The current column of the appropriate rook
+	 * @param newCol
+	 * 		The column to which the appropriate rook will move
+	 */
+	public void moveAppropriateRook(BoardSimulator board, int oldCol, int newCol) {
+		Tile t = board.getTile(oldCol, 7);
+		Piece p = t.getPiece();
+		if (p instanceof Rook && p.getMoveNumber() == 0) {
+			p.moveTo(board.getTile(newCol, 7));
+			p.incrementMoveNumber();
 		}
 	}
 }
