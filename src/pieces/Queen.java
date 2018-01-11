@@ -129,5 +129,4 @@ public class Queen extends AbstractPiece {
 		
 		return moves;
 	}
-
 }

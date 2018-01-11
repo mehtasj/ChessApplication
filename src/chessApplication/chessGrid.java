@@ -23,7 +23,8 @@ public class chessGrid {
 	/** Store white and black piece image files respectively */
 	private Image[] whitePieces, blackPieces;
 	
-	/** Constructs a chess board
+	/** 
+	 * Constructs a chess board
 	 * @param model
 	 * 		The BoardSimulator used in the chessController class
 	 * @param canvas
@@ -39,12 +40,13 @@ public class chessGrid {
 		drawGridAndPieces();
 	}
 	
-	/** Colors the tiles to which the selected piece can move
-	 * 	and outlines the currently selected tile on which the piece currently sits
+	/** 
+	 * Colors the tiles to which the selected piece can move
+	 * and outlines the currently selected tile on which the piece currently sits
 	 * @param selectedPiece
-	 * 			The currently selected piece
+	 * 		The currently selected piece
 	 * @param moves
-	 * 			A list of valid tile positions to which the selectedPiece can move
+	 * 		A list of valid tile positions to which the selectedPiece can move
 	 */
 	public void highlightReachableTiles(Piece selectedPiece, ArrayList<Integer[]> moves) {
 		// outlines the currently selected tile
@@ -62,8 +64,9 @@ public class chessGrid {
 		}
 	}
 	
-	/** Draws the chess board and the pieces on the board
-	 *  in their appropriate locations based on the game play 
+	/** 
+	 * Draws the chess board and the pieces on the board
+	 * in their appropriate locations based on the game play 
 	 */
 	public void drawGridAndPieces() {
 		drawGrid();
@@ -83,12 +86,13 @@ public class chessGrid {
 		}
 	}
 	
-	/** Stores the piece images in their corresponding color arrays 
-	 *  for quick retrieval
+	/** 
+	 * Stores the piece images in their corresponding color arrays 
+	 * for quick retrieval
 	 * @param color
-	 * 			The color of the piece being stored
+	 * 		The color of the piece being stored
 	 * @param pieces
-	 * 			The image array in which to store the images
+	 * 		The image array in which to store the images
 	 */
 	public void storePieces(String color, Image[] pieces) {
 		pieces[0] = new Image("file:" + color + "Pawn.png", 90, 90, true, true);
@@ -99,7 +103,8 @@ public class chessGrid {
 		pieces[5] = new Image("file:" + color + "King.png", 90, 90, true, true);
 	}
 	
-	/** Draws a piece on its respective location on the chess board
+	/**
+	 * Draws a piece on its respective location on the chess board
 	 * @param p
 	 * 		The piece to be drawn
 	 * @param pieces
@@ -118,11 +123,11 @@ public class chessGrid {
 		gc.drawImage(pieces[pieceIndex], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
 	}
 
-	/** Iterates through the 64 chess board tiles and draws pieces 
-	 *  at their current locations
+	/** 
+	 * Iterates through the 64 chess board tiles 
+	 * and draws pieces at their current locations
 	 */
 	public void drawPieces() {
-		// TODO
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
 				Tile t = model.getTile(c, r);

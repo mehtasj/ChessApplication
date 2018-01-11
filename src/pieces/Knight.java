@@ -52,5 +52,4 @@ public class Knight extends AbstractPiece {
 		
 		return moves;
 	}
-
 }

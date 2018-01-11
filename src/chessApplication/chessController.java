@@ -130,12 +130,13 @@ public class chessController {
 		});
 	}
 	
-	/** Highlights the tiles only if a tile with a piece of the current
-	 *  turn's color is selected
+	/** 
+	 * Highlights the tiles only if a tile with a piece of the current
+	 * turn's color is selected
 	 * @param currCol
-	 * 			The column selected on the board
+	 * 		The column selected on the board
 	 * @param currRow
-	 * 			The row selected on the board
+	 * 		The row selected on the board
 	 */
 	public void highlightTiles(int currCol, int currRow) {
 		clickedTile = model.getTile(currCol, currRow);
@@ -167,14 +168,10 @@ public class chessController {
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
 	
-	/** Redraws the chess board to depict its most updated appearance
-	 *  based on the moves made
-	 */
+	/** Redraws the chess board to depict its most updated appearance based on the moves made */
 	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 	
-	/** Prompts the players to enter their names for Player 1 (White) 
-	 *  and Player 2 (Black)
-	 */
+	/** Prompts the players to enter their names for Player 1 (White) and Player 2 (Black) */
 	public void requestPlayerNames() {
 		TextInputDialog player1 = new TextInputDialog();
 		player1.setTitle("Player 1 Name");
@@ -193,8 +190,9 @@ public class chessController {
 		player2Label.setText("Player 2 (Black): " + p2.get());
 	}
 	
-	/** Shows the numbers 1 - 8 on the left side of the chess board
-	 *  and the letters A - H on the bottom of the chess board
+	/** 
+	 * Shows the numbers 1 - 8 on the left side of the chess board 
+	 * and the letters A - H on the bottom of the chess board
 	 */
 	public void showTextNumbersAndLetters() {
 		text1.setVisible(true); text2.setVisible(true); text3.setVisible(true); text4.setVisible(true);
@@ -204,9 +202,7 @@ public class chessController {
 		textE.setVisible(true); textF.setVisible(true); textG.setVisible(true); textH.setVisible(true);
 	}
 	
-	/** Rearranges the numbers 1 - 8 and the letters A - H
-	 *  when the chess board flips
-	 */
+	/** Rearranges the numbers 1 - 8 and the letters A - H when the chess board flips */
 	public void flipTextNumbersAndLetters() {
 		if (text1.getText().equals("1")) { text1.setText("8"); textA.setText("H"); }
 		else { text1.setText("1"); textA.setText("A"); }

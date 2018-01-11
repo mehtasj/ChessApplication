@@ -16,19 +16,6 @@ public class Tile {
 	
 	/**
 	 * Constructs a tile with a simulator parent node 
-	 * and a potential piece on the tile
-	 * @param bSim
-	 * 			Board simulator node
-	 * @param piece
-	 * 			The current piece on the tile
-	 */
-	public Tile(BoardSimulator bSim, Piece p) {
-		pSim = bSim;
-		piece = p;
-	}
-	
-	/**
-	 * Constructs a tile with a simulator parent node 
 	 * at a specific (col, row) location on the board
 	 * @param bSim
 	 * 			Board simulator node
@@ -45,37 +32,39 @@ public class Tile {
 	
 	/** Checks to see if the tile is open */
 	public boolean isEmpty() {
-		if (piece == null)
-			return true;
+		if (piece == null) { return true; }
 		return false;
 	}
 	
-	/** Represents a piece moving to this tile 
-	 *  or null if piece is removed from tile
+	/** 
+	 * Represents a piece moving to this tile 
+	 * or null if piece is removed from tile
 	 */
-	public void setPiece(Piece p) {
-		piece = p;
-	}
+	public void setPiece(Piece p) { piece = p; }
 	
 	/** Returns the piece occupying the tile */
 	public Piece getPiece() {
-		if (piece == null)
-			return null;
+		if (piece == null) { return null; }
 		return piece;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 * 		The row this tile is located in
-	 */
+	/** @return The row this tile is located in */
 	public int getRow() { return row; }
 
-	/** 
-	 * 
-	 * @return
-	 * 		The column this tile is is in
-	 */
+	/** @return The column this tile is is in */
 	public int getCol() { return col; }
 	
+	// Deprecated
+	/**
+	 * Constructs a tile with a simulator parent node 
+	 * and a potential piece on the tile
+	 * @param bSim
+	 * 			Board simulator node
+	 * @param piece
+	 * 			The current piece on the tile
+	 */
+	public Tile(BoardSimulator bSim, Piece p) {
+		pSim = bSim;
+		piece = p;
+	}
 }

@@ -26,7 +26,7 @@ public class Bishop extends AbstractPiece {
 			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
 				break;
 			else if (this.canCaptureAt(board, c, rowTracker)) {
-				moves.add(storeMoveTo(c, rowTracker));
+				moves.add(storeMoveTo(c, rowTracker)); 
 				break;
 			}
 			else if (this.canMoveToEmptySpaceAt(board, c, rowTracker))

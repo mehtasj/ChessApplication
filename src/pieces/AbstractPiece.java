@@ -27,12 +27,6 @@ public abstract class AbstractPiece implements Piece {
 		pc = color;
 	}
 	
-	// Deprecated
-	@Override
-	public void moveTo(int col, int row) {
-		this.setPosition(col, row);
-	}
-	
 	@Override
 	public void moveTo(Tile t) {
 		pSim.getTile(this.col, this.row).setPiece(null);
@@ -49,8 +43,7 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override
 	public boolean canMoveToEmptySpaceAt(BoardSimulator b, int c, int r) {
-		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && b.getTile(c, r).isEmpty())
-			return true;
+		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && b.getTile(c, r).isEmpty()) { return true; }
 		return false;
 	}
 	
@@ -58,8 +51,7 @@ public abstract class AbstractPiece implements Piece {
 	public boolean canCaptureAt(BoardSimulator b, int c, int r) {
 		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && (!b.getTile(c, r).isEmpty())) {
 			Piece p = b.getTile(c, r).getPiece();
-			if (p != null && (!this.getColor().equals(p.getColor())))
-				return true;
+			if (p != null && (!this.getColor().equals(p.getColor()))) { return true; }
 		}
 		return false;
 	}
@@ -80,24 +72,15 @@ public abstract class AbstractPiece implements Piece {
 	public boolean isBlockedByOwnColorAt(BoardSimulator b, int c, int r) {
 		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && (!b.getTile(c, r).isEmpty())) {
 			Piece p = b.getTile(c, r).getPiece();
-			if (p != null && (this.getColor().equals(p.getColor())))
-				return true;
+			if (p != null && (this.getColor().equals(p.getColor()))) { return true; }
 		}
 		return false;
 	}
 	
 	@Override 
 	public boolean isWhite() {
-		if (pc == PieceColor.WHITE)
-			return true;
+		if (pc == PieceColor.WHITE) { return true; }
 		return false;
-	}
-
-	// Deprecated
-	@Override
-	public void setPosition(int col, int row) {
-		this.col = col;
-		this.row = row;
 	}
 	
 	@Override
@@ -118,5 +101,15 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override 
 	public PieceColor getColor() { return pc; }
-
+	
+	// Deprecated
+	@Override
+	public void moveTo(int col, int row) { this.setPosition(col, row); }
+	
+	// Deprecated
+	@Override
+	public void setPosition(int col, int row) {
+		this.col = col;
+		this.row = row;
+	}
 }

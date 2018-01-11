@@ -10,8 +10,8 @@ public class Pawn extends AbstractPiece {
 	public Pawn(BoardSimulator bSim, PieceColor color) {
 		super(bSim, color);
 	}
-
-	// make more methods to reduce duplications and also check for null (off the board cases)
+	
+	// Code promotions if the pawn reaches the end of the board
 	@Override
 	public ArrayList<Integer[]> getValidMoves() {
 		ArrayList<Integer[]> moves = new ArrayList<>();

@@ -5,27 +5,16 @@ import chessboard.*;
 
 /** Represents a piece on the chess board */
 public interface Piece {
-
-	/** Moves this piece to a new position on the board
-	 * Requires: move is valid
-	 */
-	public void moveTo(int col, int row);
 	
-	/** Moves this piece to a new tile on the board
+	/** 
+	 * Moves this piece to a new tile on the board
 	 * and removes it from its previous tile
 	 * Requires: move is valid
 	 */
 	public void moveTo(Tile t);
 	
-	/** Sets the position of a piece on the board 
-	 * @param col
-	 * 		The column this piece is now in
-	 * @param row
-	 * 		The row this piece is now in
-	 */
-	public void setPosition(int col, int row);
-	
-	/** Sets the tile of a piece on the board 
+	/** 
+	 * Sets the tile of a piece on the board 
 	 * @param t
 	 * 		The tile on which to set this piece
 	 */
@@ -33,42 +22,28 @@ public interface Piece {
 	
 	/**
 	 * Checks if this piece's color is white
-	 * @return
-	 * 		true if this piece is white
+	 * @return true if this piece is white
 	 */
 	public boolean isWhite();
 	
-	/**
-	 * @return
-	 * 		The row this piece is currently in
-	 */
+	/** @return The row this piece is currently in */
 	public int getRow();
 	
-	/**
-	 * @return
-	 * 		The column this piece is currently in
-	 */
+	/** @return The column this piece is currently in */
 	public int getCol();
 	
-	/**
-	 * 
-	 * @return
-	 * 		The board this piece is on (parent)
-	 */
+	/** @return The board this piece is on (parent) */
 	public BoardSimulator getBoard();
 	
-	/**
-	 * 
-	 * @return
-	 * 		The color of this piece
-	 */
+	/** @return The color of this piece */
 	public PieceColor getColor();
 	
 	/** 
 	 * @return
 	 * 		A list of valid moves that this piece can make
 	 * 		The ArrayList contains Integer arrays of length 2 
-	 * 		to represent a (col, row) coordinate; assumes the board can be flipped 
+	 * 		to represent a (col, row) coordinate;
+	 * 		Assumes the board can be flipped 
 	 */
 	public ArrayList<Integer[]> getValidMoves();
 	
@@ -79,9 +54,8 @@ public interface Piece {
 	 * 		The column coordinate
 	 * @param r
 	 * 		The row coordinate
-	 * @return
-	 * 		an array with 2 elements: column and row 
-	 * 		in that order
+	 * @return 
+	 * 		an array with 2 elements: column and row in that order
 	 */
 	public Integer[] storeMoveTo(int c, int r);
 	
@@ -110,4 +84,21 @@ public interface Piece {
 	 * 		true if this piece can capture at the specified tile
 	 */
 	public boolean canCaptureAt(BoardSimulator b, int c, int r);
+	
+	// Deprecated
+	/** 
+	 * Moves this piece to a new position on the board
+	 * Requires: move is valid
+	 */
+	public void moveTo(int col, int row);
+	
+	// Deprecated
+	/** 
+	 * Sets the position of a piece on the board 
+	 * @param col
+	 * 		The column this piece is now in
+	 * @param row
+	 * 		The row this piece is now in
+	 */
+	public void setPosition(int col, int row);
 }

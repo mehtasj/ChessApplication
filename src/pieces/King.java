@@ -7,8 +7,8 @@ import chessboard.BoardSimulator;
 public class King extends AbstractPiece {
 
 	/** Constructs a king */
-	public King(BoardSimulator bSim, PieceColor color) {
-		super(bSim, color);
+	public King(BoardSimulator bSim, PieceColor color) { 
+		super(bSim, color); 
 	}
 
 	@Override
@@ -52,5 +52,4 @@ public class King extends AbstractPiece {
 		
 		return moves;
 	}
-
 }
