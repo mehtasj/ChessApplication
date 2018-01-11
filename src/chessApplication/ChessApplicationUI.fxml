@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -26,85 +27,89 @@
             </menus>
           </MenuBar>
             <Canvas fx:id="canvas" height="720.0" layoutX="40.0" layoutY="40.0" width="720.0" />
-            <Text fx:id="text8" layoutX="15.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8" visible="false">
+            <Rectangle fx:id="leftBorder" fill="#431409" height="720.0" layoutY="40.0" stroke="#431409" strokeType="INSIDE" width="40.0" />
+            <Text fx:id="text8" fill="WHITE" layoutX="15.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font></Text>
-            <Text fx:id="text7" layoutX="15.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" visible="false">
+            <Text fx:id="text7" fill="WHITE" layoutX="15.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="text6" layoutX="15.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" visible="false">
+            <Text fx:id="text6" fill="WHITE" layoutX="15.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="text5" layoutX="15.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" visible="false">
+            <Text fx:id="text5" fill="WHITE" layoutX="15.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="text4" layoutX="15.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" visible="false">
+            <Text fx:id="text4" fill="WHITE" layoutX="15.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="text3" layoutX="15.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" visible="false">
+            <Text fx:id="text3" fill="WHITE" layoutX="15.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="text2" layoutX="15.0" layoutY="633.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" visible="false">
+            <Text fx:id="text2" fill="WHITE" layoutX="15.0" layoutY="633.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="text1" layoutX="15.0" layoutY="723.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" visible="false">
+            <Text fx:id="text1" fill="WHITE" layoutX="15.0" layoutY="723.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textA" layoutX="78.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" visible="false">
+            <Rectangle fx:id="bottomBorder" fill="#431409" height="40.0" layoutY="760.0" stroke="#431409" strokeType="INSIDE" width="760.0" />
+            <Text fx:id="textA" fill="WHITE" layoutX="78.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textB" layoutX="168.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" visible="false">
+            <Text fx:id="textB" fill="WHITE" layoutX="168.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textC" layoutX="258.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" visible="false">
+            <Text fx:id="textC" fill="WHITE" layoutX="258.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textD" layoutX="348.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" visible="false">
+            <Text fx:id="textD" fill="WHITE" layoutX="348.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textE" layoutX="438.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" visible="false">
+            <Text fx:id="textE" fill="WHITE" layoutX="438.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textF" layoutX="528.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="F" visible="false">
+            <Text fx:id="textF" fill="WHITE" layoutX="528.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="F" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textG" layoutX="618.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G" visible="false">
+            <Text fx:id="textG" fill="WHITE" layoutX="618.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textH" layoutX="708.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="H" visible="false">
+            <Text fx:id="textH" fill="WHITE" layoutX="708.0" layoutY="783.0" strokeType="OUTSIDE" strokeWidth="0.0" text="H" visible="false">
                <font>
                   <Font name="Helvetica Bold" size="18.0" />
                </font>
             </Text>
+            <Rectangle fx:id="topBorder" fill="#431409" height="15.0" layoutY="27.0" stroke="#431409" strokeType="INSIDE" width="760.0" />
+            <Rectangle fx:id="rightBorder" fill="#431409" height="773.0" layoutX="760.0" layoutY="27.0" stroke="#431409" strokeType="INSIDE" width="40.0" />
             <TableView layoutX="810.0" layoutY="510.0" prefHeight="251.0" prefWidth="412.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="#" />

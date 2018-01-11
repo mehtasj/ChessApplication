@@ -23,6 +23,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import pieces.*;
 
@@ -36,6 +37,7 @@ public class chessController {
 	@FXML private Label player1Label, player2Label;
 	@FXML private Text text1, text2, text3, text4, text5, text6, text7, text8;
 	@FXML private Text textA, textB, textC, textD, textE, textF, textG, textH;
+	@FXML private Shape leftBorder, rightBorder, topBorder, bottomBorder;
 	@FXML private Canvas canvas;
 	
 	private BoardSimulator model;
@@ -51,6 +53,7 @@ public class chessController {
 	/** Executes immediately after the GUI loads */
 	@FXML
 	public void initialize() {
+		enableOrDisableBorders(false);
 		player1Label.setVisible(true);
 		player2Label.setVisible(true);
 		player1Label.setText("Player 1 (White): ");
@@ -67,8 +70,11 @@ public class chessController {
 			@Override
 			public void handle(ActionEvent event) {
 				requestPlayerNames();
+				
 				model = new BoardSimulator();
 				chessGrid = new chessGrid(model, canvas);
+				
+				enableOrDisableBorders(true);
 				showTextNumbersAndLetters();
 			}
 		});
@@ -83,8 +89,11 @@ public class chessController {
 				if (result.get().equals(ButtonType.OK)) {
 					initialize();
 					requestPlayerNames();
+					
 					model = new BoardSimulator();
 					chessGrid = new chessGrid(model, canvas);
+					
+					enableOrDisableBorders(true);
 					if (!text1.getText().equals("1")) { flipTextNumbersAndLetters(); }
 				}
 			}
@@ -176,6 +185,15 @@ public class chessController {
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
 	
+	/** 
+	 * Stores the captured piece in the appropriate capturedPieces array
+	 * @param capturedPiece
+	 * 		The piece that was captured
+	 */
+	public void storeCapturedPiece(Piece capturedPiece) {
+		
+	}
+	
 	/** Redraws the chess board to depict its most updated appearance based on the moves made */
 	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 	
@@ -196,6 +214,16 @@ public class chessController {
 		Optional<String> p2 = player2.showAndWait();
 		
 		player2Label.setText("Player 2 (Black): " + p2.get());
+	}
+	
+	/** 
+	 * Controls the visibility of the chess board's borders
+	 * @param enable
+	 * 		true if borders should be visible and false otherwise
+	 */
+	public void enableOrDisableBorders(boolean enable) {
+		leftBorder.setVisible(enable); rightBorder.setVisible(enable);
+		topBorder.setVisible(enable); bottomBorder.setVisible(enable);	
 	}
 	
 	/** 
