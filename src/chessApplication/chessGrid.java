@@ -58,8 +58,13 @@ public class chessGrid {
 		for (int i = 0; i < moves.size(); i++) {
 			int col = moves.get(i)[0];
 			int row = moves.get(i)[1];
+			Tile t = selectedPiece.getBoard().getTile(col, row);
 			gc.setLineWidth(1.0);
-			gc.setFill(Color.color(1.0, 0.933, 0.259, 0.55));
+			
+			// tiles with pieces that can be captured are colored differently
+			if (!t.isEmpty()) { gc.setFill(Color.color(0.969, 0.443, 0.443, 0.55)); }
+			else { gc.setFill(Color.color(1.0, 0.933, 0.259, 0.55)); }
+			
 			gc.fillRect(90 * col, 90 * row, 90, 90);
 		}
 	}

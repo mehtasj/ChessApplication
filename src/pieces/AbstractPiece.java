@@ -37,9 +37,6 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	@Override
-	public void incrementMoveNumber() { this.moveNumber++; }
-	
-	@Override
 	public Integer[] storeMoveTo(int c, int r) {
 		Integer[] coordinate = new Integer[2];
 		coordinate[0] = c;
@@ -95,6 +92,9 @@ public abstract class AbstractPiece implements Piece {
 		this.row = t.getRow();
 		t.setPiece(this);
 	}
+	
+	@Override
+	public void incrementMoveNumber() { this.moveNumber++; }
 
 	@Override
 	public int getRow() { return this.row; }

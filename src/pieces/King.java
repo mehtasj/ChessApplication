@@ -8,7 +8,7 @@ import chessboard.Tile;
 public class King extends AbstractPiece {
 
 	/** 
-	 * Keeps track of whether this king can castle 
+	 * Respectively keeps track of whether this king can castle 
 	 * and if it has already castled
 	 */
 	private boolean canCastle, isAlreadyCastled;
