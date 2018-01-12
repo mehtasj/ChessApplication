@@ -84,8 +84,7 @@ public class chessGrid {
 			for (int c = 0; c < 8; c++) {
 				if ((r % 2 == 0 && c % 2 == 0) || (r % 2 != 0 && c % 2 != 0))
 					gc.setFill(Color.color(0.976, 0.804, 0.635));
-				else
-					gc.setFill(Color.color(0.788, 0.529, 0.275));
+				else { gc.setFill(Color.color(0.788, 0.529, 0.275)); }
 				gc.fillRect(90 * c, 90 * r, 90, 90);
 			}
 		}
@@ -100,12 +99,12 @@ public class chessGrid {
 	 * 		The image array in which to store the images
 	 */
 	public void storePieces(String color, Image[] pieces) {
-		pieces[0] = new Image("file:" + color + "Pawn.png", 90, 90, true, true);
-		pieces[1] = new Image("file:" + color + "Rook.png", 90, 90, true, true);
-		pieces[2] = new Image("file:" + color + "Knight.png", 90, 90, true, true);
-		pieces[3] = new Image("file:" + color + "Bishop.png", 90, 90, true, true);
-		pieces[4] = new Image("file:" + color + "Queen.png", 90, 90, true, true);
-		pieces[5] = new Image("file:" + color + "King.png", 90, 90, true, true);
+		pieces[0] = new Image("file:" + color + "Pawn.png", 100, 100, true, true);
+		pieces[1] = new Image("file:" + color + "Rook.png", 100, 100, true, true);
+		pieces[2] = new Image("file:" + color + "Knight.png", 100, 100, true, true);
+		pieces[3] = new Image("file:" + color + "Bishop.png", 100, 100, true, true);
+		pieces[4] = new Image("file:" + color + "Queen.png", 100, 100, true, true);
+		pieces[5] = new Image("file:" + color + "King.png", 100, 100, true, true);
 	}
 	
 	/**

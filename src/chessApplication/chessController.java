@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -35,29 +37,40 @@ public class chessController {
 	@FXML private Menu gameMenu;
 	@FXML private MenuItem newGameMenuItem, restartMenuItem;
 	@FXML private Label player1Label, player2Label;
+	@FXML private Label whiteCapturedPiecesLabel, blackCapturedPiecesLabel;
 	@FXML private Text text1, text2, text3, text4, text5, text6, text7, text8;
 	@FXML private Text textA, textB, textC, textD, textE, textF, textG, textH;
+	@FXML private Text textWPQ, textWRQ, textWNQ, textWBQ, textWQQ;
+	@FXML private Text textBPQ, textBRQ, textBNQ, textBBQ, textBQQ;
+	@FXML private ImageView whitePawnIV, whiteRookIV, whiteKnightIV, whiteBishopIV, whiteQueenIV;
+	@FXML private ImageView blackPawnIV, blackRookIV, blackKnightIV, blackBishopIV, blackQueenIV;
 	@FXML private Shape leftBorder, rightBorder, topBorder, bottomBorder;
 	@FXML private Canvas canvas;
-	
-	private BoardSimulator model;
-	private chessGrid chessGrid;
 	
 	private int timesClicked, turnNumber;
 	private int currCol, currRow;
 	private Tile clickedTile;
 	private Piece clickedPiece;
 	private ArrayList<Integer[]> validMoves;
-	private Piece[] capturedWhitePieces, capturedBlackPieces;
+	private ArrayList<Piece> capturedWhitePieces, capturedBlackPieces;
+	
+	private BoardSimulator model;
+	private chessGrid chessGrid;
 	
 	/** Executes immediately after the GUI loads */
 	@FXML
 	public void initialize() {
 		enableOrDisableBorders(false);
+		disableCapturedPieceImages();
+		
 		player1Label.setVisible(true);
 		player2Label.setVisible(true);
 		player1Label.setText("Player 1 (White): ");
 		player2Label.setText("Player 2 (Black): ");
+		
+		capturedWhitePieces = new ArrayList<>();
+		capturedBlackPieces = new ArrayList<>();
+		
 		turnNumber = 1;
 		
 		equipButtons(); 
@@ -75,6 +88,7 @@ public class chessController {
 				chessGrid = new chessGrid(model, canvas);
 				
 				enableOrDisableBorders(true);
+				enableCapturedPieceImages();
 				showTextNumbersAndLetters();
 			}
 		});
@@ -94,6 +108,7 @@ public class chessController {
 					chessGrid = new chessGrid(model, canvas);
 					
 					enableOrDisableBorders(true);
+					enableCapturedPieceImages();
 					if (!text1.getText().equals("1")) { flipTextNumbersAndLetters(); }
 				}
 			}
@@ -118,10 +133,19 @@ public class chessController {
 						
 					for (int i = 0; i < validMoves.size(); i++) {
 						if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
+							
+							// store captured pieces
+							if (!destTile.isEmpty()) {
+								if (destTile.getPiece().isWhite())
+									capturedWhitePieces.add(destTile.getPiece());
+								else { capturedBlackPieces.add(destTile.getPiece()); }
+							}
+							
 							clickedPiece.moveTo(destTile);
 							clickedPiece.incrementMoveNumber();
 							moved = true;
 							
+							// checking castling to move rook as well
 							if (clickedPiece instanceof King) {
 								King king = (King) clickedPiece;
 								if (!king.isAlreadyCastled() && king.canCastle())
@@ -185,15 +209,6 @@ public class chessController {
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
 	
-	/** 
-	 * Stores the captured piece in the appropriate capturedPieces array
-	 * @param capturedPiece
-	 * 		The piece that was captured
-	 */
-	public void storeCapturedPiece(Piece capturedPiece) {
-		
-	}
-	
 	/** Redraws the chess board to depict its most updated appearance based on the moves made */
 	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 	
@@ -214,6 +229,32 @@ public class chessController {
 		Optional<String> p2 = player2.showAndWait();
 		
 		player2Label.setText("Player 2 (Black): " + p2.get());
+	}
+	
+	/** Displays the captured piece images under each player's name */
+	public void enableCapturedPieceImages() {
+		whitePawnIV.setImage(new Image("file:WhitePawn.png", 100, 100, true, true)); 
+		whiteRookIV.setImage(new Image("file:WhiteRook.png", 100, 100, true, true));
+		whiteKnightIV.setImage(new Image("file:WhiteKnight.png", 100, 100, true, true));
+		whiteBishopIV.setImage(new Image("file:WhiteBishop.png", 100, 100, true, true));
+		whiteQueenIV.setImage(new Image("file:WhiteQueen.png", 100, 100, true, true));
+		
+		blackPawnIV.setImage(new Image("file:BlackPawn.png", 100, 100, true, true));
+		blackRookIV.setImage(new Image("file:BlackRook.png", 100, 100, true, true));
+		blackKnightIV.setImage(new Image("file:BlackKnight.png", 100, 100, true, true));
+		blackBishopIV.setImage(new Image("file:BlackBishop.png", 100, 100, true, true));
+		blackQueenIV.setImage(new Image("file:BlackQueen.png", 100, 100, true, true));
+	}
+	
+	/** Hides the captured piece images under each player's name */
+	public void disableCapturedPieceImages() {
+		whitePawnIV.setImage(null); whiteRookIV.setImage(null); 
+		whiteKnightIV.setImage(null); whiteBishopIV.setImage(null); 
+		whiteQueenIV.setImage(null);
+		
+		blackPawnIV.setImage(null); blackRookIV.setImage(null); 
+		blackKnightIV.setImage(null); blackBishopIV.setImage(null); 
+		blackQueenIV.setImage(null);
 	}
 	
 	/** 

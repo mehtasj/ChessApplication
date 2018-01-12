@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
@@ -110,20 +112,80 @@
             </Text>
             <Rectangle fx:id="topBorder" fill="#431409" height="15.0" layoutY="27.0" stroke="#431409" strokeType="INSIDE" width="760.0" />
             <Rectangle fx:id="rightBorder" fill="#431409" height="773.0" layoutX="760.0" layoutY="27.0" stroke="#431409" strokeType="INSIDE" width="40.0" />
-            <TableView layoutX="810.0" layoutY="510.0" prefHeight="251.0" prefWidth="412.0">
+            <TableView layoutX="835.0" layoutY="510.0" prefHeight="251.0" prefWidth="412.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="#" />
                 <TableColumn prefWidth="336.0" text="Move" />
               </columns>
             </TableView>
-            <Label fx:id="player1Label" layoutX="820.0" layoutY="40.0" prefHeight="50.0" prefWidth="300.0" text="Player 1: ">
+            <Label fx:id="player1Label" layoutX="835.0" layoutY="45.0" prefHeight="50.0" prefWidth="300.0" text="Player 1 (White): ">
                <font>
                   <Font name="Helvetica Bold" size="20.0" />
                </font></Label>
-            <Label fx:id="player2Label" layoutX="820.0" layoutY="270.0" prefHeight="50.0" prefWidth="300.0" text="Player 2: ">
+            <Label fx:id="player2Label" layoutX="835.0" layoutY="270.0" prefHeight="50.0" prefWidth="300.0" text="Player 2 (Black):">
                <font>
                   <Font name="Helvetica Bold" size="20.0" />
                </font></Label>
+            <ImageView fx:id="blackPawnIV" fitHeight="50.0" fitWidth="50.0" layoutX="830.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../BlackPawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blackRookIV" fitHeight="50.0" fitWidth="50.0" layoutX="1100.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../BlackRook.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blackKnightIV" fitHeight="50.0" fitWidth="50.0" layoutX="920.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../BlackKnight.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blackBishopIV" fitHeight="50.0" fitWidth="50.0" layoutX="1010.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../BlackBishop.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blackQueenIV" fitHeight="50.0" fitWidth="50.0" layoutX="1190.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../BlackQueen.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="whitePawnIV" fitHeight="50.0" fitWidth="50.0" layoutX="830.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../WhitePawn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="whiteRookIV" fitHeight="50.0" fitWidth="50.0" layoutX="1100.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../WhiteRook.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="whiteKnightIV" fitHeight="50.0" fitWidth="50.0" layoutX="920.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../WhiteKnight.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="whiteBishopIV" fitHeight="50.0" fitWidth="50.0" layoutX="1010.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../WhiteBishop.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="whiteQueenIV" fitHeight="50.0" fitWidth="50.0" layoutX="1190.0" layoutY="415.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../WhiteQueen.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="whiteCapturedPiecesLabel" layoutX="835.0" layoutY="150.0" text="White's Captured Pieces:">
+               <font>
+                  <Font name="Helvetica Light" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="blackCapturedPiecesLabel" layoutX="835.0" layoutY="375.0" text="Black's Captured Pieces:">
+               <font>
+                  <Font name="Helvetica Light" size="14.0" />
+               </font>
+            </Label>
       </children>
     </AnchorPane>
   </children>
