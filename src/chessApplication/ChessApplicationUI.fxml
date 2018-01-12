@@ -186,6 +186,56 @@
                   <Font name="Helvetica Light" size="14.0" />
                </font>
             </Label>
+            <Text fx:id="textBPQ" layoutX="850.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textBNQ" layoutX="940.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textBBQ" layoutX="1030.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textBRQ" layoutX="1120.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textBQQ" layoutX="1210.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textWPQ" layoutX="850.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textWNQ" layoutX="940.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textWBQ" layoutX="1030.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textWRQ" layoutX="1120.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="textWQQ" layoutX="1210.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font name="Helvetica Light" size="18.0" />
+               </font>
+            </Text>
       </children>
     </AnchorPane>
   </children>

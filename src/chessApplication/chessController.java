@@ -48,11 +48,14 @@ public class chessController {
 	@FXML private Canvas canvas;
 	
 	private int timesClicked, turnNumber;
-	private int currCol, currRow;
+	private int currCol, currRow; 
 	private Tile clickedTile;
 	private Piece clickedPiece;
 	private ArrayList<Integer[]> validMoves;
-	private ArrayList<Piece> capturedWhitePieces, capturedBlackPieces;
+	
+	// private ArrayList<Piece> capturedWhitePieces, capturedBlackPieces;
+	private int captWPCounter, captWRCounter, captWNCounter, captWBCounter, captWQCounter;
+	private int captBPCounter, captBRCounter, captBNCounter, captBBCounter, captBQCounter;
 	
 	private BoardSimulator model;
 	private chessGrid chessGrid;
@@ -61,15 +64,15 @@ public class chessController {
 	@FXML
 	public void initialize() {
 		enableOrDisableBorders(false);
+		enableOrDisableQuantityLabels(false);
+		enableOrDisableTextNumbersAndLetters(false);
 		disableCapturedPieceImages();
+		initializeCapturedPieceCounters();
 		
 		player1Label.setVisible(true);
 		player2Label.setVisible(true);
 		player1Label.setText("Player 1 (White): ");
 		player2Label.setText("Player 2 (Black): ");
-		
-		capturedWhitePieces = new ArrayList<>();
-		capturedBlackPieces = new ArrayList<>();
 		
 		turnNumber = 1;
 		
@@ -88,8 +91,12 @@ public class chessController {
 				chessGrid = new chessGrid(model, canvas);
 				
 				enableOrDisableBorders(true);
+				enableOrDisableQuantityLabels(true);
+				enableOrDisableTextNumbersAndLetters(true);
 				enableCapturedPieceImages();
-				showTextNumbersAndLetters();
+				initializeCapturedPieceCounters();
+				
+				turnNumber = 1;
 			}
 		});
 		
@@ -108,6 +115,8 @@ public class chessController {
 					chessGrid = new chessGrid(model, canvas);
 					
 					enableOrDisableBorders(true);
+					enableOrDisableQuantityLabels(true);
+					enableOrDisableTextNumbersAndLetters(true);
 					enableCapturedPieceImages();
 					if (!text1.getText().equals("1")) { flipTextNumbersAndLetters(); }
 				}
@@ -135,11 +144,7 @@ public class chessController {
 						if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
 							
 							// store captured pieces
-							if (!destTile.isEmpty()) {
-								if (destTile.getPiece().isWhite())
-									capturedWhitePieces.add(destTile.getPiece());
-								else { capturedBlackPieces.add(destTile.getPiece()); }
-							}
+							if (!destTile.isEmpty()) { storeCapturedPiece(destTile.getPiece()); }
 							
 							clickedPiece.moveTo(destTile);
 							clickedPiece.incrementMoveNumber();
@@ -197,7 +202,7 @@ public class chessController {
 		}
 	}
 	
-	/** Flips the board after a 1.5 second delay */
+	/** Flips the board after a one second delay */
 	public void delayThenFlip() {
 		ScheduledExecutorService boardFlip = Executors.newSingleThreadScheduledExecutor();
 	    boardFlip.schedule(() -> {
@@ -209,26 +214,40 @@ public class chessController {
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
 	
-	/** Redraws the chess board to depict its most updated appearance based on the moves made */
-	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
+	/**
+	 * Updates the captured pieces count given a newly captured piece
+	 * @param captPiece
+	 * 		The piece that was captured
+	 */
+	public void storeCapturedPiece(Piece captPiece) {
+		if (captPiece.isWhite()) {
+			if (captPiece instanceof Pawn) { textWPQ.setText(String.valueOf(++captWPCounter)); }
+			else if (captPiece instanceof Rook) { textWRQ.setText(String.valueOf(++captWRCounter)); }
+			else if (captPiece instanceof Knight) { textWNQ.setText(String.valueOf(++captWNCounter)); }
+			else if (captPiece instanceof Bishop) { textWBQ.setText(String.valueOf(++captWBCounter)); }
+			else if (captPiece instanceof Queen) { textWQQ.setText(String.valueOf(++captWQCounter)); }
+		}
+		else {
+			if (captPiece instanceof Pawn) { textBPQ.setText(String.valueOf(++captBPCounter)); }
+			else if (captPiece instanceof Rook) { textBRQ.setText(String.valueOf(++captBRCounter)); }
+			else if (captPiece instanceof Knight) { textBNQ.setText(String.valueOf(++captBNCounter)); }
+			else if (captPiece instanceof Bishop) { textBBQ.setText(String.valueOf(++captBBCounter)); }
+			else if (captPiece instanceof Queen) { textBQQ.setText(String.valueOf(++captBQCounter)); }
+		}
+	}
 	
-	/** Prompts the players to enter their names for Player 1 (White) and Player 2 (Black) */
-	public void requestPlayerNames() {
-		TextInputDialog player1 = new TextInputDialog();
-		player1.setTitle("Player 1 Name");
-		player1.setHeaderText("White");
-		player1.setContentText("Please enter Player 1's name:");
-		Optional<String> p1 = player1.showAndWait();
+	/** Initializes all the captured piece counters to 0 */
+	public void initializeCapturedPieceCounters() {
+		captWPCounter = 0; captWRCounter = 0; captWNCounter = 0; captWBCounter = 0; captWQCounter = 0;
+		captBPCounter = 0; captBRCounter = 0; captBNCounter = 0; captBBCounter = 0; captBQCounter = 0;
 		
-		player1Label.setText("Player 1 (White): " + p1.get());
+		textWPQ.setText(String.valueOf(captWPCounter)); textWRQ.setText(String.valueOf(captWRCounter));
+		textWNQ.setText(String.valueOf(captWNCounter)); textWBQ.setText(String.valueOf(captWBCounter));
+		textWQQ.setText(String.valueOf(captWQCounter)); 
 		
-		TextInputDialog player2 = new TextInputDialog();
-		player2.setTitle("Player 2 Name");
-		player2.setHeaderText("Black");
-		player2.setContentText("Please enter Player 2's name:");
-		Optional<String> p2 = player2.showAndWait();
-		
-		player2Label.setText("Player 2 (Black): " + p2.get());
+		textBPQ.setText(String.valueOf(captBPCounter)); textBRQ.setText(String.valueOf(captBRCounter)); 
+		textBNQ.setText(String.valueOf(captBNCounter)); textBBQ.setText(String.valueOf(captBBCounter)); 
+		textBQQ.setText(String.valueOf(captBQCounter));
 	}
 	
 	/** Displays the captured piece images under each player's name */
@@ -258,6 +277,21 @@ public class chessController {
 	}
 	
 	/** 
+	 * Controls the visibility of the captured piece quantity labels
+	 * @param enable
+	 * 		true if labels should be visible and false otherwise
+	 */
+	public void enableOrDisableQuantityLabels(boolean enable) {
+		textWPQ.setVisible(enable); textWRQ.setVisible(enable); 
+		textWNQ.setVisible(enable); textWBQ.setVisible(enable); 
+		textWQQ.setVisible(enable);
+		
+		textBPQ.setVisible(enable); textBRQ.setVisible(enable); 
+		textBNQ.setVisible(enable); textBBQ.setVisible(enable); 
+		textBQQ.setVisible(enable);
+	}
+	
+	/** 
 	 * Controls the visibility of the chess board's borders
 	 * @param enable
 	 * 		true if borders should be visible and false otherwise
@@ -268,15 +302,21 @@ public class chessController {
 	}
 	
 	/** 
-	 * Shows the numbers 1 - 8 on the left side of the chess board 
+	 * Controls the visibility of the numbers 1 - 8 on the left side of the chess board 
 	 * and the letters A - H on the bottom of the chess board
+	 * @param enable
+	 * 		true if numbers and letters should be visible and false otherwise
 	 */
-	public void showTextNumbersAndLetters() {
-		text1.setVisible(true); text2.setVisible(true); text3.setVisible(true); text4.setVisible(true);
-		text5.setVisible(true); text6.setVisible(true); text7.setVisible(true); text8.setVisible(true);
+	public void enableOrDisableTextNumbersAndLetters(boolean enable) {
+		text1.setVisible(enable); text2.setVisible(enable); 
+		text3.setVisible(enable); text4.setVisible(enable);
+		text5.setVisible(enable); text6.setVisible(enable); 
+		text7.setVisible(enable); text8.setVisible(enable);
 		
-		textA.setVisible(true); textB.setVisible(true); textC.setVisible(true); textD.setVisible(true);
-		textE.setVisible(true); textF.setVisible(true); textG.setVisible(true); textH.setVisible(true);
+		textA.setVisible(enable); textB.setVisible(enable); 
+		textC.setVisible(enable); textD.setVisible(enable);
+		textE.setVisible(enable); textF.setVisible(enable); 
+		textG.setVisible(enable); textH.setVisible(enable);
 	}
 	
 	/** Rearranges the numbers 1 - 8 and the letters A - H when the chess board flips */
@@ -305,4 +345,26 @@ public class chessController {
 		if (text8.getText().equals("8")) { text8.setText("1"); textH.setText("A"); }
 		else { text8.setText("8"); textH.setText("H"); }
 	}
+	
+	/** Prompts the players to enter their names for Player 1 (White) and Player 2 (Black) */
+	public void requestPlayerNames() {
+		TextInputDialog player1 = new TextInputDialog();
+		player1.setTitle("Player 1 Name");
+		player1.setHeaderText("White");
+		player1.setContentText("Please enter Player 1's name:");
+		Optional<String> p1 = player1.showAndWait();
+		
+		player1Label.setText("Player 1 (White): " + p1.get());
+		
+		TextInputDialog player2 = new TextInputDialog();
+		player2.setTitle("Player 2 Name");
+		player2.setHeaderText("Black");
+		player2.setContentText("Please enter Player 2's name:");
+		Optional<String> p2 = player2.showAndWait();
+		
+		player2Label.setText("Player 2 (Black): " + p2.get());
+	}
+	
+	/** Redraws the chess board to depict its most updated appearance based on the moves made */
+	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 }
