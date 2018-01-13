@@ -38,10 +38,13 @@ public class chessController {
 	@FXML private MenuItem newGameMenuItem, restartMenuItem;
 	@FXML private Label player1Label, player2Label;
 	@FXML private Label whiteCapturedPiecesLabel, blackCapturedPiecesLabel;
+	@FXML private Label player1PointsLabel, player2PointsLabel;
 	@FXML private Text text1, text2, text3, text4, text5, text6, text7, text8;
 	@FXML private Text textA, textB, textC, textD, textE, textF, textG, textH;
 	@FXML private Text textWPQ, textWRQ, textWNQ, textWBQ, textWQQ;
 	@FXML private Text textBPQ, textBRQ, textBNQ, textBBQ, textBQQ;
+	@FXML private Text textPlayer1Points, textPlayer2Points;
+	@FXML private Text textPlayer1Check, textPlayer2Check;
 	@FXML private ImageView whitePawnIV, whiteRookIV, whiteKnightIV, whiteBishopIV, whiteQueenIV;
 	@FXML private ImageView blackPawnIV, blackRookIV, blackKnightIV, blackBishopIV, blackQueenIV;
 	@FXML private Shape leftBorder, rightBorder, topBorder, bottomBorder;
@@ -56,6 +59,7 @@ public class chessController {
 	// private ArrayList<Piece> capturedWhitePieces, capturedBlackPieces;
 	private int captWPCounter, captWRCounter, captWNCounter, captWBCounter, captWQCounter;
 	private int captBPCounter, captBRCounter, captBNCounter, captBBCounter, captBQCounter;
+	private int whitePoints, blackPoints;
 	
 	private BoardSimulator model;
 	private chessGrid chessGrid;
@@ -64,10 +68,10 @@ public class chessController {
 	@FXML
 	public void initialize() {
 		enableOrDisableBorders(false);
-		enableOrDisableQuantityLabels(false);
+		enableOrDisableQuantityAndPointCounters(false);
 		enableOrDisableTextNumbersAndLetters(false);
 		disableCapturedPieceImages();
-		initializeCapturedPieceCounters();
+		initializeCapturedPieceAndPointCounters();
 		
 		player1Label.setVisible(true);
 		player2Label.setVisible(true);
@@ -91,10 +95,10 @@ public class chessController {
 				chessGrid = new chessGrid(model, canvas);
 				
 				enableOrDisableBorders(true);
-				enableOrDisableQuantityLabels(true);
+				enableOrDisableQuantityAndPointCounters(true);
 				enableOrDisableTextNumbersAndLetters(true);
 				enableCapturedPieceImages();
-				initializeCapturedPieceCounters();
+				initializeCapturedPieceAndPointCounters();
 				
 				turnNumber = 1;
 			}
@@ -115,7 +119,7 @@ public class chessController {
 					chessGrid = new chessGrid(model, canvas);
 					
 					enableOrDisableBorders(true);
-					enableOrDisableQuantityLabels(true);
+					enableOrDisableQuantityAndPointCounters(true);
 					enableOrDisableTextNumbersAndLetters(true);
 					enableCapturedPieceImages();
 					if (!text1.getText().equals("1")) { flipTextNumbersAndLetters(); }
@@ -134,6 +138,11 @@ public class chessController {
 					highlightTiles(currCol, currRow);
 				}
 				
+				// check if the king is in check (assume no checkmate yet - that will be last)
+				if (textPlayer1Check.getText().equals("CHECK!") || textPlayer2Check.getText().equals("CHECK!")) {
+					// if king is in check then figure out what moves are ok to ensure king is not in check
+				}
+				
 				if (timesClicked >= 2) {
 					int destCol = (int) (event.getX() / 90);
 					int destRow = (int) (event.getY() / 90);
@@ -143,22 +152,30 @@ public class chessController {
 					for (int i = 0; i < validMoves.size(); i++) {
 						if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
 							
-							// store captured pieces
-							if (!destTile.isEmpty()) { storeCapturedPiece(destTile.getPiece()); }
+							// check if moving a piece will put own king in check (this piece cannot move)
 							
+							// check if moving a piece will put other color's king in check
+							
+							// store captured piece before clickedPiece moves to that tile
+							if (!destTile.isEmpty()) { storeCapturedPieceAndUpdatePoints(destTile.getPiece()); }
+							
+							// move clickedPiece to new tile
 							clickedPiece.moveTo(destTile);
 							clickedPiece.incrementMoveNumber();
 							moved = true;
 							
-							// checking castling to move rook as well
+							// check if move was a castle so the appropriate rook moves as well
 							if (clickedPiece instanceof King) {
 								King king = (King) clickedPiece;
 								if (!king.isAlreadyCastled() && king.canCastle())
 									king.checkIfCastle(clickedTile, destTile);
 							} 
 							
+							// check if pawn reaches the end of the board for promotion
+							
 							updateBoardAppearance();
 							delayThenFlip();
+							
 							turnNumber++;
 							timesClicked = 0;
 							break;
@@ -177,8 +194,8 @@ public class chessController {
 	}
 	
 	/** 
-	 * Highlights the tiles only if a tile with a piece of the current
-	 * turn's color is selected
+	 * Highlights the tiles only if a tile with a piece of 
+	 * the current turn's color is selected
 	 * @param currCol
 	 * 		The column selected on the board
 	 * @param currRow
@@ -216,28 +233,81 @@ public class chessController {
 	
 	/**
 	 * Updates the captured pieces count given a newly captured piece
+	 * and updates the appropriate point counter
 	 * @param captPiece
 	 * 		The piece that was captured
 	 */
-	public void storeCapturedPiece(Piece captPiece) {
+	public void storeCapturedPieceAndUpdatePoints(Piece captPiece) {
 		if (captPiece.isWhite()) {
-			if (captPiece instanceof Pawn) { textWPQ.setText(String.valueOf(++captWPCounter)); }
-			else if (captPiece instanceof Rook) { textWRQ.setText(String.valueOf(++captWRCounter)); }
-			else if (captPiece instanceof Knight) { textWNQ.setText(String.valueOf(++captWNCounter)); }
-			else if (captPiece instanceof Bishop) { textWBQ.setText(String.valueOf(++captWBCounter)); }
-			else if (captPiece instanceof Queen) { textWQQ.setText(String.valueOf(++captWQCounter)); }
+			if (captPiece instanceof Pawn) { 
+				textWPQ.setText(String.valueOf(++captWPCounter)); 
+				blackPoints++; 
+				updatePoints(blackPoints, textPlayer2Points);
+			}
+			else if (captPiece instanceof Rook) { 
+				textWRQ.setText(String.valueOf(++captWRCounter)); 
+				blackPoints += 5;
+				updatePoints(blackPoints, textPlayer2Points);
+			}
+			else if (captPiece instanceof Knight) { 
+				textWNQ.setText(String.valueOf(++captWNCounter));
+				blackPoints += 3;
+				updatePoints(blackPoints, textPlayer2Points);
+			}
+			else if (captPiece instanceof Bishop) { 
+				textWBQ.setText(String.valueOf(++captWBCounter)); 
+				blackPoints += 3;
+				updatePoints(blackPoints, textPlayer2Points);
+			}
+			else if (captPiece instanceof Queen) {
+				textWQQ.setText(String.valueOf(++captWQCounter)); 
+				blackPoints += 9;
+				updatePoints(blackPoints, textPlayer2Points);
+			}
 		}
 		else {
-			if (captPiece instanceof Pawn) { textBPQ.setText(String.valueOf(++captBPCounter)); }
-			else if (captPiece instanceof Rook) { textBRQ.setText(String.valueOf(++captBRCounter)); }
-			else if (captPiece instanceof Knight) { textBNQ.setText(String.valueOf(++captBNCounter)); }
-			else if (captPiece instanceof Bishop) { textBBQ.setText(String.valueOf(++captBBCounter)); }
-			else if (captPiece instanceof Queen) { textBQQ.setText(String.valueOf(++captBQCounter)); }
+			if (captPiece instanceof Pawn) { 
+				textBPQ.setText(String.valueOf(++captBPCounter)); 
+				whitePoints++; 
+				updatePoints(whitePoints, textPlayer1Points);
+			}
+			else if (captPiece instanceof Rook) { 
+				textBRQ.setText(String.valueOf(++captBRCounter)); 
+				whitePoints += 5; 
+				updatePoints(whitePoints, textPlayer1Points);
+			}
+			else if (captPiece instanceof Knight) { 
+				textBNQ.setText(String.valueOf(++captBNCounter)); 
+				whitePoints += 3; 
+				updatePoints(whitePoints, textPlayer1Points);
+			}
+			else if (captPiece instanceof Bishop) { 
+				textBBQ.setText(String.valueOf(++captBBCounter));
+				whitePoints += 3; 
+				updatePoints(whitePoints, textPlayer1Points);
+			}
+			else if (captPiece instanceof Queen) { 
+				textBQQ.setText(String.valueOf(++captBQCounter)); 
+				whitePoints += 9; 
+				updatePoints(whitePoints, textPlayer1Points);
+			}
 		}
 	}
 	
-	/** Initializes all the captured piece counters to 0 */
-	public void initializeCapturedPieceCounters() {
+	/**
+	 * Updates the appropriate player's point counter
+	 * @param points
+	 * 		The point counter to update
+	 * @param textPlayerPoints
+	 * 		The text box which should display the updated point value
+	 */
+	public void updatePoints(int points, Text textPlayerPoints) {
+		if (points < 10) { textPlayerPoints.setText("0" + points); }
+		else { textPlayerPoints.setText(String.valueOf(points)); }
+	}
+	
+	/** Initializes all the captured piece counters and the point counters to 0 */
+	public void initializeCapturedPieceAndPointCounters() {
 		captWPCounter = 0; captWRCounter = 0; captWNCounter = 0; captWBCounter = 0; captWQCounter = 0;
 		captBPCounter = 0; captBRCounter = 0; captBNCounter = 0; captBBCounter = 0; captBQCounter = 0;
 		
@@ -248,6 +318,10 @@ public class chessController {
 		textBPQ.setText(String.valueOf(captBPCounter)); textBRQ.setText(String.valueOf(captBRCounter)); 
 		textBNQ.setText(String.valueOf(captBNCounter)); textBBQ.setText(String.valueOf(captBBCounter)); 
 		textBQQ.setText(String.valueOf(captBQCounter));
+		
+		whitePoints = 0; blackPoints = 0;
+		
+		textPlayer1Points.setText("00"); textPlayer2Points.setText("00");
 	}
 	
 	/** Displays the captured piece images under each player's name */
@@ -277,11 +351,12 @@ public class chessController {
 	}
 	
 	/** 
-	 * Controls the visibility of the captured piece quantity labels
+	 * Controls the visibility of the captured piece quantity counters 
+	 * and the point value counters 
 	 * @param enable
 	 * 		true if labels should be visible and false otherwise
 	 */
-	public void enableOrDisableQuantityLabels(boolean enable) {
+	public void enableOrDisableQuantityAndPointCounters(boolean enable) {
 		textWPQ.setVisible(enable); textWRQ.setVisible(enable); 
 		textWNQ.setVisible(enable); textWBQ.setVisible(enable); 
 		textWQQ.setVisible(enable);
@@ -289,6 +364,9 @@ public class chessController {
 		textBPQ.setVisible(enable); textBRQ.setVisible(enable); 
 		textBNQ.setVisible(enable); textBBQ.setVisible(enable); 
 		textBQQ.setVisible(enable);
+		
+		player1PointsLabel.setVisible(enable); player2PointsLabel.setVisible(enable);
+		textPlayer1Points.setVisible(enable); textPlayer2Points.setVisible(enable);
 	}
 	
 	/** 
