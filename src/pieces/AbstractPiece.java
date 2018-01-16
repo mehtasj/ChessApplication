@@ -73,6 +73,15 @@ public abstract class AbstractPiece implements Piece {
 					Piece king;
 					if (this.isWhite()) { king = board.getWhitePieces()[15]; }
 					else { king = board.getBlackPieces()[15]; }
+					
+					if (p instanceof Pawn) {
+						if (p.canCaptureAt(board, p.getCol() + 1, p.getRow() + 1))
+							pMoves.add(this.storeMoveTo(p.getCol() + 1, p.getRow() + 1));
+						if (p.canCaptureAt(board, p.getCol() - 1, p.getRow() + 1))
+							pMoves.add(this.storeMoveTo(p.getCol() - 1, p.getRow() + 1));
+					}
+					
+					// add king corrections
 							
 					for (int j = 0; j < pMoves.size(); j++) { 
 						int pDestCol = pMoves.get(j)[0];

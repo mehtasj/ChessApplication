@@ -259,61 +259,23 @@ public class chessController {
 	 */
 	public void storeCapturedPieceAndUpdatePoints(Piece captPiece) {
 		if (captPiece.isWhite()) {
-			if (captPiece instanceof Pawn) { 
-				textWPQ.setText(String.valueOf(++captWPCounter)); 
-				blackPoints++; 
-				updatePoints(blackPoints, textPlayer2Points);
-			}
-			else if (captPiece instanceof Rook) { 
-				textWRQ.setText(String.valueOf(++captWRCounter)); 
-				blackPoints += 5;
-				updatePoints(blackPoints, textPlayer2Points);
-			}
-			else if (captPiece instanceof Knight) { 
-				textWNQ.setText(String.valueOf(++captWNCounter));
-				blackPoints += 3;
-				updatePoints(blackPoints, textPlayer2Points);
-			}
-			else if (captPiece instanceof Bishop) { 
-				textWBQ.setText(String.valueOf(++captWBCounter)); 
-				blackPoints += 3;
-				updatePoints(blackPoints, textPlayer2Points);
-			}
-			else if (captPiece instanceof Queen) {
-				textWQQ.setText(String.valueOf(++captWQCounter)); 
-				blackPoints += 9;
-				updatePoints(blackPoints, textPlayer2Points);
-			}
+			if (captPiece instanceof Pawn) { textWPQ.setText(String.valueOf(++captWPCounter)); blackPoints++; }
+			else if (captPiece instanceof Rook) { textWRQ.setText(String.valueOf(++captWRCounter)); blackPoints += 5; }
+			else if (captPiece instanceof Knight) { textWNQ.setText(String.valueOf(++captWNCounter)); blackPoints += 3; }
+			else if (captPiece instanceof Bishop) { textWBQ.setText(String.valueOf(++captWBCounter)); blackPoints += 3; }
+			else if (captPiece instanceof Queen) { textWQQ.setText(String.valueOf(++captWQCounter)); blackPoints += 9; }
 			
+			updatePoints(blackPoints, textPlayer2Points);
 			model.getCaptWhitePieces().add(captPiece);
 		}
 		else {
-			if (captPiece instanceof Pawn) { 
-				textBPQ.setText(String.valueOf(++captBPCounter)); 
-				whitePoints++; 
-				updatePoints(whitePoints, textPlayer1Points);
-			}
-			else if (captPiece instanceof Rook) { 
-				textBRQ.setText(String.valueOf(++captBRCounter)); 
-				whitePoints += 5; 
-				updatePoints(whitePoints, textPlayer1Points);
-			}
-			else if (captPiece instanceof Knight) { 
-				textBNQ.setText(String.valueOf(++captBNCounter)); 
-				whitePoints += 3; 
-				updatePoints(whitePoints, textPlayer1Points);
-			}
-			else if (captPiece instanceof Bishop) { 
-				textBBQ.setText(String.valueOf(++captBBCounter));
-				whitePoints += 3; 
-				updatePoints(whitePoints, textPlayer1Points);
-			}
-			else if (captPiece instanceof Queen) { 
-				textBQQ.setText(String.valueOf(++captBQCounter)); 
-				whitePoints += 9; 
-				updatePoints(whitePoints, textPlayer1Points);
-			}
+			if (captPiece instanceof Pawn) { textBPQ.setText(String.valueOf(++captBPCounter)); whitePoints++; }
+			else if (captPiece instanceof Rook) { textBRQ.setText(String.valueOf(++captBRCounter)); whitePoints += 5; }
+			else if (captPiece instanceof Knight) { textBNQ.setText(String.valueOf(++captBNCounter)); whitePoints += 3; }
+			else if (captPiece instanceof Bishop) { textBBQ.setText(String.valueOf(++captBBCounter)); whitePoints += 3; }
+			else if (captPiece instanceof Queen) { textBQQ.setText(String.valueOf(++captBQCounter)); whitePoints += 9; }
 			
+			updatePoints(whitePoints, textPlayer1Points);
 			model.getCaptBlackPieces().add(captPiece);
 		}
 	}
