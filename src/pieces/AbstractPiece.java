@@ -1,7 +1,6 @@
 package pieces;
 
 import java.util.ArrayList;
-
 import chessboard.*;
 
 /** Contains common implementations among all pieces */ 
@@ -64,38 +63,46 @@ public abstract class AbstractPiece implements Piece {
 			Tile destTile = board.getTile(destCol, destRow);
 			Piece destTilePiece = destTile.getPiece();
 			currTile.setPiece(null);
-			destTile.setPiece(this); // temporarily move this piece to allow access to current tile
-			capturedPieces.add(destTilePiece); // temporarily add piece to captured list
+			destTile.setPiece(this);
+			capturedPieces.add(destTilePiece);
+			boolean checked = false;
+			
+			Piece king;
+			if (this.isWhite()) { king = board.getWhitePieces()[15]; }
+			else { king = board.getBlackPieces()[15]; }
+			
+			// calculate king's row and col values
+			int kingCol, kingRow;
+			if (this instanceof King) { kingCol = destCol; kingRow = destRow; }
+			else { kingCol = king.getCol(); kingRow = king.getRow(); }
 					
 			for (Piece p : oppositeColoredPieces) {
 				if (p != null && !capturedPieces.contains(p)) {
 					ArrayList<Integer[]> pMoves = p.getValidMoves();
-					Piece king;
-					if (this.isWhite()) { king = board.getWhitePieces()[15]; }
-					else { king = board.getBlackPieces()[15]; }
 					
+					// corrections for pawn moves because the board was not flipped
 					if (p instanceof Pawn) {
 						if (p.canCaptureAt(board, p.getCol() + 1, p.getRow() + 1))
 							pMoves.add(this.storeMoveTo(p.getCol() + 1, p.getRow() + 1));
 						if (p.canCaptureAt(board, p.getCol() - 1, p.getRow() + 1))
 							pMoves.add(this.storeMoveTo(p.getCol() - 1, p.getRow() + 1));
 					}
-					
-					// add king corrections
 							
 					for (int j = 0; j < pMoves.size(); j++) { 
 						int pDestCol = pMoves.get(j)[0];
 						int pDestRow = pMoves.get(j)[1];
 								
-						if (pDestCol == king.getCol() && pDestRow == king.getRow()) {
+						if (pDestCol == kingCol && pDestRow == kingRow) {
+							checked = true;
 							refinedMoves.remove(i);
-							currTile.setPiece(this); // move back to current tile
-							destTile.setPiece(destTilePiece); // revert tile to original state
-							capturedPieces.remove(destTilePiece); // remove from captured list
+							currTile.setPiece(this);
+							destTile.setPiece(destTilePiece);
+							capturedPieces.remove(destTilePiece);
 							break;
 						}
 					}
 				}
+				if (checked) { break; }
 			}
 			currTile.setPiece(this);
 			destTile.setPiece(destTilePiece);
@@ -112,7 +119,7 @@ public abstract class AbstractPiece implements Piece {
 	@Override
 	public Integer[] storeMoveTo(int c, int r) {
 		Integer[] coordinate = new Integer[2];
-		coordinate[0] = c;
+		coordinate[0] = c; 
 		coordinate[1] = r;
 		return coordinate;
 	}

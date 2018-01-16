@@ -13,11 +13,14 @@ public class King extends AbstractPiece {
 	 */
 	private boolean canCastle, isAlreadyCastled;
 	
+	private boolean inCheck;
+	
 	/** Constructs a king */
 	public King(BoardSimulator bSim, PieceColor color) { 
 		super(bSim, color);
 		this.canCastle = true;
 		this.isAlreadyCastled = false;
+		this.inCheck = false;
 	}
 
 	@Override
@@ -112,8 +115,6 @@ public class King extends AbstractPiece {
 	/** 
 	 * Checks if the king castled; 
 	 * if true, then the appropriate rook is moved to its new position
-	 * @param k
-	 * 		The king that castles
 	 * @param prevTile
 	 * 		The previous tile the king was on
 	 * @param currTile
@@ -144,7 +145,7 @@ public class King extends AbstractPiece {
 	/** 
 	 * Moves the correct rook to its new position on the board during the castle 
 	 * @param board
-	 * 		The board Simulator on which the pieces are located
+	 * 		The board on which the pieces are located
 	 * @param oldCol
 	 * 		The current column of the appropriate rook
 	 * @param newCol
@@ -166,4 +167,6 @@ public class King extends AbstractPiece {
 	
 	/** @return true if this king is already castled */
 	public boolean isAlreadyCastled() { return isAlreadyCastled; }
+	
+	public void setCheckState(boolean inCheck) { this.inCheck = inCheck; }
 }

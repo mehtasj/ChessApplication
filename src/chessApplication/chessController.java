@@ -152,11 +152,8 @@ public class chessController {
 						
 					for (int i = 0; i < refinedMoves.size(); i++) {
 						if (destCol == refinedMoves.get(i)[0] && destRow == refinedMoves.get(i)[1]) {
-							
-							// store captured piece before clickedPiece moves to that tile
 							if (!destTile.isEmpty()) { storeCapturedPieceAndUpdatePoints(destTile.getPiece()); }
 							
-							// move clickedPiece to new tile
 							clickedPiece.moveTo(destTile);
 							clickedPiece.incrementMoveNumber();
 							moved = true;
@@ -165,17 +162,19 @@ public class chessController {
 							if (textPlayer2Check.getText().equals("CHECK!")) { textPlayer2Check.setText(""); }
 							
 							// check if move was a castle so the appropriate rook moves as well
-							// make a separate method for clarity
+							// make a separate method for clarity and to remove comments
 							if (clickedPiece instanceof King) {
 								King king = (King) clickedPiece;
 								if (!king.isAlreadyCastled() && king.canCastle())
 									king.checkIfCastle(clickedTile, destTile);
+								// check if the rook that moved is now checking the king to print out CHECK!
 							} 
 							
 							// check if pawn reaches the end of the board for promotion
+							// make a separate method for clarity and to remove comments
 							
 							// check if moving a piece will put other color's king in check
-							// make a separate method
+							// make a separate method for clarity and to remove comments
 							ArrayList<Integer[]> validMoves = clickedPiece.getValidMoves();
 							
 							for (int j = 0; j < validMoves.size(); j++) {
