@@ -54,7 +54,7 @@ public class chessController {
 	private int currCol, currRow; 
 	private Tile clickedTile;
 	private Piece clickedPiece;
-	private ArrayList<Integer[]> validMoves;
+	private ArrayList<Integer[]> refinedMoves;
 	
 	// private ArrayList<Piece> capturedWhitePieces, capturedBlackPieces;
 	private int captWPCounter, captWRCounter, captWNCounter, captWBCounter, captWQCounter;
@@ -73,10 +73,13 @@ public class chessController {
 		disableCapturedPieceImages();
 		initializeCapturedPieceAndPointCounters();
 		
-		player1Label.setVisible(true);
+		player1Label.setVisible(true); 
 		player2Label.setVisible(true);
-		player1Label.setText("Player 1 (White): ");
+		player1Label.setText("Player 1 (White): "); 
 		player2Label.setText("Player 2 (Black): ");
+		
+		textPlayer1Check.setText("");
+		textPlayer2Check.setText("");
 		
 		turnNumber = 1;
 		
@@ -99,6 +102,9 @@ public class chessController {
 				enableOrDisableTextNumbersAndLetters(true);
 				enableCapturedPieceImages();
 				initializeCapturedPieceAndPointCounters();
+				
+				textPlayer1Check.setText("");
+				textPlayer2Check.setText("");
 				
 				turnNumber = 1;
 			}
@@ -138,23 +144,14 @@ public class chessController {
 					highlightTiles(currCol, currRow);
 				}
 				
-				// check if the king is in check (assume no checkmate yet - that will be last)
-				if (textPlayer1Check.getText().equals("CHECK!") || textPlayer2Check.getText().equals("CHECK!")) {
-					// if king is in check then figure out what moves are ok to ensure king is not in check
-				}
-				
 				if (timesClicked >= 2) {
 					int destCol = (int) (event.getX() / 90);
 					int destRow = (int) (event.getY() / 90);
 					Tile destTile = model.getTile(destCol, destRow);
 					boolean moved = false;
 						
-					for (int i = 0; i < validMoves.size(); i++) {
-						if (destCol == validMoves.get(i)[0] && destRow == validMoves.get(i)[1]) {
-							
-							// check if moving a piece will put own king in check (this piece cannot move)
-							
-							// check if moving a piece will put other color's king in check
+					for (int i = 0; i < refinedMoves.size(); i++) {
+						if (destCol == refinedMoves.get(i)[0] && destRow == refinedMoves.get(i)[1]) {
 							
 							// store captured piece before clickedPiece moves to that tile
 							if (!destTile.isEmpty()) { storeCapturedPieceAndUpdatePoints(destTile.getPiece()); }
@@ -164,7 +161,11 @@ public class chessController {
 							clickedPiece.incrementMoveNumber();
 							moved = true;
 							
+							if (textPlayer1Check.getText().equals("CHECK!")) { textPlayer1Check.setText(""); }
+							if (textPlayer2Check.getText().equals("CHECK!")) { textPlayer2Check.setText(""); }
+							
 							// check if move was a castle so the appropriate rook moves as well
+							// make a separate method for clarity
 							if (clickedPiece instanceof King) {
 								King king = (King) clickedPiece;
 								if (!king.isAlreadyCastled() && king.canCastle())
@@ -172,6 +173,24 @@ public class chessController {
 							} 
 							
 							// check if pawn reaches the end of the board for promotion
+							
+							// check if moving a piece will put other color's king in check
+							// make a separate method
+							ArrayList<Integer[]> validMoves = clickedPiece.getValidMoves();
+							
+							for (int j = 0; j < validMoves.size(); j++) {
+								int dCol = validMoves.get(j)[0];
+								int dRow = validMoves.get(j)[1];
+								Piece king;
+								
+								if (clickedPiece.isWhite()) { king = model.getBlackPieces()[15]; }
+								else { king = model.getWhitePieces()[15]; }
+								
+								if (dCol == king.getCol() && dRow == king.getRow()) {
+									if (clickedPiece.isWhite()) { textPlayer2Check.setText("CHECK!"); }
+									else { textPlayer1Check.setText("CHECK!"); }
+								}
+							}
 							
 							updateBoardAppearance();
 							delayThenFlip();
@@ -205,16 +224,17 @@ public class chessController {
 		clickedTile = model.getTile(currCol, currRow);
 		clickedPiece = clickedTile.getPiece();
 		
-		if (clickedPiece != null) { validMoves = clickedPiece.getValidMoves(); }
+		if (clickedPiece != null) { refinedMoves = clickedPiece.getRefinedMoves(); }
+		if (refinedMoves.size() == 0) { timesClicked = 0; return; }
 
 		if (turnNumber % 2 == 1) {
 			if (clickedPiece != null && clickedPiece.isWhite())
-				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
+				chessGrid.highlightReachableTiles(clickedPiece, refinedMoves);
 			else { timesClicked = 0; }
 		}
 		else {
 			if (clickedPiece != null && !clickedPiece.isWhite())
-				chessGrid.highlightReachableTiles(clickedPiece, validMoves);
+				chessGrid.highlightReachableTiles(clickedPiece, refinedMoves);
 			else { timesClicked = 0; }
 		}
 	}
@@ -264,6 +284,8 @@ public class chessController {
 				blackPoints += 9;
 				updatePoints(blackPoints, textPlayer2Points);
 			}
+			
+			model.getCaptWhitePieces().add(captPiece);
 		}
 		else {
 			if (captPiece instanceof Pawn) { 
@@ -291,6 +313,8 @@ public class chessController {
 				whitePoints += 9; 
 				updatePoints(whitePoints, textPlayer1Points);
 			}
+			
+			model.getCaptBlackPieces().add(captPiece);
 		}
 	}
 	

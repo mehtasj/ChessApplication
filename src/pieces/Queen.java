@@ -2,6 +2,7 @@ package pieces;
 
 import java.util.ArrayList;
 import chessboard.BoardSimulator;
+import chessboard.Tile;
 
 /** Represents a queen */
 public class Queen extends AbstractPiece {

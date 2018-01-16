@@ -1,33 +1,97 @@
 package pieces;
 
+import java.util.ArrayList;
+
 import chessboard.*;
 
 /** Contains common implementations among all pieces */ 
 public abstract class AbstractPiece implements Piece {
 
+	/** This piece's parent simulator (i.e. the board it is on) */
+	private BoardSimulator pSim;
+	
 	/** This piece's color */
 	private PieceColor pc;
-	
-	/** This piece's column and row location */
-	private int col, row;
 	
 	/** Keeps track of how many times this piece has successfully moved */
 	private int moveNumber;
 	
-	/** The piece's parent simulator (i.e. the board it is on) */
-	private BoardSimulator pSim;
+	/** This piece's column and row location */
+	private int col, row;
 	
 	/**
 	 * Constructs a piece with a simulator parent node and a color
 	 * @param bSim
-	 * 			Board simulator node
+	 * 		Board simulator node
 	 * @param color
-	 * 			Color of the piece (black or white)
+	 * 		Color of the piece (black or white)
 	 */
 	public AbstractPiece(BoardSimulator bSim, PieceColor color) {
 		this.pSim = bSim;
 		this.pc = color;
 		this.moveNumber = 0;
+	}
+	
+	@Override
+	public ArrayList<Integer[]> getRefinedMoves() {
+		ArrayList<Integer[]> refinedMoves = this.getValidMoves();
+		BoardSimulator board = this.getBoard();
+		int col = this.getCol();
+		int row = this.getRow();
+		Tile currTile = board.getTile(col, row);
+				
+		if (this.isWhite()) {
+			Piece[] oppositeColoredPieces = board.getBlackPieces();
+			ArrayList<Piece> blackCapturedPieces = board.getCaptBlackPieces();
+			calculateRefinedMoves(board, refinedMoves, currTile, oppositeColoredPieces, blackCapturedPieces); 
+		}
+		else {
+			Piece[] oppositeColoredPieces = board.getWhitePieces();
+			ArrayList<Piece> whiteCapturedPieces = board.getCaptWhitePieces();
+			calculateRefinedMoves(board, refinedMoves, currTile, oppositeColoredPieces, whiteCapturedPieces); 
+		}
+			
+		return refinedMoves;
+	}
+	
+	@Override
+	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
+			Tile currTile, Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces) {
+		
+		for (int i = refinedMoves.size() - 1; i >= 0; i--) {
+			int destCol = refinedMoves.get(i)[0];
+			int destRow = refinedMoves.get(i)[1];
+			Tile destTile = board.getTile(destCol, destRow);
+			Piece destTilePiece = destTile.getPiece();
+			currTile.setPiece(null);
+			destTile.setPiece(this); // temporarily move this piece to allow access to current tile
+			capturedPieces.add(destTilePiece); // temporarily add piece to captured list
+					
+			for (Piece p : oppositeColoredPieces) {
+				if (p != null && !capturedPieces.contains(p)) {
+					ArrayList<Integer[]> pMoves = p.getValidMoves();
+					Piece king;
+					if (this.isWhite()) { king = board.getWhitePieces()[15]; }
+					else { king = board.getBlackPieces()[15]; }
+							
+					for (int j = 0; j < pMoves.size(); j++) { 
+						int pDestCol = pMoves.get(j)[0];
+						int pDestRow = pMoves.get(j)[1];
+								
+						if (pDestCol == king.getCol() && pDestRow == king.getRow()) {
+							refinedMoves.remove(i);
+							currTile.setPiece(this); // move back to current tile
+							destTile.setPiece(destTilePiece); // revert tile to original state
+							capturedPieces.remove(destTilePiece); // remove from captured list
+							break;
+						}
+					}
+				}
+			}
+			currTile.setPiece(this);
+			destTile.setPiece(destTilePiece);
+			capturedPieces.remove(destTilePiece);
+		}
 	}
 	
 	@Override

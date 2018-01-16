@@ -127,10 +127,7 @@ public class chessGrid {
 		gc.drawImage(pieces[pieceIndex], p.getCol() * 90 + 5, p.getRow() * 90 + 5, 80, 80);
 	}
 
-	/** 
-	 * Iterates through the 64 chess board tiles 
-	 * and draws pieces at their current locations
-	 */
+	/** Draws pieces at their most up-to-date locations */
 	public void drawPieces() {
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {

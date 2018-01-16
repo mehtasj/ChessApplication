@@ -2,6 +2,7 @@ package pieces;
 
 import java.util.ArrayList;
 import chessboard.BoardSimulator;
+import chessboard.Tile;
 
 /** Represents a bishop */
 public class Bishop extends AbstractPiece {

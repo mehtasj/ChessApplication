@@ -8,12 +8,45 @@ public interface Piece {
 	
 	/** 
 	 * @return
-	 * 		A list of valid moves that this piece can make
+	 * 		a list of valid moves that this piece can make
 	 * 		The ArrayList contains Integer arrays of length 2 
 	 * 		to represent a (col, row) coordinate;
 	 * 		Assumes the board can be flipped 
 	 */
 	public ArrayList<Integer[]> getValidMoves();
+	
+	/** 
+	 * @return
+	 * 		a subset of valid moves that this piece can make
+	 * 		The ArrayList contains Integer arrays of length 2 
+	 * 		to represent a (col, row) coordinate;
+	 * 		Takes into account if a usually valid move is 
+	 * 		invalid if the king is currently in Check or 
+	 * 		if it would be placed in Check (illegal move)
+	 */
+	public ArrayList<Integer[]> getRefinedMoves();
+	
+	/**
+	 * Calculates the refined moves for a specific piece
+	 * @param board
+	 * 		The board this piece is on
+	 * @param refinedMoves
+	 * 		The whole list of valid moves this piece can make;
+	 * 		Will potentially remove moves inside this method
+	 * @param currTile
+	 * 		The current tile this piece is on
+	 * @param oppositeColoredPieces
+	 * 		The pieces that differ in color from this piece
+	 * 		in order to check if any of them threaten this piece's king,
+	 * 		which would result in an illegal move
+	 * @param capturedPieces
+	 * 		The list of captured pieces of the opposite color from this piece;
+	 * 		Pieces will be placed into this list if this piece's valid move would capture
+	 * 		the piece; however, they will later be removed from the list to maintain a 
+	 * 		list of pieces that were actually captured
+	 */
+	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, Tile currTile,
+			Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces);
 	
 	/** 
 	 * Moves this piece to a new tile on the board
@@ -23,7 +56,7 @@ public interface Piece {
 	public void moveTo(Tile t);
 	
 	/** 
-	 *  Increments the number of times this pieces has moved
+	 *  Increments the number of times this piece has moved
 	 *  if it successfully moves to a new tile
 	 */
 	public void incrementMoveNumber();
@@ -42,7 +75,7 @@ public interface Piece {
 	
 	/** 
 	 * Checks if this piece can move to an empty tile
-	 * @param b
+	 * @param b 
 	 * 		The board this piece is on
 	 * @param c
 	 * 		The column coordinate
