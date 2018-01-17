@@ -184,8 +184,9 @@ public class chessController {
 							// check if moving a piece will put other color's king in check
 							// make a method
 							if (!checkIfPieceChecks(clickedPiece)) {
-								if (clickedPiece.isWhite()) { checkIfCheck(model.getWhitePieces()); }
-								else { checkIfCheck(model.getBlackPieces()); }
+								if (clickedPiece.isWhite())
+									checkIfCheck(model.getWhitePieces(), model.getCaptWhitePieces()); 
+								else { checkIfCheck(model.getBlackPieces(), model.getCaptBlackPieces()); }
 							}
 							
 							// check if checkmate
@@ -232,6 +233,7 @@ public class chessController {
 	public void highlightTiles(int currCol, int currRow) {
 		clickedTile = model.getTile(currCol, currRow);
 		clickedPiece = clickedTile.getPiece();
+		System.out.println(clickedPiece);
 		
 		if (clickedPiece != null) { refinedMoves = clickedPiece.getRefinedMoves(); }
 		if (refinedMoves.size() == 0) { timesClicked = 0; return; }
@@ -290,12 +292,15 @@ public class chessController {
 	 * once they move (i.e. if they are the clicked piece moving into an updated position)
 	 * @param coloredPieces
 	 * 		The array of pieces with the same color as the clicked piece
+	 * @param captColoredPieces
+	 * 		The pieces that were captured of the same color as the clicked piece
 	 */
-	public void checkIfCheck(Piece[] coloredPieces) {
+	public void checkIfCheck(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
 		boolean checkFound = false;
 		
 		for (Piece p : coloredPieces) {
-			if (p != null && (p instanceof Rook || p instanceof Bishop || p instanceof Queen))
+			if (p != null && !captColoredPieces.contains(p) 
+					&& (p instanceof Rook || p instanceof Bishop || p instanceof Queen))
 				checkFound = checkIfPieceChecks(p);
 			if (checkFound) break;
 		}
@@ -317,6 +322,7 @@ public class chessController {
 			int destRow = validMoves.get(i)[1];
 			
 			if (destCol == king.getCol() && destRow == king.getRow()) {
+				System.out.println(p + " checks at " + destCol + " " + destRow);
 				if (clickedPiece.isWhite()) { textPlayer2Check.setText("CHECK!"); }
 				else { textPlayer1Check.setText("CHECK!"); }
 				king.setCheckState(true);

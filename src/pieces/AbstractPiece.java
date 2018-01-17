@@ -84,6 +84,7 @@ public abstract class AbstractPiece implements Piece {
 					// corrections for pawn moves because the board was not flipped
 					// separate method
 					if (p instanceof Pawn) {
+						pMoves = new ArrayList<>();
 						if (p.canCaptureAt(board, p.getCol() + 1, p.getRow() + 1))
 							pMoves.add(this.storeMoveTo(p.getCol() + 1, p.getRow() + 1));
 						if (p.canCaptureAt(board, p.getCol() - 1, p.getRow() + 1))
