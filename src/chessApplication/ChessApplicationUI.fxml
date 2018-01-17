@@ -236,12 +236,12 @@
                   <Font name="Helvetica Light" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="textPlayer1Check" layoutX="835.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHECK!">
+            <Text fx:id="textPlayer1Check" fill="#d00f0f" layoutX="835.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHECK!">
                <font>
                   <Font name="Helvetica Bold Oblique" size="24.0" />
                </font>
             </Text>
-            <Text fx:id="textPlayer2Check" layoutX="835.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHECK!">
+            <Text fx:id="textPlayer2Check" fill="#d00f0f" layoutX="835.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHECK!">
                <font>
                   <Font name="Helvetica Bold Oblique" size="24.0" />
                </font>

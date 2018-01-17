@@ -56,7 +56,6 @@ public class chessController {
 	private Piece clickedPiece;
 	private ArrayList<Integer[]> refinedMoves;
 	
-	// private ArrayList<Piece> capturedWhitePieces, capturedBlackPieces;
 	private int captWPCounter, captWRCounter, captWNCounter, captWBCounter, captWQCounter;
 	private int captBPCounter, captBRCounter, captBNCounter, captBBCounter, captBQCounter;
 	private int whitePoints, blackPoints;
@@ -158,8 +157,17 @@ public class chessController {
 							clickedPiece.incrementMoveNumber();
 							moved = true;
 							
-							if (textPlayer1Check.getText().equals("CHECK!")) { textPlayer1Check.setText(""); }
-							if (textPlayer2Check.getText().equals("CHECK!")) { textPlayer2Check.setText(""); }
+							// make method
+							if (textPlayer1Check.getText().equals("CHECK!")) { 
+								textPlayer1Check.setText("");
+								King king = (King) model.getWhitePieces()[15];
+								king.setCheckState(false);
+							}
+							if (textPlayer2Check.getText().equals("CHECK!")) { 
+								textPlayer2Check.setText(""); 
+								King king = (King) model.getBlackPieces()[15];
+								king.setCheckState(false);
+							}
 							
 							// check if move was a castle so the appropriate rook moves as well
 							// make a separate method for clarity and to remove comments
@@ -167,27 +175,29 @@ public class chessController {
 								King king = (King) clickedPiece;
 								if (!king.isAlreadyCastled() && king.canCastle())
 									king.checkIfCastle(clickedTile, destTile);
-								// check if the rook that moved is now checking the king to print out CHECK!
 							} 
 							
 							// check if pawn reaches the end of the board for promotion
 							// make a separate method for clarity and to remove comments
 							
-							// check if moving a piece will put other color's king in check
-							// make a separate method for clarity and to remove comments
-							ArrayList<Integer[]> validMoves = clickedPiece.getValidMoves();
 							
-							for (int j = 0; j < validMoves.size(); j++) {
-								int dCol = validMoves.get(j)[0];
-								int dRow = validMoves.get(j)[1];
-								Piece king;
-								
-								if (clickedPiece.isWhite()) { king = model.getBlackPieces()[15]; }
-								else { king = model.getWhitePieces()[15]; }
-								
-								if (dCol == king.getCol() && dRow == king.getRow()) {
-									if (clickedPiece.isWhite()) { textPlayer2Check.setText("CHECK!"); }
-									else { textPlayer1Check.setText("CHECK!"); }
+							// check if moving a piece will put other color's king in check
+							// make a method
+							if (!checkIfPieceChecks(clickedPiece)) {
+								if (clickedPiece.isWhite()) { checkIfCheck(model.getWhitePieces()); }
+								else { checkIfCheck(model.getBlackPieces()); }
+							}
+							
+							// check if checkmate
+							// make method
+							if (textPlayer1Check.getText().equals("CHECK!")) {
+								if (checkmate(model.getWhitePieces(), model.getCaptWhitePieces())) {
+									System.out.println("CHECKMATE! Black wins!");
+								}
+							}
+							else if (textPlayer2Check.getText().equals("CHECK!")) { 
+								if (checkmate(model.getBlackPieces(), model.getCaptBlackPieces())) {
+									System.out.println("CHECKMATE! White wins!");
 								}
 							}
 							
@@ -248,6 +258,78 @@ public class chessController {
 				flipTextNumbersAndLetters();
 	        });
 	    }, 1000, TimeUnit.MILLISECONDS);
+	}
+	
+	/**
+	 * Checks if there is a Checkmate, which means the game is over
+	 * @param coloredPieces
+	 * 		The pieces of the threatened king's color
+	 * @param captColoredPieces
+	 * 		The pieces that were captured of the threatened king's color
+	 * @return
+	 * 		true if there is a Checkmate
+	 */
+	public boolean checkmate(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
+		int possibleMoves = 0;
+		
+		for (Piece p : coloredPieces) {
+			if (p != null && !captColoredPieces.contains(p)) {
+				ArrayList<Integer[]> pRefinedMoves = p.getRefinedMoves();
+				possibleMoves += pRefinedMoves.size();
+			}
+		}
+		
+		if (possibleMoves == 0) return true;
+		return false;
+	}
+	
+	/**
+	 * Checks if a rook, bishop, or queen of the clicked piece's color
+	 * threatens the opposite color's king after the clicked piece has moved;
+	 * Do not need to check pawns or knights as they can only Check 
+	 * once they move (i.e. if they are the clicked piece moving into an updated position)
+	 * @param coloredPieces
+	 * 		The array of pieces with the same color as the clicked piece
+	 */
+	public void checkIfCheck(Piece[] coloredPieces) {
+		boolean checkFound = false;
+		
+		for (Piece p : coloredPieces) {
+			if (p != null && (p instanceof Rook || p instanceof Bishop || p instanceof Queen))
+				checkFound = checkIfPieceChecks(p);
+			if (checkFound) break;
+		}
+	}
+	
+	/**
+	 * Checks to see if a given piece's valid moves threaten the opposite king
+	 * @param p
+	 * 		The piece whose valid moves are to be checked
+	 * @return
+	 * 		true if the given piece does threaten the opposite king (Check)
+	 */
+	public boolean checkIfPieceChecks(Piece p) {
+		ArrayList<Integer[]> validMoves = p.getValidMoves();
+		King king = calculateOppositeColoredKing();
+		
+		for (int i = 0; i < validMoves.size(); i++) {
+			int destCol = validMoves.get(i)[0];
+			int destRow = validMoves.get(i)[1];
+			
+			if (destCol == king.getCol() && destRow == king.getRow()) {
+				if (clickedPiece.isWhite()) { textPlayer2Check.setText("CHECK!"); }
+				else { textPlayer1Check.setText("CHECK!"); }
+				king.setCheckState(true);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/** @return the king opposite in color to the clicked piece */
+	public King calculateOppositeColoredKing() {
+		if (clickedPiece.isWhite()) { return (King) model.getBlackPieces()[15]; }
+		else { return (King) model.getWhitePieces()[15]; }
 	}
 	
 	/**

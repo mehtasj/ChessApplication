@@ -64,7 +64,7 @@ public class King extends AbstractPiece {
 			moves.add(storeMoveTo(col - 1, row + 1));
 		
 		// Checks if this king can castle king's side if it is white
-		if (this.isWhite()) {
+		if (this.isWhite() && !this.inCheck) {
 			Tile t = board.getTile(7, 7);
 			Piece p = t.getPiece();
 			
@@ -75,7 +75,7 @@ public class King extends AbstractPiece {
 		}
 		
 		// Checks if this king can castle king's side if it is black 
-		if (!this.isWhite()) {
+		if (!this.isWhite() && !this.inCheck) {
 			Tile t = board.getTile(0, 7);
 			Piece p = t.getPiece();
 			
@@ -86,7 +86,7 @@ public class King extends AbstractPiece {
 		}
 		
 		// Checks if this king can castle queen's side if it is white
-		if (this.isWhite()) {
+		if (this.isWhite() && !this.inCheck) {
 			Tile t = board.getTile(0, 7);
 			Piece p = t.getPiece();
 			
@@ -98,7 +98,7 @@ public class King extends AbstractPiece {
 		}
 		
 		// Checks if this king can castle queen's side if it is black
-		if (!this.isWhite()) {
+		if (!this.isWhite() && !this.inCheck) {
 			Tile t = board.getTile(7, 7);
 			Piece p = t.getPiece();
 			
@@ -113,13 +113,13 @@ public class King extends AbstractPiece {
 	}
 	
 	/** 
-	 * Checks if the king castled; 
+	 * Checks if this king castled; 
 	 * if true, then the appropriate rook is moved to its new position
 	 * @param prevTile
-	 * 		The previous tile the king was on
+	 * 		The previous tile this king was on
 	 * @param currTile
-	 * 		The current tile the king is on
-	 */
+	 * 		The current tile this king is on
+	 */ 
 	public void checkIfCastle(Tile prevTile, Tile currTile) {
 		int prevCol = prevTile.getCol();
 		int prevRow = prevTile.getRow();

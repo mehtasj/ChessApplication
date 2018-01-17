@@ -65,9 +65,10 @@ public abstract class AbstractPiece implements Piece {
 			currTile.setPiece(null);
 			destTile.setPiece(this);
 			capturedPieces.add(destTilePiece);
-			boolean checked = false;
+			boolean checkedMove = false;
 			
 			Piece king;
+			// make a return method
 			if (this.isWhite()) { king = board.getWhitePieces()[15]; }
 			else { king = board.getBlackPieces()[15]; }
 			
@@ -81,6 +82,7 @@ public abstract class AbstractPiece implements Piece {
 					ArrayList<Integer[]> pMoves = p.getValidMoves();
 					
 					// corrections for pawn moves because the board was not flipped
+					// separate method
 					if (p instanceof Pawn) {
 						if (p.canCaptureAt(board, p.getCol() + 1, p.getRow() + 1))
 							pMoves.add(this.storeMoveTo(p.getCol() + 1, p.getRow() + 1));
@@ -88,12 +90,13 @@ public abstract class AbstractPiece implements Piece {
 							pMoves.add(this.storeMoveTo(p.getCol() - 1, p.getRow() + 1));
 					}
 							
+					// separate method
 					for (int j = 0; j < pMoves.size(); j++) { 
 						int pDestCol = pMoves.get(j)[0];
 						int pDestRow = pMoves.get(j)[1];
 								
 						if (pDestCol == kingCol && pDestRow == kingRow) {
-							checked = true;
+							checkedMove = true;
 							refinedMoves.remove(i);
 							currTile.setPiece(this);
 							destTile.setPiece(destTilePiece);
@@ -102,7 +105,7 @@ public abstract class AbstractPiece implements Piece {
 						}
 					}
 				}
-				if (checked) { break; }
+				if (checkedMove) { break; }
 			}
 			currTile.setPiece(this);
 			destTile.setPiece(destTilePiece);
