@@ -192,13 +192,13 @@ public class chessController {
 							// check if checkmate
 							// make method
 							if (textPlayer1Check.getText().equals("CHECK!")) {
-								if (checkmate(model.getWhitePieces(), model.getCaptWhitePieces())) {
-									System.out.println("CHECKMATE! Black wins!");
+								if (isCheckmate(model.getWhitePieces(), model.getCaptWhitePieces())) {
+									textPlayer1Check.setText("CHECKMATE!");
 								}
 							}
 							else if (textPlayer2Check.getText().equals("CHECK!")) { 
-								if (checkmate(model.getBlackPieces(), model.getCaptBlackPieces())) {
-									System.out.println("CHECKMATE! White wins!");
+								if (isCheckmate(model.getBlackPieces(), model.getCaptBlackPieces())) {
+									textPlayer2Check.setText("CHECKMATE!");
 								}
 							}
 							
@@ -212,7 +212,7 @@ public class chessController {
 					}
 					
 					if (!moved) {
-						updateBoardAppearance(); // gets rid of highlights on any tiles
+						updateBoardAppearance();
 						currCol = (int) (event.getX() / 90);
 						currRow = (int) (event.getY() / 90);
 						highlightTiles(currCol, currRow);
@@ -233,7 +233,6 @@ public class chessController {
 	public void highlightTiles(int currCol, int currRow) {
 		clickedTile = model.getTile(currCol, currRow);
 		clickedPiece = clickedTile.getPiece();
-		System.out.println(clickedPiece);
 		
 		if (clickedPiece != null) { refinedMoves = clickedPiece.getRefinedMoves(); }
 		if (refinedMoves.size() == 0) { timesClicked = 0; return; }
@@ -271,7 +270,7 @@ public class chessController {
 	 * @return
 	 * 		true if there is a Checkmate
 	 */
-	public boolean checkmate(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
+	public boolean isCheckmate(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
 		int possibleMoves = 0;
 		
 		for (Piece p : coloredPieces) {
@@ -286,8 +285,8 @@ public class chessController {
 	}
 	
 	/**
-	 * Checks if a rook, bishop, or queen of the clicked piece's color
-	 * threatens the opposite color's king after the clicked piece has moved;
+	 * Checks if a rook, bishop, and/or queen of the clicked piece's color
+	 * threaten(s) the opposite color's king after the clicked piece has moved;
 	 * Do not need to check pawns or knights as they can only Check 
 	 * once they move (i.e. if they are the clicked piece moving into an updated position)
 	 * @param coloredPieces
@@ -322,7 +321,6 @@ public class chessController {
 			int destRow = validMoves.get(i)[1];
 			
 			if (destCol == king.getCol() && destRow == king.getRow()) {
-				System.out.println(p + " checks at " + destCol + " " + destRow);
 				if (clickedPiece.isWhite()) { textPlayer2Check.setText("CHECK!"); }
 				else { textPlayer1Check.setText("CHECK!"); }
 				king.setCheckState(true);
