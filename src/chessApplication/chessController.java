@@ -189,24 +189,12 @@ public class chessController {
 								else { checkIfCheck(model.getBlackPieces(), model.getCaptBlackPieces()); }
 							}
 							
-							// check if checkmate
-							// make method
-							if (textPlayer1Check.getText().equals("CHECK!")) {
-								if (isCheckmate(model.getWhitePieces(), model.getCaptWhitePieces())) {
-									textPlayer1Check.setText("CHECKMATE!");
-								}
-							}
-							else if (textPlayer2Check.getText().equals("CHECK!")) { 
-								if (isCheckmate(model.getBlackPieces(), model.getCaptBlackPieces())) {
-									textPlayer2Check.setText("CHECKMATE!");
-								}
-							}
-							
 							updateBoardAppearance();
-							delayThenFlip();
+							delayThenFlip(); // placed checkmate function in here for now
 							
 							turnNumber++;
 							timesClicked = 0;
+							
 							break;
 						}
 					}
@@ -257,6 +245,20 @@ public class chessController {
 	        		model.flipBoard();
 				updateBoardAppearance();
 				flipTextNumbersAndLetters();
+				
+				// check if checkmate
+				// make method
+				if (textPlayer1Check.getText().equals("CHECK!")) {
+					if (isCheckmate(model.getWhitePieces(), model.getCaptWhitePieces())) {
+						textPlayer1Check.setText("CHECKMATE!");
+					}
+				}
+				else if (textPlayer2Check.getText().equals("CHECK!")) { 
+					if (isCheckmate(model.getBlackPieces(), model.getCaptBlackPieces())) {
+						textPlayer2Check.setText("CHECKMATE!");
+					}
+				}
+				
 	        });
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
@@ -268,7 +270,8 @@ public class chessController {
 	 * @param captColoredPieces
 	 * 		The pieces that were captured of the threatened king's color
 	 * @return
-	 * 		true if there is a Checkmate
+	 * 		true if there are no more possible moves for pieces with the threatened
+	 * 		king's color (a.k.a CHECKMATE)
 	 */
 	public boolean isCheckmate(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
 		int possibleMoves = 0;
@@ -280,8 +283,7 @@ public class chessController {
 			}
 		}
 		
-		if (possibleMoves == 0) return true;
-		return false;
+		return possibleMoves == 0;
 	}
 	
 	/**

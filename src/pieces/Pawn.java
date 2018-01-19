@@ -11,7 +11,6 @@ public class Pawn extends AbstractPiece {
 		super(bSim, color);
 	}
 	
-	// Code promotions if the pawn reaches the end of the board
 	@Override
 	public ArrayList<Integer[]> getValidMoves() {
 		ArrayList<Integer[]> moves = new ArrayList<>();

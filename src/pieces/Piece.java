@@ -50,8 +50,8 @@ public interface Piece {
 	
 	/** 
 	 * Moves this piece to a new tile on the board
-	 * and removes it from its previous tile
-	 * Requires: move is valid
+	 * and removes it from its previous tile;
+	 * Requires that the move is valid
 	 */
 	public void moveTo(Tile t);
 	
@@ -126,21 +126,4 @@ public interface Piece {
 	
 	/** @return The color of this piece */
 	public PieceColor getColor();
-	
-	// Deprecated
-	/** 
-	 * Moves this piece to a new position on the board
-	 * Requires: move is valid
-	 */
-	public void moveTo(int col, int row);
-	
-	// Deprecated
-	/** 
-	 * Sets the position of a piece on the board 
-	 * @param col
-	 * 		The column this piece is now in
-	 * @param row
-	 * 		The row this piece is now in
-	 */
-	public void setPosition(int col, int row);
 }

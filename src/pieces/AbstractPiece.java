@@ -194,15 +194,4 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override 
 	public PieceColor getColor() { return this.pc; }
-	
-	// Deprecated
-	@Override
-	public void moveTo(int col, int row) { this.setPosition(col, row); }
-	
-	// Deprecated
-	@Override
-	public void setPosition(int col, int row) {
-		this.col = col;
-		this.row = row;
-	}
 }
