@@ -8,7 +8,7 @@ public interface Piece {
 	
 	/** 
 	 * @return
-	 * 		a list of valid moves that this piece can make
+	 * 		a list of valid moves that this piece can make;
 	 * 		The ArrayList contains Integer arrays of length 2 
 	 * 		to represent a (col, row) coordinate;
 	 * 		Assumes the board can be flipped 
@@ -49,31 +49,6 @@ public interface Piece {
 			Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces);
 	
 	/** 
-	 * Moves this piece to a new tile on the board
-	 * and removes it from its previous tile;
-	 * Requires that the move is valid
-	 */
-	public void moveTo(Tile t);
-	
-	/** 
-	 *  Increments the number of times this piece has moved
-	 *  if it successfully moves to a new tile
-	 */
-	public void incrementMoveNumber();
-	
-	/**
-	 * Stores a valid move coordinate inside an array
-	 * which will be added to a List of valid coordinates
-	 * @param c
-	 * 		The column coordinate
-	 * @param r
-	 * 		The row coordinate
-	 * @return 
-	 * 		an array with 2 elements: column and row in that order
-	 */
-	public Integer[] storeMoveTo(int c, int r);
-	
-	/** 
 	 * Checks if this piece can move to an empty tile
 	 * @param b 
 	 * 		The board this piece is on
@@ -99,12 +74,37 @@ public interface Piece {
 	 */
 	public boolean canCaptureAt(BoardSimulator b, int c, int r);
 	
+	/**
+	 * Stores a valid move coordinate inside an array
+	 * which will be added to a List of valid coordinates
+	 * @param c
+	 * 		The column coordinate
+	 * @param r
+	 * 		The row coordinate
+	 * @return 
+	 * 		an array with 2 elements: column and row in that order
+	 */
+	public Integer[] storeMoveTo(int c, int r);
+	
+	/** 
+	 * Moves this piece to a new tile on the board
+	 * and removes it from its previous tile;
+	 * Requires that the move is valid
+	 */
+	public void moveTo(Tile t);
+	
 	/** 
 	 * Sets the tile of a piece on the board 
 	 * @param t
 	 * 		The tile on which to set this piece
 	 */
 	public void setTile(Tile t);
+	
+	/** 
+	 *  Increments the number of times this piece has moved
+	 *  if it successfully moves to a new tile
+	 */
+	public void incrementMoveNumber();
 	
 	/**
 	 * Checks if this piece's color is white

@@ -1,7 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
-import chessboard.*;
+import chessboard.BoardSimulator;
 
 /** Represents a pawn */
 public class Pawn extends AbstractPiece {
@@ -18,19 +18,17 @@ public class Pawn extends AbstractPiece {
 		int col = this.getCol();
 		int row = this.getRow();
 		
-		// Special Case: Checks if this pawn can move two spaces forward from its home tile
-		if (row == 6 && board.getTile(col, 4).isEmpty() && board.getTile(col, 5).isEmpty())
+		// special case: if this pawn can move forward 2 spaces
+		if (row == 6 && board.getTile(col, 4).isEmpty() 
+				&& board.getTile(col, 5).isEmpty())
 			moves.add(storeMoveTo(col, 4));
 		
-		// Checks if this pawn can move one space forward
 		if (this.canMoveToEmptySpaceAt(board, col, row - 1))
 			moves.add(storeMoveTo(col, row - 1));
 		
-		// Checks if this pawn can capture another piece diagonally right forward
 		if (this.canCaptureAt(board, col + 1, row - 1))
 			moves.add(storeMoveTo(col + 1, row - 1));
 		
-		// Checks if this pawn can capture another piece diagonally left forward
 		if (this.canCaptureAt(board, col - 1, row - 1))
 			moves.add(storeMoveTo(col - 1, row - 1));
 		

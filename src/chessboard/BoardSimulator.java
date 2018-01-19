@@ -33,17 +33,17 @@ public class BoardSimulator {
 	}
 	
 	/**
-	 * @param col
+	 * @param c
 	 * 		The column the requested tile is in
-	 * @param row
+	 * @param r
 	 * 		The row the requested tile is in
 	 * @return
-	 * 		The tile at (col, row)
+	 * 		The tile at (c, r)
 	 */
-	public Tile getTile(int col, int row) {
-		if (board[row][col] == null)
-			board[row][col] = new Tile(this, col, row);
-		return board[row][col];
+	public Tile getTile(int c, int r) {
+		if (board[r][c] == null)
+			board[r][c] = new Tile(this, c, r);
+		return board[r][c];
 	}
 	
 	/** 
