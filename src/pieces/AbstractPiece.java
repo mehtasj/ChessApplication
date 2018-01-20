@@ -31,6 +31,9 @@ public abstract class AbstractPiece implements Piece {
 		this.moveNumber = 0;
 	}
 	
+	/** Insert comment */
+	public enum MoveDir { LEFT, RIGHT, FORWARD, BACKWARD, DIAGONALLY_LEFT, DIAGONALLY_RIGHT; }
+	
 	@Override
 	public ArrayList<Integer[]> getRefinedMoves() {
 		ArrayList<Integer[]> refinedMoves = this.getValidMoves();
@@ -112,6 +115,29 @@ public abstract class AbstractPiece implements Piece {
 			destTile.setPiece(destTilePiece);
 			capturedPieces.remove(destTilePiece);
 		}
+	}
+	
+	/**
+	 * Insert comment
+	 * @param dir
+	 * @param board
+	 * @param moves
+	 * @param c
+	 * @param r
+	 * @return true if tile at (c, r) is empty (can continue to check tiles on that diagonal)
+	 */
+	public boolean checkMove(MoveDir dir, BoardSimulator board, 
+				   ArrayList<Integer[]> moves, int c, int r) 
+	{
+		if (this.isBlockedByOwnColorAt(board, c, r))
+			return false;
+		else if (this.canCaptureAt(board, c, r)) {
+			moves.add(storeMoveTo(c, r)); 
+			return false;
+		}
+		else if (this.canMoveToEmptySpaceAt(board, c, r))
+			moves.add(storeMoveTo(c, r));
+		return true;
 	}
 	
 	@Override
