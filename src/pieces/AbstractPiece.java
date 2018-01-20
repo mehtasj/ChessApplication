@@ -3,7 +3,7 @@ package pieces;
 import java.util.ArrayList;
 import chessboard.*;
 
-/** Contains common implementations among all pieces */ 
+/** Contains common implementations among most or all pieces */ 
 public abstract class AbstractPiece implements Piece {
 
 	/** This piece's parent simulator (i.e. the board it is on) */
@@ -19,11 +19,9 @@ public abstract class AbstractPiece implements Piece {
 	private int col, row;
 	
 	/**
-	 * Constructs a piece with a simulator parent node and a color
-	 * @param bSim
-	 * 		Board simulator node
-	 * @param color
-	 * 		Color of the piece (black or white)
+	 * Constructs a piece with a board simulator parent and a color
+	 * @param bSim - the board this piece is on
+	 * @param color - the color of the piece (black or white)
 	 */
 	public AbstractPiece(BoardSimulator bSim, PieceColor color) {
 		this.pSim = bSim;
@@ -31,14 +29,14 @@ public abstract class AbstractPiece implements Piece {
 		this.moveNumber = 0;
 	}
 	
-	/** Insert comment */
+	/** Identifiers for the types of moves different pieces can make */
 	public enum MoveDir { 
 		LEFT, RIGHT, 
 		FORWARD, BACKWARD, 
 		DIAGONALLY_LEFT_FORWARD, 
 		DIAGONALLY_RIGHT_FORWARD, 
 		DIAGONALLY_LEFT_BACKWARD, 
-		DIAGONALLY_RIGHT_BACKWARD,
+		DIAGONALLY_RIGHT_BACKWARD;
 	}
 	
 	@Override
@@ -48,25 +46,25 @@ public abstract class AbstractPiece implements Piece {
 		int col = this.getCol();
 		int row = this.getRow();
 		Tile currTile = board.getTile(col, row);
+		
+		Piece[] opposingPieces = (this.isWhite()) ? 
+			board.getBlackPieces() :
+			board.getWhitePieces();
 				
-		if (this.isWhite()) {
-			Piece[] oppositeColoredPieces = board.getBlackPieces();
-			ArrayList<Piece> blackCapturedPieces = board.getCaptBlackPieces();
-			calculateRefinedMoves(board, refinedMoves, currTile, oppositeColoredPieces, blackCapturedPieces); 
-		}
-		else {
-			Piece[] oppositeColoredPieces = board.getWhitePieces();
-			ArrayList<Piece> whiteCapturedPieces = board.getCaptWhitePieces();
-			calculateRefinedMoves(board, refinedMoves, currTile, oppositeColoredPieces, whiteCapturedPieces); 
-		}
+		ArrayList<Piece> capturedPieces = (this.isWhite()) ? 
+			board.getCaptBlackPieces() : 
+			board.getCaptWhitePieces();
+			
+		calculateRefinedMoves(board, refinedMoves, 
+			currTile, opposingPieces, capturedPieces);
 			
 		return refinedMoves;
 	}
 	
 	@Override
 	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
-			Tile currTile, Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces) {
-		
+				Tile currTile, Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces) 
+	{
 		for (int i = refinedMoves.size() - 1; i >= 0; i--) {
 			int destCol = refinedMoves.get(i)[0];
 			int destRow = refinedMoves.get(i)[1];
@@ -147,14 +145,7 @@ public abstract class AbstractPiece implements Piece {
 		return true;
 	}
 	
-	/**
-	 * Insert comment
-	 * @param dir
-	 * @param board
-	 * @param moves
-	 * @param c
-	 * @param r
-	 */
+	@Override
 	public void checkMove(MoveDir dir, BoardSimulator board,
 				ArrayList<Integer[]> moves, int c, int r) 
 	{
@@ -178,15 +169,18 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override
 	public boolean canMoveToEmptySpaceAt(BoardSimulator b, int c, int r) {
-		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && b.getTile(c, r).isEmpty()) { return true; }
-		return false;
+		return (r >= 0 && r <= 7 && c >= 0 && c <= 7 
+			    && b.getTile(c, r).isEmpty());
 	}
 	
 	@Override
 	public boolean canCaptureAt(BoardSimulator b, int c, int r) {
-		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && (!b.getTile(c, r).isEmpty())) {
+		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 
+			&& (!b.getTile(c, r).isEmpty())) 
+		{
 			Piece p = b.getTile(c, r).getPiece();
-			if (p != null && (!this.getColor().equals(p.getColor()))) { return true; }
+			if (!this.getColor().equals(p.getColor())) 
+				return true;
 		}
 		return false;
 	}
@@ -205,16 +199,13 @@ public abstract class AbstractPiece implements Piece {
 	 * 		true if the piece on the specified tile is the same color as this piece
 	 */
 	public boolean isBlockedByOwnColorAt(BoardSimulator b, int c, int r) {
-		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 && (!b.getTile(c, r).isEmpty())) {
+		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 
+			&& (!b.getTile(c, r).isEmpty())) 
+		{
 			Piece p = b.getTile(c, r).getPiece();
-			if (p != null && (this.getColor().equals(p.getColor()))) { return true; }
+			if (this.getColor().equals(p.getColor())) 
+				return true;
 		}
-		return false;
-	}
-	
-	@Override 
-	public boolean isWhite() {
-		if (pc == PieceColor.WHITE) { return true; }
 		return false;
 	}
 	
@@ -225,21 +216,24 @@ public abstract class AbstractPiece implements Piece {
 		t.setPiece(this);
 	}
 	
-	@Override
-	public void incrementMoveNumber() { this.moveNumber++; }
-
-	@Override
-	public int getRow() { return this.row; }
-
-	@Override
-	public int getCol() { return this.col; }
+	@Override 
+	public boolean isWhite() { return (pc == PieceColor.WHITE); }
 	
 	@Override
-	public int getMoveNumber() { return this.moveNumber; }
+	public void incrementMoveNumber() { this.moveNumber++; }
 	
 	@Override 
 	public BoardSimulator getBoard() { return this.pSim; }
 	
 	@Override 
 	public PieceColor getColor() { return this.pc; }
+	
+	@Override
+	public int getMoveNumber() { return this.moveNumber; }
+
+	@Override
+	public int getCol() { return this.col; }
+	
+	@Override
+	public int getRow() { return this.row; }
 }

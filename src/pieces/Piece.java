@@ -49,6 +49,17 @@ public interface Piece {
 	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, Tile currTile,
 			Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces);
 	
+	/**
+	 * Insert comment
+	 * @param dir
+	 * @param board
+	 * @param moves
+	 * @param c
+	 * @param r
+	 */
+	public void checkMove(MoveDir dir, BoardSimulator board, 
+				ArrayList<Integer[]> moves, int c, int r);
+	
 	/** 
 	 * Checks if this piece can move to an empty tile
 	 * @param b 

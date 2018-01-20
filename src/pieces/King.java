@@ -51,10 +51,10 @@ public class King extends AbstractPiece {
 			
 			if (rookCol == 7) 
 				checkKingsideCastle(board, p, moves, 
-						moveNumber, kColor, rookCol - 2, rookCol - 1);
+					moveNumber, kColor, rookCol - 2, rookCol - 1);
 			else if (rookCol == 0)
 				checkKingsideCastle(board, p, moves, 
-						moveNumber, kColor, rookCol + 2, rookCol + 1);
+					moveNumber, kColor, rookCol + 2, rookCol + 1);
 		}
 		
 		if (!this.inCheck) {
@@ -64,7 +64,7 @@ public class King extends AbstractPiece {
 			
 			if (rookCol == 7) 
 				checkQueensideCastle(board, p, moves, 
-						moveNumber, kColor, rookCol - 3, rookCol - 2, rookCol - 1);
+					moveNumber, kColor, rookCol - 3, rookCol - 2, rookCol - 1);
 			else if (rookCol == 0)
 				checkQueensideCastle(board, p, moves,
 					moveNumber, kColor, rookCol + 3, rookCol + 2, rookCol + 1);
@@ -87,12 +87,12 @@ public class King extends AbstractPiece {
 				int moveNumber, PieceColor kColor, int kCol, int rCol) 
 	{
 		if (moveNumber == 0 && p instanceof Rook && p.getColor().equals(kColor) 
-				&& p.getMoveNumber() == 0) 
-			{
-				if (this.canMoveToEmptySpaceAt(board, kCol, 7) 
-						&& p.canMoveToEmptySpaceAt(board, rCol, 7))
-					moves.add(storeMoveTo(rCol, 7));
-			}
+			&& p.getMoveNumber() == 0) 
+		{
+			if (this.canMoveToEmptySpaceAt(board, kCol, 7) 
+					&& p.canMoveToEmptySpaceAt(board, rCol, 7))
+				moves.add(storeMoveTo(rCol, 7));
+		}
 	}
 	
 	/**
@@ -107,10 +107,10 @@ public class King extends AbstractPiece {
 	 * @param rCol2
 	 */
 	public void checkQueensideCastle(BoardSimulator board, Piece p, ArrayList<Integer[]> moves, 
-			int moveNumber, PieceColor kColor, int kCol, int rCol1, int rCol2)
+				int moveNumber, PieceColor kColor, int kCol, int rCol1, int rCol2)
 	{
 		if (moveNumber == 0 && p instanceof Rook && p.getColor().equals(kColor) 
-				&& p.getMoveNumber() == 0) 
+			&& p.getMoveNumber() == 0) 
 		{
 			if (this.canMoveToEmptySpaceAt(board, kCol, 7) 
 					&& p.canMoveToEmptySpaceAt(board, rCol1, 7)
