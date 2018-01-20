@@ -39,7 +39,6 @@ public abstract class AbstractPiece implements Piece {
 		DIAGONALLY_RIGHT_FORWARD, 
 		DIAGONALLY_LEFT_BACKWARD, 
 		DIAGONALLY_RIGHT_BACKWARD,
-		CASTLE;
 	}
 	
 	@Override

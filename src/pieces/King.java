@@ -3,7 +3,6 @@ package pieces;
 import java.util.ArrayList;
 import chessboard.BoardSimulator;
 import chessboard.Tile;
-import pieces.AbstractPiece.MoveDir;
 
 /** Represents a king */
 public class King extends AbstractPiece {
@@ -31,6 +30,8 @@ public class King extends AbstractPiece {
 		int col = this.getCol();
 		int row = this.getRow();
 		int moveNumber = this.getMoveNumber();
+		int rookCol;
+		PieceColor kColor = this.getColor();
 		
 		checkMove(MoveDir.LEFT, board, moves, col - 1, row);
 		checkMove(MoveDir.RIGHT, board, moves, col + 1, row);
@@ -42,57 +43,93 @@ public class King extends AbstractPiece {
 		checkMove(MoveDir.DIAGONALLY_LEFT_BACKWARD, board, moves, col - 1, row + 1);
 		checkMove(MoveDir.DIAGONALLY_RIGHT_BACKWARD, board, moves, col + 1, row + 1);
 		
-		// Checks if this king can castle king's side if it is white
 		if (this.isWhite() && !this.inCheck) {
-			Tile t = board.getTile(7, 7);
+			rookCol = 7;
+			Tile t = board.getTile(rookCol, 7);
 			Piece p = t.getPiece();
 			
-			if (moveNumber == 0 && p instanceof Rook && p.isWhite() && p.getMoveNumber() == 0) {
-				if (this.canMoveToEmptySpaceAt(board, 5, 7) && p.canMoveToEmptySpaceAt(board, 6, 7))
-					moves.add(storeMoveTo(6, 7));
-			}
+			checkKingsideCastle(board, p, moves, 
+				moveNumber, kColor, rookCol - 2, rookCol - 1);
 		}
-		
-		// Checks if this king can castle king's side if it is black 
+		 
 		if (!this.isWhite() && !this.inCheck) {
-			Tile t = board.getTile(0, 7);
+			rookCol = 0;
+			Tile t = board.getTile(rookCol, 7);
 			Piece p = t.getPiece();
 			
-			if (moveNumber == 0 && p instanceof Rook && !p.isWhite() && p.getMoveNumber() == 0) {
-				if (this.canMoveToEmptySpaceAt(board, 2, 7) && p.canMoveToEmptySpaceAt(board, 1, 7))
-					moves.add(storeMoveTo(1, 7));
-			}
+			checkKingsideCastle(board, p, moves, 
+				moveNumber, kColor, rookCol + 2, rookCol + 1);
 		}
 		
-		// Checks if this king can castle queen's side if it is white
 		if (this.isWhite() && !this.inCheck) {
-			Tile t = board.getTile(0, 7);
+			rookCol = 0;
+			Tile t = board.getTile(rookCol, 7);
 			Piece p = t.getPiece();
 			
-			if (moveNumber == 0 && p instanceof Rook && p.isWhite() && p.getMoveNumber() == 0) {
-				if (this.canMoveToEmptySpaceAt(board, 3, 7) && p.canMoveToEmptySpaceAt(board, 1, 7)
-						&& p.canMoveToEmptySpaceAt(board, 2, 7))
-					moves.add(storeMoveTo(2, 7));
-			}
+			checkQueensideCastle(board, p, moves,
+				moveNumber, kColor, rookCol + 3, rookCol + 2, rookCol + 1);
 		}
 		
-		// Checks if this king can castle queen's side if it is black
 		if (!this.isWhite() && !this.inCheck) {
-			Tile t = board.getTile(7, 7);
+			rookCol = 7;
+			Tile t = board.getTile(rookCol, 7);
 			Piece p = t.getPiece();
 			
-			if (moveNumber == 0 && p instanceof Rook && !p.isWhite() && p.getMoveNumber() == 0) {
-				if (this.canMoveToEmptySpaceAt(board, 4, 7) && p.canMoveToEmptySpaceAt(board, 5, 7)
-						&& p.canMoveToEmptySpaceAt(board, 6, 7))
-					moves.add(storeMoveTo(5, 7));
-			}
+			checkQueensideCastle(board, p, moves, 
+				moveNumber, kColor, rookCol - 3, rookCol - 2, rookCol - 1);
 		}
 		
 		return moves;
 	}
 	
+	/**
+	 * Insert comment
+	 * @param board
+	 * @param p
+	 * @param moves
+	 * @param moveNumber
+	 * @param kColor
+	 * @param kCol
+	 * @param rCol
+	 */
+	public void checkKingsideCastle(BoardSimulator board, Piece p, ArrayList<Integer[]> moves, 
+				int moveNumber, PieceColor kColor, int kCol, int rCol) 
+	{
+		if (moveNumber == 0 && p instanceof Rook && p.getColor().equals(kColor) 
+				&& p.getMoveNumber() == 0) 
+			{
+				if (this.canMoveToEmptySpaceAt(board, kCol, 7) 
+						&& p.canMoveToEmptySpaceAt(board, rCol, 7))
+					moves.add(storeMoveTo(rCol, 7));
+			}
+	}
+	
+	/**
+	 * Insert comment
+	 * @param board
+	 * @param p
+	 * @param moves
+	 * @param moveNumber
+	 * @param kColor
+	 * @param kCol
+	 * @param rCol1
+	 * @param rCol2
+	 */
+	public void checkQueensideCastle(BoardSimulator board, Piece p, ArrayList<Integer[]> moves, 
+			int moveNumber, PieceColor kColor, int kCol, int rCol1, int rCol2)
+	{
+		if (moveNumber == 0 && p instanceof Rook && p.getColor().equals(kColor) 
+				&& p.getMoveNumber() == 0) 
+		{
+			if (this.canMoveToEmptySpaceAt(board, kCol, 7) 
+					&& p.canMoveToEmptySpaceAt(board, rCol1, 7)
+					&& p.canMoveToEmptySpaceAt(board, rCol2, 7))
+				moves.add(storeMoveTo(rCol1, 7));
+		}
+	}
+	
 	/** 
-	 * Checks if this king castled; 
+	 * Checks if this king castled when it moves for the first time; 
 	 * if true, then the appropriate rook is moved to its new position
 	 * @param prevTile
 	 * 		The previous tile this king was on
@@ -107,16 +144,16 @@ public class King extends AbstractPiece {
 		
 		if (this.isWhite()) {
 			if (prevCol == 4 && prevRow == 7 && currCol == 6 && currRow == 7)
-				moveAppropriateRook(this.getBoard(), 7, 5);
+				moveAppropriateRook(this.getBoard(), 7, currCol - 1);
 			else if (prevCol == 4 && prevRow == 7 && currCol == 2 && currRow == 7)
-				moveAppropriateRook(this.getBoard(), 0, 3);
+				moveAppropriateRook(this.getBoard(), 0, currCol + 1);
 			else { this.canCastle = false; }
 		}
 		else {
 			if (prevCol == 3 && prevRow == 7 && currCol == 1 && currRow == 7)
-				moveAppropriateRook(this.getBoard(), 0, 2);
+				moveAppropriateRook(this.getBoard(), 0, currCol + 1);
 			else if (prevCol == 3 && prevRow == 7 && currCol == 5 && currRow == 7)
-				moveAppropriateRook(this.getBoard(), 7, 4);
+				moveAppropriateRook(this.getBoard(), 7, currCol - 1);
 			else { this.canCastle = false; }
 		}
 	}
@@ -142,12 +179,16 @@ public class King extends AbstractPiece {
 		}
 	}
 	
+	/**
+	 * Assigns a boolean value to the Check state of this king
+	 * @param inCheck
+	 * 		true if this king is in Check
+	 */
+	public void setCheckState(boolean inCheck) { this.inCheck = inCheck; }
+	
 	/** @return true if this king can still castle */
 	public boolean canCastle() { return canCastle; }
 	
 	/** @return true if this king is already castled */
 	public boolean isAlreadyCastled() { return isAlreadyCastled; }
-	
-	/** Insert comment */
-	public void setCheckState(boolean inCheck) { this.inCheck = inCheck; }
 }
