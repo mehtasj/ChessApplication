@@ -26,12 +26,17 @@ public class Pawn extends AbstractPiece {
 		if (this.canMoveToEmptySpaceAt(board, col, row - 1))
 			moves.add(storeMoveTo(col, row - 1));
 		
-		if (this.canCaptureAt(board, col + 1, row - 1))
-			moves.add(storeMoveTo(col + 1, row - 1));
-		
-		if (this.canCaptureAt(board, col - 1, row - 1))
-			moves.add(storeMoveTo(col - 1, row - 1));
+		checkMove(MoveDir.DIAGONALLY_LEFT_FORWARD, board, moves, col - 1, row - 1);
+		checkMove(MoveDir.DIAGONALLY_RIGHT_FORWARD, board, moves, col + 1, row - 1);
 		
 		return moves;
+	}
+	
+	@Override
+	public void checkMove(MoveDir dir, BoardSimulator board,
+				ArrayList<Integer[]> moves, int c, int r) 
+	{
+		if (this.canCaptureAt(board, c, r))
+			moves.add(storeMoveTo(c, r));
 	}
 }

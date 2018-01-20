@@ -2,6 +2,7 @@ package pieces;
 
 import java.util.ArrayList;
 import chessboard.*;
+import pieces.AbstractPiece.MoveDir;
 
 /** Represents a piece on the chess board */
 public interface Piece {

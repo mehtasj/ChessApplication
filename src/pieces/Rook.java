@@ -21,25 +21,25 @@ public class Rook extends AbstractPiece {
 		
 		for (int c = col - 1; c >= 0; c--) {
 			keepChecking = checkMoveAndIfMoreEmptySpace
-					(MoveDir.LEFT, board, moves, c, row);
+				(MoveDir.LEFT, board, moves, c, row);
 			if (!keepChecking) break;
 		}
 		
 		for (int c = col + 1; c <= 7; c++) {
 			keepChecking = checkMoveAndIfMoreEmptySpace
-					(MoveDir.RIGHT, board, moves, c, row);
+				(MoveDir.RIGHT, board, moves, c, row);
 			if (!keepChecking) break;
 		}
 		
 		for (int r = row - 1; r >= 0; r--) {
 			keepChecking = checkMoveAndIfMoreEmptySpace
-					(MoveDir.FORWARD, board, moves, col, r);
+				(MoveDir.FORWARD, board, moves, col, r);
 			if (!keepChecking) break;
 		}
 		
 		for (int r = row + 1; r <= 7; r++) {
 			keepChecking = checkMoveAndIfMoreEmptySpace
-					(MoveDir.BACKWARD, board, moves, col, r);
+				(MoveDir.BACKWARD, board, moves, col, r);
 			if (!keepChecking) break;
 		}
 		
