@@ -23,28 +23,32 @@ public class Bishop extends AbstractPiece {
 		rowTracker = row;
 		for (int c = col - 1; c >= 0; c--) {
 			rowTracker -= 1;
-			keepChecking = checkMove(MoveDir.DIAGONALLY_LEFT, board, moves, c, rowTracker);
+			keepChecking = checkMoveAndIfMoreEmptySpace
+				(MoveDir.DIAGONALLY_LEFT_FORWARD, board, moves, c, rowTracker);
 			if (!keepChecking) break;
 		}
 		
 		rowTracker = row;
 		for (int c = col - 1; c >= 0; c--) {
 			rowTracker += 1;
-			keepChecking = checkMove(MoveDir.DIAGONALLY_LEFT, board, moves, c, rowTracker);	
+			keepChecking = checkMoveAndIfMoreEmptySpace
+				(MoveDir.DIAGONALLY_LEFT_BACKWARD, board, moves, c, rowTracker);	
 			if (!keepChecking) break;
 		}
 		
 		rowTracker = row;
 		for (int c = col + 1; c <= 7; c++) {
 			rowTracker -= 1;
-			keepChecking = checkMove(MoveDir.DIAGONALLY_RIGHT, board, moves, c, rowTracker);
+			keepChecking = checkMoveAndIfMoreEmptySpace
+				(MoveDir.DIAGONALLY_RIGHT_FORWARD, board, moves, c, rowTracker);
 			if (!keepChecking) break;
 		}
 		
 		rowTracker = row;
 		for (int c = col + 1; c <= 7; c++) {
 			rowTracker += 1;
-			keepChecking = checkMove(MoveDir.DIAGONALLY_RIGHT, board, moves, c, rowTracker);
+			keepChecking = checkMoveAndIfMoreEmptySpace
+				(MoveDir.DIAGONALLY_RIGHT_BACKWARD, board, moves, c, rowTracker);
 			if (!keepChecking) break;
 		}
 		

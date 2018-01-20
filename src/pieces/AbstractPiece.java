@@ -32,7 +32,15 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	/** Insert comment */
-	public enum MoveDir { LEFT, RIGHT, FORWARD, BACKWARD, DIAGONALLY_LEFT, DIAGONALLY_RIGHT; }
+	public enum MoveDir { 
+		LEFT, RIGHT, 
+		FORWARD, BACKWARD, 
+		DIAGONALLY_LEFT_FORWARD, 
+		DIAGONALLY_RIGHT_FORWARD, 
+		DIAGONALLY_LEFT_BACKWARD, 
+		DIAGONALLY_RIGHT_BACKWARD,
+		CASTLE;
+	}
 	
 	@Override
 	public ArrayList<Integer[]> getRefinedMoves() {
@@ -124,9 +132,9 @@ public abstract class AbstractPiece implements Piece {
 	 * @param moves
 	 * @param c
 	 * @param r
-	 * @return true if tile at (c, r) is empty (can continue to check tiles on that diagonal)
+	 * @return true if tile at (c, r) is empty (continue to check tiles in that direction)
 	 */
-	public boolean checkMove(MoveDir dir, BoardSimulator board, 
+	public boolean checkMoveAndIfMoreEmptySpace(MoveDir dir, BoardSimulator board, 
 				   ArrayList<Integer[]> moves, int c, int r) 
 	{
 		if (this.isBlockedByOwnColorAt(board, c, r))
@@ -138,6 +146,21 @@ public abstract class AbstractPiece implements Piece {
 		else if (this.canMoveToEmptySpaceAt(board, c, r))
 			moves.add(storeMoveTo(c, r));
 		return true;
+	}
+	
+	/**
+	 * Insert comment
+	 * @param dir
+	 * @param board
+	 * @param moves
+	 * @param c
+	 * @param r
+	 */
+	public void checkMove(MoveDir dir, BoardSimulator board,
+				ArrayList<Integer[]> moves, int c, int r) 
+	{
+		if (this.canMoveToEmptySpaceAt(board, c, r) || this.canCaptureAt(board, c, r))
+			moves.add(storeMoveTo(c, r));
 	}
 	
 	@Override

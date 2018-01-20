@@ -3,6 +3,7 @@ package pieces;
 import java.util.ArrayList;
 import chessboard.BoardSimulator;
 import chessboard.Tile;
+import pieces.AbstractPiece.MoveDir;
 
 /** Represents a king */
 public class King extends AbstractPiece {
@@ -31,37 +32,15 @@ public class King extends AbstractPiece {
 		int row = this.getRow();
 		int moveNumber = this.getMoveNumber();
 		
-		// Checks if this king can move to / capture at one space ahead of it
-		if (this.canMoveToEmptySpaceAt(board, col, row - 1) || this.canCaptureAt(board, col, row - 1))
-			moves.add(storeMoveTo(col, row - 1));
+		checkMove(MoveDir.LEFT, board, moves, col - 1, row);
+		checkMove(MoveDir.RIGHT, board, moves, col + 1, row);
+		checkMove(MoveDir.FORWARD, board, moves, col, row - 1);
+		checkMove(MoveDir.BACKWARD, board, moves, col, row + 1);
 		
-		// Checks if this king can move to / capture at one space behind it
-		if (this.canMoveToEmptySpaceAt(board, col, row + 1) || this.canCaptureAt(board, col, row + 1))
-			moves.add(storeMoveTo(col, row + 1));
-		
-		// Checks if this king can move to / capture at one space to its right
-		if (this.canMoveToEmptySpaceAt(board, col + 1, row) || this.canCaptureAt(board, col + 1, row))
-			moves.add(storeMoveTo(col + 1, row));
-		
-		// Checks if this king can move to / capture at one space to its left
-		if (this.canMoveToEmptySpaceAt(board, col - 1, row) || this.canCaptureAt(board, col - 1, row))
-			moves.add(storeMoveTo(col - 1, row));
-		
-		// Checks if this king can move to / capture at one space diagonally right and above it
-		if (this.canMoveToEmptySpaceAt(board, col + 1, row - 1) || this.canCaptureAt(board, col + 1, row - 1))
-			moves.add(storeMoveTo(col + 1, row - 1));
-		
-		// Checks if this king can move to / capture at one space diagonally left and above it
-		if (this.canMoveToEmptySpaceAt(board, col - 1, row - 1) || this.canCaptureAt(board, col - 1, row - 1))
-			moves.add(storeMoveTo(col - 1, row - 1));
-		
-		// Checks if this king can move to / capture at one space diagonally right and below it
-		if (this.canMoveToEmptySpaceAt(board, col + 1, row + 1) || this.canCaptureAt(board, col + 1, row + 1))
-			moves.add(storeMoveTo(col + 1, row + 1));
-				
-		// Checks if this king can move to / capture at one space diagonally left and below it
-		if (this.canMoveToEmptySpaceAt(board, col - 1, row + 1) || this.canCaptureAt(board, col - 1, row + 1))
-			moves.add(storeMoveTo(col - 1, row + 1));
+		checkMove(MoveDir.DIAGONALLY_LEFT_FORWARD, board, moves, col - 1, row - 1);
+		checkMove(MoveDir.DIAGONALLY_RIGHT_FORWARD, board, moves, col + 1, row - 1);
+		checkMove(MoveDir.DIAGONALLY_LEFT_BACKWARD, board, moves, col - 1, row + 1);
+		checkMove(MoveDir.DIAGONALLY_RIGHT_BACKWARD, board, moves, col + 1, row + 1);
 		
 		// Checks if this king can castle king's side if it is white
 		if (this.isWhite() && !this.inCheck) {
@@ -154,6 +133,7 @@ public class King extends AbstractPiece {
 	public void moveAppropriateRook(BoardSimulator board, int oldCol, int newCol) {
 		Tile t = board.getTile(oldCol, 7);
 		Piece p = t.getPiece();
+		
 		if (p instanceof Rook && p.getMoveNumber() == 0) {
 			p.moveTo(board.getTile(newCol, 7));
 			p.incrementMoveNumber();
@@ -168,5 +148,6 @@ public class King extends AbstractPiece {
 	/** @return true if this king is already castled */
 	public boolean isAlreadyCastled() { return isAlreadyCastled; }
 	
+	/** Insert comment */
 	public void setCheckState(boolean inCheck) { this.inCheck = inCheck; }
 }

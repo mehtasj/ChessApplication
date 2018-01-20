@@ -10,9 +10,6 @@ public class Knight extends AbstractPiece {
 	public Knight(BoardSimulator bSim, PieceColor color) {
 		super(bSim, color);
 	}
-	
-	/** Insert comment */
-	public enum MoveDir { FORWARD, BACKWARD, LEFT, RIGHT; }
 
 	@Override
 	public ArrayList<Integer[]> getValidMoves() {
@@ -34,20 +31,5 @@ public class Knight extends AbstractPiece {
 		checkMove(MoveDir.BACKWARD, board, moves, col - 1, row + 2);
 		
 		return moves;
-	}
-	
-	/**
-	 * Insert comment
-	 * @param dir
-	 * @param board
-	 * @param moves
-	 * @param c
-	 * @param r
-	 */
-	public void checkMove(MoveDir dir, BoardSimulator board,
-				ArrayList<Integer[]> moves, int c, int r) 
-	{
-		if (this.canMoveToEmptySpaceAt(board, c, r) || this.canCaptureAt(board, c, r))
-			moves.add(storeMoveTo(c, r));
 	}
 }
