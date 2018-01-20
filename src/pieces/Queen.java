@@ -3,6 +3,7 @@ package pieces;
 import java.util.ArrayList;
 import chessboard.BoardSimulator;
 import chessboard.Tile;
+import pieces.AbstractPiece.MoveDir;
 
 /** Represents a queen */
 public class Queen extends AbstractPiece {
@@ -19,113 +20,54 @@ public class Queen extends AbstractPiece {
 		int col = this.getCol();
 		int row = this.getRow();
 		int rowTracker;
+		boolean keepChecking = true;
 		
-		// Movements equivalent to those of a rook
+		for (int c = col - 1; c >= 0; c--) {
+			keepChecking = checkMove(MoveDir.LEFT, board, moves, c, row);
+			if (!keepChecking) break;
+		}
 		
-		// Checks if this queen can move to / capture at any space ahead of it
+		for (int c = col + 1; c <= 7; c++) {
+			keepChecking = checkMove(MoveDir.RIGHT, board, moves, c, row);
+			if (!keepChecking) break;
+		}
+		
 		for (int r = row - 1; r >= 0; r--) {
-			if (this.isBlockedByOwnColorAt(board, col, r))
-				break;
-			else if (this.canCaptureAt(board, col, r)) {
-				moves.add(storeMoveTo(col, r));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, col, r))
-				moves.add(storeMoveTo(col, r));
+			keepChecking = checkMove(MoveDir.FORWARD, board, moves, col, r);
+			if (!keepChecking) break;
 		}
 		
-		// Checks if this queen can move to / capture at any space behind it
 		for (int r = row + 1; r <= 7; r++) {
-			if (this.isBlockedByOwnColorAt(board, col, r))
-				break;
-			else if (this.canCaptureAt(board, col, r)) {
-				moves.add(storeMoveTo(col, r));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, col, r))
-				moves.add(storeMoveTo(col, r));
+			keepChecking = checkMove(MoveDir.BACKWARD, board, moves, col, r);
+			if (!keepChecking) break;
 		}
 		
-		// Checks if this queen can move to / capture at any space to its right
-		for (int c = col + 1; c <= 7; c++) {
-			if (this.isBlockedByOwnColorAt(board, c, row))
-				break;
-			else if (this.canCaptureAt(board, c, row)) {
-				moves.add(storeMoveTo(c, row));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, c, row))
-				moves.add(storeMoveTo(c, row));
-		}
-		
-		// Checks if this queen can move to / capture at any space to its left
-		for (int c = col - 1; c >= 0; c--) {
-			if (this.isBlockedByOwnColorAt(board, c, row))
-				break;
-			else if (this.canCaptureAt(board, c, row)) {
-				moves.add(storeMoveTo(c, row));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, c, row))
-				moves.add(storeMoveTo(c, row));
-		}
-		
-		// Movements equivalent to those of a bishop
-		
-		// Checks if this queen can move to / capture at any space diagonally right and above it
-		rowTracker = row;
-		for (int c = col + 1; c <= 7; c++) {
-			rowTracker -= 1;
-			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
-				break;
-			else if (this.canCaptureAt(board, c, rowTracker)) {
-				moves.add(storeMoveTo(c, rowTracker));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, c, rowTracker))
-				moves.add(storeMoveTo(c, rowTracker));	
-		}
-		
-		// Checks if this queen can move to / capture at any space diagonally left and above it
 		rowTracker = row;
 		for (int c = col - 1; c >= 0; c--) {
 			rowTracker -= 1;
-			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
-				break;
-			else if (this.canCaptureAt(board, c, rowTracker)) {
-				moves.add(storeMoveTo(c, rowTracker));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, c, rowTracker))
-				moves.add(storeMoveTo(c, rowTracker));	
+			keepChecking = checkMove(MoveDir.DIAGONALLY_LEFT, board, moves, c, rowTracker);
+			if (!keepChecking) break;
 		}
 		
-		// Checks if this queen can move to / capture at any space diagonally right and below it
-		rowTracker = row;
-		for (int c = col + 1; c <= 7; c++) {
-			rowTracker += 1;
-			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
-				break;
-			else if (this.canCaptureAt(board, c, rowTracker)) {
-				moves.add(storeMoveTo(c, rowTracker));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, c, rowTracker))
-				moves.add(storeMoveTo(c, rowTracker));	
-		}
-		
-		// Checks if this queen can move to / capture at any space diagonally left and below it
 		rowTracker = row;
 		for (int c = col - 1; c >= 0; c--) {
 			rowTracker += 1;
-			if (this.isBlockedByOwnColorAt(board, c, rowTracker))
-				break;
-			else if (this.canCaptureAt(board, c, rowTracker)) {
-				moves.add(storeMoveTo(c, rowTracker));
-				break;
-			}
-			else if (this.canMoveToEmptySpaceAt(board, c, rowTracker))
-				moves.add(storeMoveTo(c, rowTracker));	
+			keepChecking = checkMove(MoveDir.DIAGONALLY_LEFT, board, moves, c, rowTracker);	
+			if (!keepChecking) break;
+		}
+		
+		rowTracker = row;
+		for (int c = col + 1; c <= 7; c++) {
+			rowTracker -= 1;
+			keepChecking = checkMove(MoveDir.DIAGONALLY_RIGHT, board, moves, c, rowTracker);
+			if (!keepChecking) break;
+		}
+		
+		rowTracker = row;
+		for (int c = col + 1; c <= 7; c++) {
+			rowTracker += 1;
+			keepChecking = checkMove(MoveDir.DIAGONALLY_RIGHT, board, moves, c, rowTracker);
+			if (!keepChecking) break;
 		}
 		
 		return moves;
