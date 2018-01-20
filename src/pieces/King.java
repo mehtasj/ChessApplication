@@ -8,11 +8,12 @@ import chessboard.Tile;
 public class King extends AbstractPiece {
 
 	/** 
-	 * Respectively keeps track of whether this king can castle 
-	 * and if it has already castled
+	 * Respectively keeps track of whether this king 
+	 * can castle and if it has already castled
 	 */
 	private boolean canCastle, isAlreadyCastled;
 	
+	/** Keeps track of whether this king is in Check */
 	private boolean inCheck;
 	
 	/** Constructs a king */
@@ -43,40 +44,30 @@ public class King extends AbstractPiece {
 		checkMove(MoveDir.DIAGONALLY_LEFT_BACKWARD, board, moves, col - 1, row + 1);
 		checkMove(MoveDir.DIAGONALLY_RIGHT_BACKWARD, board, moves, col + 1, row + 1);
 		
-		if (this.isWhite() && !this.inCheck) {
-			rookCol = 7;
+		if (!this.inCheck) {
+			rookCol = (this.isWhite()) ? 7 : 0;
 			Tile t = board.getTile(rookCol, 7);
 			Piece p = t.getPiece();
 			
-			checkKingsideCastle(board, p, moves, 
-				moveNumber, kColor, rookCol - 2, rookCol - 1);
-		}
-		 
-		if (!this.isWhite() && !this.inCheck) {
-			rookCol = 0;
-			Tile t = board.getTile(rookCol, 7);
-			Piece p = t.getPiece();
-			
-			checkKingsideCastle(board, p, moves, 
-				moveNumber, kColor, rookCol + 2, rookCol + 1);
+			if (rookCol == 7) 
+				checkKingsideCastle(board, p, moves, 
+						moveNumber, kColor, rookCol - 2, rookCol - 1);
+			else if (rookCol == 0)
+				checkKingsideCastle(board, p, moves, 
+						moveNumber, kColor, rookCol + 2, rookCol + 1);
 		}
 		
-		if (this.isWhite() && !this.inCheck) {
-			rookCol = 0;
+		if (!this.inCheck) {
+			rookCol = (this.isWhite()) ? 0 : 7;
 			Tile t = board.getTile(rookCol, 7);
 			Piece p = t.getPiece();
 			
-			checkQueensideCastle(board, p, moves,
-				moveNumber, kColor, rookCol + 3, rookCol + 2, rookCol + 1);
-		}
-		
-		if (!this.isWhite() && !this.inCheck) {
-			rookCol = 7;
-			Tile t = board.getTile(rookCol, 7);
-			Piece p = t.getPiece();
-			
-			checkQueensideCastle(board, p, moves, 
-				moveNumber, kColor, rookCol - 3, rookCol - 2, rookCol - 1);
+			if (rookCol == 7) 
+				checkQueensideCastle(board, p, moves, 
+						moveNumber, kColor, rookCol - 3, rookCol - 2, rookCol - 1);
+			else if (rookCol == 0)
+				checkQueensideCastle(board, p, moves,
+					moveNumber, kColor, rookCol + 3, rookCol + 2, rookCol + 1);
 		}
 		
 		return moves;
