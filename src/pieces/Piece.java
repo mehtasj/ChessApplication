@@ -112,30 +112,30 @@ public interface Piece {
 	 */
 	public void setTile(Tile t);
 	
-	/** 
-	 *  Increments the number of times this piece has moved
-	 *  if it successfully moves to a new tile
-	 */
-	public void incrementMoveNumber();
-	
 	/**
 	 * Checks if this piece's color is white
 	 * @return true if this piece is white
 	 */
 	public boolean isWhite();
 	
-	/** @return The row this piece is currently in */
-	public int getRow();
-	
-	/** @return The column this piece is currently in */
-	public int getCol();
-	
-	/** @return The move number of this piece */
-	public int getMoveNumber();
+	/** 
+	 *  Increments the number of times this piece has moved
+	 *  if it successfully moves to a new tile
+	 */
+	public void incrementMoveNumber();
 	
 	/** @return The board this piece is on (parent) */
 	public BoardSimulator getBoard();
 	
 	/** @return The color of this piece */
 	public PieceColor getColor();
+	
+	/** @return The move number of this piece */
+	public int getMoveNumber();
+	
+	/** @return The column this piece is currently in */
+	public int getCol();
+	
+	/** @return The row this piece is currently in */
+	public int getRow();
 }

@@ -6,20 +6,23 @@ import chessboard.*;
 /** Contains common implementations among most or all pieces */ 
 public abstract class AbstractPiece implements Piece {
 
-	/** This piece's parent simulator (i.e. the board it is on) */
+	/** 
+	 * This piece's parent board simulator 
+	 * (i.e. the board it is on) 
+	 */
 	private BoardSimulator pSim;
 	
 	/** This piece's color */
 	private PieceColor pc;
 	
-	/** Keeps track of how many times this piece has successfully moved */
+	/** Keeps track of how many times this piece has moved */
 	private int moveNumber;
 	
 	/** This piece's column and row location */
 	private int col, row;
 	
 	/**
-	 * Constructs a piece with a board simulator parent and a color
+	 * Constructs a piece with a board parent and a color
 	 * @param bSim - the board this piece is on
 	 * @param color - the color of the piece (black or white)
 	 */
@@ -29,7 +32,10 @@ public abstract class AbstractPiece implements Piece {
 		this.moveNumber = 0;
 	}
 	
-	/** Identifiers for the types of moves different pieces can make */
+	/** 
+	 * Purely identifiers to understand the 
+	 * types of moves different pieces can make 
+	 */
 	public enum MoveDir { 
 		LEFT, RIGHT, 
 		FORWARD, BACKWARD, 
@@ -122,6 +128,15 @@ public abstract class AbstractPiece implements Piece {
 		}
 	}
 	
+	@Override
+	public void checkMove(MoveDir dir, BoardSimulator board,
+				ArrayList<Integer[]> moves, int c, int r) 
+	{
+		if (this.canMoveToEmptySpaceAt(board, c, r) 
+				|| this.canCaptureAt(board, c, r))
+			moves.add(storeMoveTo(c, r));
+	}
+	
 	/**
 	 * Insert comment
 	 * @param dir
@@ -143,28 +158,6 @@ public abstract class AbstractPiece implements Piece {
 		else if (this.canMoveToEmptySpaceAt(board, c, r))
 			moves.add(storeMoveTo(c, r));
 		return true;
-	}
-	
-	@Override
-	public void checkMove(MoveDir dir, BoardSimulator board,
-				ArrayList<Integer[]> moves, int c, int r) 
-	{
-		if (this.canMoveToEmptySpaceAt(board, c, r) || this.canCaptureAt(board, c, r))
-			moves.add(storeMoveTo(c, r));
-	}
-	
-	@Override
-	public void moveTo(Tile t) {
-		pSim.getTile(this.col, this.row).setPiece(null);
-		this.setTile(t);
-	}
-	
-	@Override
-	public Integer[] storeMoveTo(int c, int r) {
-		Integer[] coordinate = new Integer[2];
-		coordinate[0] = c; 
-		coordinate[1] = r;
-		return coordinate;
 	}
 	
 	@Override
@@ -207,6 +200,20 @@ public abstract class AbstractPiece implements Piece {
 				return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public Integer[] storeMoveTo(int c, int r) {
+		Integer[] coordinate = new Integer[2];
+		coordinate[0] = c; 
+		coordinate[1] = r;
+		return coordinate;
+	}
+	
+	@Override
+	public void moveTo(Tile t) {
+		pSim.getTile(this.col, this.row).setPiece(null);
+		this.setTile(t);
 	}
 	
 	@Override
