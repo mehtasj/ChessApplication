@@ -7,94 +7,59 @@ import pieces.AbstractPiece.MoveDir;
 /** Represents a piece on the chess board */
 public interface Piece {
 	
-	/** 
-	 * @return
-	 * 		a list of valid moves that this piece can make;
-	 * 		The ArrayList contains Integer arrays of length 2 
-	 * 		to represent a (col, row) coordinate;
-	 * 		Assumes the board can be flipped 
-	 */
+	/** @return a list of valid tile coordinates to which this piece can move */
 	public ArrayList<Integer[]> getValidMoves();
 	
 	/** 
-	 * @return
-	 * 		a subset of valid moves that this piece can make
-	 * 		The ArrayList contains Integer arrays of length 2 
-	 * 		to represent a (col, row) coordinate;
-	 * 		Takes into account if a usually valid move is 
-	 * 		invalid if the king is currently in Check or 
-	 * 		if it would be placed in Check (illegal move)
+	 * @return a revised list of valid tile coordinates to which this piece can move;
+	 * Removes moves that would both result in a Check against the current player's king
+	 * and that would fail to take the current player's king out of a Check
 	 */
 	public ArrayList<Integer[]> getRefinedMoves();
 	
 	/**
-	 * Calculates the refined moves for a specific piece
-	 * @param board
-	 * 		The board this piece is on
-	 * @param refinedMoves
-	 * 		The whole list of valid moves this piece can make;
-	 * 		Will potentially remove moves inside this method
-	 * @param currTile
-	 * 		The current tile this piece is on
-	 * @param oppositeColoredPieces
-	 * 		The pieces that differ in color from this piece
-	 * 		in order to check if any of them threaten this piece's king,
-	 * 		which would result in an illegal move
-	 * @param capturedPieces
-	 * 		The list of captured pieces of the opposite color from this piece;
-	 * 		Pieces will be placed into this list if this piece's valid move would capture
-	 * 		the piece; however, they will later be removed from the list to maintain a 
-	 * 		list of pieces that were actually captured
+	 * Calculates this piece's refined moves
+	 * @param board - the board this piece is on
+	 * @param refinedMoves - the initial list of all this piece's valid moves
+	 * @param currTile - this piece's current tile coordinate
+	 * @param opposingPieces - the pieces that have a different color than this piece
+	 * @param capturedPieces - the list of captured pieces that have a different color than this piece
 	 */
-	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, Tile currTile,
-			Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces);
+	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
+				Tile currTile, Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces);
 	
 	/**
-	 * Insert comment
-	 * @param dir
-	 * @param board
-	 * @param moves
-	 * @param c
-	 * @param r
+	 * Checks if a move to (c, r) is valid
+	 * @param dir - this piece's potential move direction
+	 * @param board - the board this piece is on
+	 * @param moves - this piece's list of valid moves
+	 * @param c - the column coordinate of the tile in question
+	 * @param r - the row coordinate of the tile in question
 	 */
 	public void checkMove(MoveDir dir, BoardSimulator board, 
 				ArrayList<Integer[]> moves, int c, int r);
 	
 	/** 
-	 * Checks if this piece can move to an empty tile
-	 * @param b 
-	 * 		The board this piece is on
-	 * @param c
-	 * 		The column coordinate
-	 * @param r
-	 * 		The row coordinate
-	 * @return
-	 * 		true if this piece can move to the specified tile
+	 * @param b - the board this piece is on
+	 * @param c - the column coordinate of the tile in question
+	 * @param r - the row coordinate of the tile in question
+	 * @return true if this piece can move to the empty tile
 	 */
 	public boolean canMoveToEmptySpaceAt(BoardSimulator b, int c, int r);
 	
 	/** 
-	 * Checks if this piece can capture at the specified tile
-	 * @param b
-	 * 		The board this piece is on
-	 * @param c
-	 * 		The column coordinate
-	 * @param r
-	 * 		The row coordinate
-	 * @return
-	 * 		true if this piece can capture at the specified tile
+	 * @param b - the board this piece is on
+	 * @param c - the column coordinate of the tile in question
+	 * @param r - The row coordinate of the tile in question
+	 * @return true if this piece can capture at the specified tile
 	 */
 	public boolean canCaptureAt(BoardSimulator b, int c, int r);
 	
 	/**
-	 * Stores a valid move coordinate inside an array
-	 * which will be added to a List of valid coordinates
-	 * @param c
-	 * 		The column coordinate
-	 * @param r
-	 * 		The row coordinate
-	 * @return 
-	 * 		an array with 2 elements: column and row in that order
+	 * Stores a valid move
+	 * @param c - the column coordinate
+	 * @param r - the row coordinate
+	 * @return an array representing the move to (c, r)
 	 */
 	public Integer[] storeMoveTo(int c, int r);
 	
@@ -102,40 +67,34 @@ public interface Piece {
 	 * Moves this piece to a new tile on the board
 	 * and removes it from its previous tile;
 	 * Requires that the move is valid
+	 * @param t - this piece's new tile
 	 */
 	public void moveTo(Tile t);
 	
 	/** 
-	 * Sets the tile of a piece on the board 
-	 * @param t
-	 * 		The tile on which to set this piece
+	 * Sets this piece's tile on the board 
+	 * @param t - the tile on which to set this piece
 	 */
 	public void setTile(Tile t);
 	
-	/**
-	 * Checks if this piece's color is white
-	 * @return true if this piece is white
-	 */
+	/** @return true if this piece is white */
 	public boolean isWhite();
 	
-	/** 
-	 *  Increments the number of times this piece has moved
-	 *  if it successfully moves to a new tile
-	 */
+	/** Adds 1 to this piece's current move number */
 	public void incrementMoveNumber();
 	
-	/** @return The board this piece is on (parent) */
+	/** @return the board this piece is on */
 	public BoardSimulator getBoard();
 	
-	/** @return The color of this piece */
+	/** @return this piece's color */
 	public PieceColor getColor();
 	
-	/** @return The move number of this piece */
+	/** @return this piece's move number */
 	public int getMoveNumber();
 	
-	/** @return The column this piece is currently in */
+	/** @return this piece's column coordinate */
 	public int getCol();
 	
-	/** @return The row this piece is currently in */
+	/** @return this piece's row coordinate */
 	public int getRow();
 }

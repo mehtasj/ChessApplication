@@ -6,25 +6,23 @@ import chessboard.*;
 /** Contains common implementations among most or all pieces */ 
 public abstract class AbstractPiece implements Piece {
 
-	/** 
-	 * This piece's parent board simulator 
-	 * (i.e. the board it is on) 
-	 */
+	/** This piece's board parent */
 	private BoardSimulator pSim;
 	
 	/** This piece's color */
 	private PieceColor pc;
 	
-	/** Keeps track of how many times this piece has moved */
+	/** The number of times this piece has moved */
 	private int moveNumber;
 	
-	/** This piece's column and row location */
+	/** This piece's column and row coordinates */
 	private int col, row;
 	
 	/**
-	 * Constructs a piece with a board parent and a color
+	 * Constructs a piece with a board parent and a color;
+	 * Initializes number of moves to 0
 	 * @param bSim - the board this piece is on
-	 * @param color - the color of the piece (black or white)
+	 * @param color - this piece's color (black or white)
 	 */
 	public AbstractPiece(BoardSimulator bSim, PieceColor color) {
 		this.pSim = bSim;
@@ -33,8 +31,8 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	/** 
-	 * Purely identifiers to understand the 
-	 * types of moves different pieces can make 
+	 * Labels to identify this piece's move direction;
+	 * Each piece moves differently
 	 */
 	public enum MoveDir { 
 		LEFT, RIGHT, 
@@ -138,13 +136,13 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	/**
-	 * Insert comment
-	 * @param dir
-	 * @param board
-	 * @param moves
-	 * @param c
-	 * @param r
-	 * @return true if tile at (c, r) is empty (continue to check tiles in that direction)
+	 * Checks if a move to (c, r) is valid
+	 * @param dir - this piece's potential move direction
+	 * @param board - the board this piece is on
+	 * @param moves - this piece's list of valid moves
+	 * @param c - the column coordinate of the tile in question
+	 * @param r - the row coordinate of the tile in question
+	 * @return true if the tile at (c, r) is empty (continue to check tiles in that direction)
 	 */
 	public boolean checkMoveAndIfMoreEmptySpace(MoveDir dir, BoardSimulator board, 
 				   ArrayList<Integer[]> moves, int c, int r) 
@@ -178,18 +176,11 @@ public abstract class AbstractPiece implements Piece {
 		return false;
 	}
 	
-	/** 
-	 * Checks if the specified tile contains a piece of the same
-	 * color as this piece, which would mean that this piece cannot move to 
-	 * that tile (used for all pieces except for pawn)
-	 * @param b
-	 * 		The board this piece is on
-	 * @param c
-	 * 		The column coordinate
-	 * @param r
-	 * 		The row coordinate
-	 * @return
-	 * 		true if the piece on the specified tile is the same color as this piece
+	/**
+	 * @param b - the board this piece is on
+	 * @param c - the column coordinate of the tile in question
+	 * @param r - the row coordinate of the tile in question
+	 * @return true if the piece at (c, r) is the same color as this piece (cannot move piece)
 	 */
 	public boolean isBlockedByOwnColorAt(BoardSimulator b, int c, int r) {
 		if (r >= 0 && r <= 7 && c >= 0 && c <= 7 
