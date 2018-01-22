@@ -10,16 +10,10 @@ public class BoardSimulator {
 	/** Represents an n x n board of tiles */
 	private Tile[][] board;
 	
-	/** 
-	 * Stores the 16 white and 16 black pieces in their 
-	 * respective colored piece arrays 
-	 */
-	private Piece[] whitePieces, blackPieces;
+	/** Stores the white and black pieces in their respective lists */
+	private ArrayList<Piece> whitePieces, blackPieces;
 	
-	/**
-	 * Stores the captured white and black pieces in their
-	 * respective colored lists
-	 */
+	/** Stores the captured white and black pieces in their respective lists */
 	private ArrayList<Piece> captWhitePieces, captBlackPieces;
 	
 	/** Constructs a simulator of a chess board */
@@ -101,12 +95,24 @@ public class BoardSimulator {
 		wPawn5.setTile(board[6][4]); wPawn6.setTile(board[6][5]);
 		wPawn7.setTile(board[6][6]); wPawn8.setTile(board[6][7]);
 		
-		whitePieces = new Piece[16];
+		whitePieces = new ArrayList<>();
 		
-		whitePieces[0] = wPawn1; whitePieces[1] = wPawn2; whitePieces[2] = wPawn3; whitePieces[3] = wPawn4;
-		whitePieces[4] = wPawn5; whitePieces[5] = wPawn6; whitePieces[6] = wPawn7; whitePieces[7] = wPawn8;
-		whitePieces[8] = wRook1; whitePieces[9] = wRook2; whitePieces[10] = wKnight1; whitePieces[11] = wKnight2;
-		whitePieces[12] = wBishop1; whitePieces[13] = wBishop2; whitePieces[14] = wQueen; whitePieces[15] = wKing;
+		whitePieces.add(wKing); 
+		whitePieces.add(wPawn1); 
+		whitePieces.add(wPawn2);
+		whitePieces.add(wPawn3);
+		whitePieces.add(wPawn4);
+		whitePieces.add(wPawn5);
+		whitePieces.add(wPawn6);
+		whitePieces.add(wPawn7);
+		whitePieces.add(wPawn8);
+		whitePieces.add(wRook1);
+		whitePieces.add(wRook2);
+		whitePieces.add(wKnight1);
+		whitePieces.add(wKnight2);
+		whitePieces.add(wBishop1);
+		whitePieces.add(wBishop2);
+		whitePieces.add(wQueen);
 	}
 	
 	/** Initializing all black pieces and setting their default tile positions */
@@ -137,22 +143,34 @@ public class BoardSimulator {
 		bPawn5.setTile(board[1][4]); bPawn6.setTile(board[1][5]);
 		bPawn7.setTile(board[1][6]); bPawn8.setTile(board[1][7]);
 		
-		blackPieces = new Piece[16];
+		blackPieces = new ArrayList<>();
 		
-		blackPieces[0] = bPawn1; blackPieces[1] = bPawn2; blackPieces[2] = bPawn3; blackPieces[3] = bPawn4;
-		blackPieces[4] = bPawn5; blackPieces[5] = bPawn6; blackPieces[6] = bPawn7; blackPieces[7] = bPawn8;
-		blackPieces[8] = bRook1; blackPieces[9] = bRook2; blackPieces[10] = bKnight1; blackPieces[11] = bKnight2;
-		blackPieces[12] = bBishop1; blackPieces[13] = bBishop2; blackPieces[14] = bQueen; blackPieces[15] = bKing;
+		blackPieces.add(bKing); 
+		blackPieces.add(bPawn1); 
+		blackPieces.add(bPawn2);
+		blackPieces.add(bPawn3);
+		blackPieces.add(bPawn4);
+		blackPieces.add(bPawn5);
+		blackPieces.add(bPawn6);
+		blackPieces.add(bPawn7);
+		blackPieces.add(bPawn8);
+		blackPieces.add(bRook1);
+		blackPieces.add(bRook2);
+		blackPieces.add(bKnight1);
+		blackPieces.add(bKnight2);
+		blackPieces.add(bBishop1);
+		blackPieces.add(bBishop2);
+		blackPieces.add(bQueen);
 	}
 	
 	/** @return the board of tiles */
 	public Tile[][] getBoard() { return board; }
 	
 	/** @return the white pieces */
-	public Piece[] getWhitePieces() { return whitePieces; }
+	public ArrayList<Piece> getWhitePieces() { return whitePieces; }
 	
 	/** @return the black pieces */
-	public Piece[] getBlackPieces() { return blackPieces; }
+	public ArrayList<Piece> getBlackPieces() { return blackPieces; }
 	
 	/** @return the captured white pieces */
 	public ArrayList<Piece> getCaptWhitePieces() { return captWhitePieces; }

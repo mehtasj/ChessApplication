@@ -51,12 +51,12 @@ public abstract class AbstractPiece implements Piece {
 		int row = this.getRow();
 		Tile currTile = board.getTile(col, row);
 		
-		Piece[] opposingPieces = (this.isWhite()) ? 
-			board.getBlackPieces() :
+		ArrayList<Piece> opposingPieces = (this.isWhite()) ? 
+			board.getBlackPieces():
 			board.getWhitePieces();
 				
 		ArrayList<Piece> capturedPieces = (this.isWhite()) ? 
-			board.getCaptBlackPieces() : 
+			board.getCaptBlackPieces(): 
 			board.getCaptWhitePieces();
 			
 		calculateRefinedMoves(board, refinedMoves, 
@@ -67,42 +67,32 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override
 	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
-				Tile currTile, Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces) 
+				Tile currTile, ArrayList<Piece> opposingPieces, ArrayList<Piece> capturedPieces) 
 	{
 		for (int i = refinedMoves.size() - 1; i >= 0; i--) {
 			int destCol = refinedMoves.get(i)[0];
 			int destRow = refinedMoves.get(i)[1];
 			Tile destTile = board.getTile(destCol, destRow);
 			Piece destTilePiece = destTile.getPiece();
+
 			currTile.setPiece(null);
 			destTile.setPiece(this);
 			capturedPieces.add(destTilePiece);
 			boolean checkedMove = false;
 			
-			Piece king;
-			// make a return method
-			if (this.isWhite()) { king = board.getWhitePieces()[15]; }
-			else { king = board.getBlackPieces()[15]; }
-			
-			// calculate king's row and col values
-			int kingCol, kingRow;
-			if (this instanceof King) { kingCol = destCol; kingRow = destRow; }
-			else { kingCol = king.getCol(); kingRow = king.getRow(); }
+			Piece king = (this.isWhite()) ? 
+				board.getWhitePieces().get(0):
+				board.getBlackPieces().get(0);
+				
+			int kingCol = (this instanceof King) ? destCol : king.getCol();
+			int kingRow = (this instanceof King) ? destRow : king.getRow();
 					
-			for (Piece p : oppositeColoredPieces) {
+			for (Piece p : opposingPieces) {
 				if (p != null && !capturedPieces.contains(p)) {
 					ArrayList<Integer[]> pMoves = p.getValidMoves();
-					
-					// corrections for pawn moves because the board was not flipped
-					// separate method
-					if (p instanceof Pawn) {
-						pMoves = new ArrayList<>();
-						if (p.canCaptureAt(board, p.getCol() + 1, p.getRow() + 1))
-							pMoves.add(this.storeMoveTo(p.getCol() + 1, p.getRow() + 1));
-						if (p.canCaptureAt(board, p.getCol() - 1, p.getRow() + 1))
-							pMoves.add(this.storeMoveTo(p.getCol() - 1, p.getRow() + 1));
-					}
-							
+
+					temporarilyReviseValidMovesIfPawn(board, pMoves, p);
+						
 					// separate method
 					for (int j = 0; j < pMoves.size(); j++) { 
 						int pDestCol = pMoves.get(j)[0];
@@ -118,11 +108,33 @@ public abstract class AbstractPiece implements Piece {
 						}
 					}
 				}
-				if (checkedMove) { break; }
+				if (checkedMove) break;
 			}
 			currTile.setPiece(this);
 			destTile.setPiece(destTilePiece);
 			capturedPieces.remove(destTilePiece);
+		}
+	}
+	
+	/**
+	 * Insert comment (due to flipping)
+	 * @param board
+	 * @param moves
+	 * @param p
+	 * @param c
+	 * @param r
+	 */
+	public void temporarilyReviseValidMovesIfPawn(BoardSimulator board, 
+				ArrayList<Integer[]> moves, Piece p) 
+	{
+		if (p instanceof Pawn) {
+			moves = new ArrayList<>();
+			
+			if (p.canCaptureAt(board, p.getCol() + 1, p.getRow() + 1)) 
+				moves.add(this.storeMoveTo(p.getCol() + 1, p.getRow() + 1));
+			
+			if (p.canCaptureAt(board, p.getCol() - 1, p.getRow() + 1))
+				moves.add(this.storeMoveTo(p.getCol() - 1, p.getRow() + 1));
 		}
 	}
 	

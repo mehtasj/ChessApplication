@@ -26,7 +26,7 @@ public interface Piece {
 	 * @param capturedPieces - the list of captured pieces that have a different color than this piece
 	 */
 	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
-				Tile currTile, Piece[] oppositeColoredPieces, ArrayList<Piece> capturedPieces);
+				Tile currTile, ArrayList<Piece> opposingPieces, ArrayList<Piece> capturedPieces);
 	
 	/**
 	 * Checks if a move to (c, r) is valid

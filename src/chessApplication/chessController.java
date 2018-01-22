@@ -160,12 +160,12 @@ public class chessController {
 							// make method
 							if (textPlayer1Check.getText().equals("CHECK!")) { 
 								textPlayer1Check.setText("");
-								King king = (King) model.getWhitePieces()[15];
+								King king = (King) model.getWhitePieces().get(0);
 								king.setCheckState(false);
 							}
 							if (textPlayer2Check.getText().equals("CHECK!")) { 
 								textPlayer2Check.setText(""); 
-								King king = (King) model.getBlackPieces()[15];
+								King king = (King) model.getBlackPieces().get(0);
 								king.setCheckState(false);
 							}
 							
@@ -273,7 +273,7 @@ public class chessController {
 	 * 		true if there are no more possible moves for pieces with the threatened
 	 * 		king's color (a.k.a CHECKMATE)
 	 */
-	public boolean isCheckmate(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
+	public boolean isCheckmate(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
 		int possibleMoves = 0;
 		
 		for (Piece p : coloredPieces) {
@@ -296,7 +296,7 @@ public class chessController {
 	 * @param captColoredPieces
 	 * 		The pieces that were captured of the same color as the clicked piece
 	 */
-	public void checkIfCheck(Piece[] coloredPieces, ArrayList<Piece> captColoredPieces) {
+	public void checkIfCheck(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
 		boolean checkFound = false;
 		
 		for (Piece p : coloredPieces) {
@@ -334,8 +334,8 @@ public class chessController {
 	
 	/** @return the king opposite in color to the clicked piece */
 	public King calculateOppositeColoredKing() {
-		if (clickedPiece.isWhite()) { return (King) model.getBlackPieces()[15]; }
-		else { return (King) model.getWhitePieces()[15]; }
+		if (clickedPiece.isWhite()) { return (King) model.getBlackPieces().get(0); }
+		else { return (King) model.getWhitePieces().get(0); }
 	}
 	
 	/**
