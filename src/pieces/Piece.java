@@ -28,6 +28,18 @@ public interface Piece {
 	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
 				Tile currTile, ArrayList<Piece> opposingPieces, ArrayList<Piece> capturedPieces);
 	
+	/** 
+	 * @param b - the board this piece is on
+	 * @return the king equal in color to this piece
+	 */
+	public King calculateSameColoredKing(BoardSimulator b);
+	
+	/** 
+	 * @param b - the board this piece is on
+	 * @return the king opposite in color to this piece
+	 */
+	public King calculateOppositeColoredKing(BoardSimulator b);
+	
 	/**
 	 * Checks if a move to (c, r) is valid
 	 * @param dir - this piece's potential move direction

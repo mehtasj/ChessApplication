@@ -48,15 +48,16 @@ public class chessController {
 	@FXML private Shape leftBorder, rightBorder, topBorder, bottomBorder;
 	@FXML private Canvas canvas;
 	
-	private int timesClicked, turnNumber;
-	private int currCol, currRow; 
-	private Tile clickedTile;
-	private Piece clickedPiece;
-	private ArrayList<Integer[]> refinedMoves;
-	
 	private int captWPCounter, captWRCounter, captWNCounter, captWBCounter, captWQCounter;
 	private int captBPCounter, captBRCounter, captBNCounter, captBBCounter, captBQCounter;
 	private int whitePoints, blackPoints;
+	
+	private int timesClicked, turnNumber;
+	private int currCol, currRow; 
+	
+	private Tile clickedTile;
+	private Piece clickedPiece;
+	private ArrayList<Integer[]> refinedMoves;
 	
 	private BoardSimulator model;
 	private chessGrid chessGrid;
@@ -125,7 +126,9 @@ public class chessController {
 					enableOrDisableQuantityAndPointCounters(true);
 					enableOrDisableTextNumbersAndLetters(true);
 					enableCapturedPieceImages();
-					if (!text1.getText().equals("1")) { flipTextNumbersAndLetters(); }
+					
+					if (!text1.getText().equals("1")) 
+						flipTextNumbersAndLetters();
 				}
 			}
 		});
@@ -220,8 +223,13 @@ public class chessController {
 		clickedTile = model.getTile(currCol, currRow);
 		clickedPiece = clickedTile.getPiece();
 		
-		if (clickedPiece != null) { refinedMoves = clickedPiece.getRefinedMoves(); }
-		if (refinedMoves.size() == 0) { timesClicked = 0; return; }
+		if (clickedPiece != null) 
+			refinedMoves = clickedPiece.getRefinedMoves();
+		
+		if (refinedMoves.size() == 0) { 
+			timesClicked = 0; 
+			return; 
+		}
 
 		if (turnNumber % 2 == 1) {
 			if (clickedPiece != null && clickedPiece.isWhite())
@@ -313,7 +321,7 @@ public class chessController {
 	 */
 	public boolean checkIfPieceChecks(Piece p) {
 		ArrayList<Integer[]> validMoves = p.getValidMoves();
-		King king = calculateOppositeColoredKing();
+		King king = clickedPiece.calculateOppositeColoredKing(model);
 		
 		for (int i = 0; i < validMoves.size(); i++) {
 			int destCol = validMoves.get(i)[0];
@@ -329,17 +337,10 @@ public class chessController {
 		return false;
 	}
 	
-	/** @return the king opposite in color to the clicked piece */
-	public King calculateOppositeColoredKing() {
-		if (clickedPiece.isWhite()) { return (King) model.getBlackPieces().get(0); }
-		else { return (King) model.getWhitePieces().get(0); }
-	}
-	
 	/**
-	 * Updates the captured pieces count given a newly captured piece
-	 * and updates the appropriate point counter
-	 * @param captPiece
-	 * 		The piece that was captured
+	 * Updates the captured pieces count given a newly captured piece;
+	 * Also updates the appropriate point counter
+	 * @param captPiece - the piece that was captured
 	 */
 	public void storeCapturedPieceAndUpdatePoints(Piece captPiece) {
 		if (captPiece.isWhite()) {
@@ -366,14 +367,13 @@ public class chessController {
 	
 	/**
 	 * Updates the appropriate player's point counter
-	 * @param points
-	 * 		The point counter to update
-	 * @param textPlayerPoints
-	 * 		The text box which should display the updated point value
+	 * @param points - the point counter to update
+	 * @param textPlayerPoints - displays the updated score
 	 */
 	public void updatePoints(int points, Text textPlayerPoints) {
-		if (points < 10) { textPlayerPoints.setText("0" + points); }
-		else { textPlayerPoints.setText(String.valueOf(points)); }
+		if (points < 10) 
+			textPlayerPoints.setText("0" + points);
+		else textPlayerPoints.setText(String.valueOf(points));
 	}
 	
 	/** Initializes all the captured piece counters and the point counters to 0 */
@@ -389,9 +389,11 @@ public class chessController {
 		textBNQ.setText(String.valueOf(captBNCounter)); textBBQ.setText(String.valueOf(captBBCounter)); 
 		textBQQ.setText(String.valueOf(captBQCounter));
 		
-		whitePoints = 0; blackPoints = 0;
+		whitePoints = 0; 
+		blackPoints = 0;
 		
-		textPlayer1Points.setText("00"); textPlayer2Points.setText("00");
+		textPlayer1Points.setText("00"); 
+		textPlayer2Points.setText("00");
 	}
 	
 	/** Displays the captured piece images under each player's name */
@@ -411,20 +413,23 @@ public class chessController {
 	
 	/** Hides the captured piece images under each player's name */
 	public void disableCapturedPieceImages() {
-		whitePawnIV.setImage(null); whiteRookIV.setImage(null); 
-		whiteKnightIV.setImage(null); whiteBishopIV.setImage(null); 
+		whitePawnIV.setImage(null); 
+		whiteRookIV.setImage(null); 
+		whiteKnightIV.setImage(null); 
+		whiteBishopIV.setImage(null); 
 		whiteQueenIV.setImage(null);
 		
-		blackPawnIV.setImage(null); blackRookIV.setImage(null); 
-		blackKnightIV.setImage(null); blackBishopIV.setImage(null); 
+		blackPawnIV.setImage(null); 
+		blackRookIV.setImage(null); 
+		blackKnightIV.setImage(null); 
+		blackBishopIV.setImage(null); 
 		blackQueenIV.setImage(null);
 	}
 	
 	/** 
 	 * Controls the visibility of the captured piece quantity counters 
 	 * and the point value counters 
-	 * @param enable
-	 * 		true if labels should be visible and false otherwise
+	 * @param enable - true if labels should be visible
 	 */
 	public void enableOrDisableQuantityAndPointCounters(boolean enable) {
 		textWPQ.setVisible(enable); textWRQ.setVisible(enable); 
@@ -435,18 +440,22 @@ public class chessController {
 		textBNQ.setVisible(enable); textBBQ.setVisible(enable); 
 		textBQQ.setVisible(enable);
 		
-		player1PointsLabel.setVisible(enable); player2PointsLabel.setVisible(enable);
-		textPlayer1Points.setVisible(enable); textPlayer2Points.setVisible(enable);
+		player1PointsLabel.setVisible(enable); 
+		player2PointsLabel.setVisible(enable);
+		
+		textPlayer1Points.setVisible(enable); 
+		textPlayer2Points.setVisible(enable);
 	}
 	
 	/** 
 	 * Controls the visibility of the chess board's borders
-	 * @param enable
-	 * 		true if borders should be visible and false otherwise
+	 * @param enable - true if borders should be visible
 	 */
 	public void enableOrDisableBorders(boolean enable) {
-		leftBorder.setVisible(enable); rightBorder.setVisible(enable);
-		topBorder.setVisible(enable); bottomBorder.setVisible(enable);	
+		leftBorder.setVisible(enable); 
+		rightBorder.setVisible(enable);
+		topBorder.setVisible(enable); 
+		bottomBorder.setVisible(enable);	
 	}
 	
 	/** 
@@ -469,6 +478,7 @@ public class chessController {
 	
 	/** Rearranges the numbers 1 - 8 and the letters A - H when the chess board flips */
 	public void flipTextNumbersAndLetters() {
+		
 		if (text1.getText().equals("1")) { text1.setText("8"); textA.setText("H"); }
 		else { text1.setText("1"); textA.setText("A"); }
 		
@@ -494,7 +504,10 @@ public class chessController {
 		else { text8.setText("8"); textH.setText("H"); }
 	}
 	
-	/** Prompts the players to enter their names for Player 1 (White) and Player 2 (Black) */
+	/** 
+	 * Prompts the players to enter their names for 
+	 * Player 1 (White) and Player 2 (Black) 
+	 */
 	public void requestPlayerNames() {
 		TextInputDialog player1 = new TextInputDialog();
 		player1.setTitle("Player 1 Name");
@@ -513,6 +526,9 @@ public class chessController {
 		player2Label.setText("Player 2 (Black): " + p2.get());
 	}
 	
-	/** Redraws the chess board to depict its most updated appearance based on the moves made */
+	/** 
+	 * Redraws the chess board to depict its most 
+	 * updated appearance based on the moves made 
+	 */
 	public void updateBoardAppearance() { chessGrid.drawGridAndPieces(); }
 }

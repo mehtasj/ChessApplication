@@ -80,10 +80,7 @@ public abstract class AbstractPiece implements Piece {
 			destTile.setPiece(this);
 			capturedPieces.add(destTilePiece);
 			
-			Piece king = (this.isWhite()) ? 
-				board.getWhitePieces().get(0):
-				board.getBlackPieces().get(0);
-				
+			King king = calculateSameColoredKing(board);
 			int kingCol = (this instanceof King) ? destCol : king.getCol();
 			int kingRow = (this instanceof King) ? destRow : king.getRow();
 					
@@ -115,6 +112,20 @@ public abstract class AbstractPiece implements Piece {
 			destTile.setPiece(destTilePiece);
 			capturedPieces.remove(destTilePiece);
 		}
+	}
+	
+	@Override
+	public King calculateSameColoredKing(BoardSimulator b) {
+		if (this.isWhite()) 
+			return (King) b.getWhitePieces().get(0);
+		else return (King) b.getBlackPieces().get(0);
+	}
+	
+	@Override
+	public King calculateOppositeColoredKing(BoardSimulator b) {
+		if (this.isWhite()) 
+			return (King) b.getBlackPieces().get(0);
+		else return (King) b.getWhitePieces().get(0);
 	}
 	
 	/**
