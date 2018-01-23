@@ -75,10 +75,10 @@ public abstract class AbstractPiece implements Piece {
 			Tile destTile = board.getTile(destCol, destRow);
 			Piece destTilePiece = destTile.getPiece();
 
+			boolean leadsToCheck = false;
 			currTile.setPiece(null);
 			destTile.setPiece(this);
 			capturedPieces.add(destTilePiece);
-			boolean checkedMove = false;
 			
 			Piece king = (this.isWhite()) ? 
 				board.getWhitePieces().get(0):
@@ -93,22 +93,23 @@ public abstract class AbstractPiece implements Piece {
 
 					temporarilyReviseValidMovesIfPawn(board, pMoves, p);
 						
-					// separate method
 					for (int j = 0; j < pMoves.size(); j++) { 
 						int pDestCol = pMoves.get(j)[0];
 						int pDestRow = pMoves.get(j)[1];
 								
 						if (pDestCol == kingCol && pDestRow == kingRow) {
-							checkedMove = true;
+							leadsToCheck = true;
 							refinedMoves.remove(i);
+							
 							currTile.setPiece(this);
 							destTile.setPiece(destTilePiece);
 							capturedPieces.remove(destTilePiece);
+							
 							break;
 						}
 					}
 				}
-				if (checkedMove) break;
+				if (leadsToCheck) break;
 			}
 			currTile.setPiece(this);
 			destTile.setPiece(destTilePiece);

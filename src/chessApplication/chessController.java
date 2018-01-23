@@ -31,8 +31,6 @@ import pieces.*;
 
 /** Includes code corresponding to specific moves on the canvas / chess GUI */
 public class chessController {
-
-	// Add javadocs for each of the following 
 	
 	@FXML private Menu gameMenu;
 	@FXML private MenuItem newGameMenuItem, restartMenuItem;
@@ -282,8 +280,7 @@ public class chessController {
 				possibleMoves += pRefinedMoves.size();
 			}
 		}
-		
-		return possibleMoves == 0;
+		return (possibleMoves == 0);
 	}
 	
 	/**
