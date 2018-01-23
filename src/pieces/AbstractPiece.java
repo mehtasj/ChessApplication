@@ -91,7 +91,7 @@ public abstract class AbstractPiece implements Piece {
 				if (p != null && !capturedPieces.contains(p)) {
 					ArrayList<Integer[]> pMoves = p.getValidMoves();
 
-					temporarilyReviseValidMovesIfPawn(board, pMoves, p);
+					temporarilyReviseValidMovesIfPawn(board, p, pMoves);
 						
 					for (int j = 0; j < pMoves.size(); j++) { 
 						int pDestCol = pMoves.get(j)[0];
@@ -118,15 +118,14 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	/**
-	 * Insert comment (due to flipping)
-	 * @param board
-	 * @param moves
-	 * @param p
-	 * @param c
-	 * @param r
+	 * Allows the opposing pawn to capture diagonally below its position
+	 * to account for not flipping the board while calculating this piece's refined moves
+	 * @param board - the board this piece is on
+	 * @param p - the opposing piece
+	 * @param moves - the opposing piece's valid moves
 	 */
-	public void temporarilyReviseValidMovesIfPawn(BoardSimulator board, 
-				ArrayList<Integer[]> moves, Piece p) 
+	public void temporarilyReviseValidMovesIfPawn(BoardSimulator board, Piece p,
+				ArrayList<Integer[]> moves) 
 	{
 		if (p instanceof Pawn) {
 			moves = new ArrayList<>();

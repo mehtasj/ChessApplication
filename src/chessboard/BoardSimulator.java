@@ -1,13 +1,12 @@
 package chessboard;
 
-
 import java.util.ArrayList;
 import pieces.*;
 
 /** Keeps track of the state of the board and its pieces */
 public class BoardSimulator {
 
-	/** Represents an n x n board of tiles */
+	/** Represents an 8 x 8 chess board of tiles */
 	private Tile[][] board;
 	
 	/** Stores the white and black pieces in their respective lists */
@@ -16,7 +15,7 @@ public class BoardSimulator {
 	/** Stores the captured white and black pieces in their respective lists */
 	private ArrayList<Piece> captWhitePieces, captBlackPieces;
 	
-	/** Constructs a simulator of a chess board */
+	/** Constructs a chess board */
 	public BoardSimulator() {
 		board = new Tile[8][8];
 		initializeTiles();
@@ -27,12 +26,9 @@ public class BoardSimulator {
 	}
 	
 	/**
-	 * @param c
-	 * 		The column the requested tile is in
-	 * @param r
-	 * 		The row the requested tile is in
-	 * @return
-	 * 		The tile at (c, r)
+	 * @param c - The requested tile's column coordinate
+	 * @param r - the requested tile's row coordinate
+	 * @return the tile at (c, r)
 	 */
 	public Tile getTile(int c, int r) {
 		if (board[r][c] == null)
@@ -41,8 +37,8 @@ public class BoardSimulator {
 	}
 	
 	/** 
-	 * Rotates the board 180 degrees by moving pieces
-	 * to allow both players to play from their POV
+	 * Rotates the board 180 degrees to allow 
+	 * both players to play from their POV 
 	 */
 	public void flipBoard() {
 		for (int r = 0; r < board.length; r++) {
@@ -50,11 +46,13 @@ public class BoardSimulator {
 				Piece p = board[r][c].getPiece();
 				Piece p2 = board[7-r][7-c].getPiece();
 				
-				if (p != null) p.setTile(board[7-r][7-c]);
-				else { board[7-r][7-c].setPiece(null); } 
+				if (p != null) 
+					p.setTile(board[7-r][7-c]);
+				else board[7-r][7-c].setPiece(null);
 				
-				if (p2 != null) { p2.setTile(board[r][c]); }
-				else { board[r][c].setPiece(null); } 
+				if (p2 != null) 
+					p2.setTile(board[r][c]);
+				else board[r][c].setPiece(null); 
 			}
 		}
 	}
@@ -67,7 +65,7 @@ public class BoardSimulator {
 		}
 	}
 	
-	/** Initializing all white pieces and setting their default tile positions */
+	/** Initializes all white pieces and sets their default tile positions */
 	public void initializeWhitePieces() {
 		Piece wRook1 = new Rook(this, PieceColor.WHITE);
 		Piece wKnight1 = new Knight(this, PieceColor.WHITE);
@@ -115,7 +113,7 @@ public class BoardSimulator {
 		whitePieces.add(wQueen);
 	}
 	
-	/** Initializing all black pieces and setting their default tile positions */
+	/** Initializes all black pieces and sets their default tile positions */
 	public void initializeBlackPieces() {
 		Piece bRook1 = new Rook(this, PieceColor.BLACK);
 		Piece bKnight1 = new Knight(this, PieceColor.BLACK);
