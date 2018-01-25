@@ -57,6 +57,46 @@ public class BoardSimulator {
 		}
 	}
 	
+	// Board Simulator methods for MVC 
+	
+	/**
+	 * Checks if there is a Checkmate, which means the game is over
+	 * @param coloredPieces - the pieces of the threatened king's color
+	 * @param captColoredPieces - the pieces that were captured of the threatened king's color
+	 * @return true if there are no more possible moves for the current player (CHECKMATE)
+	 */
+	public boolean isCheckmate(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
+		int possibleMoves = 0;
+			
+		for (Piece p : coloredPieces) {
+			if (p != null && !captColoredPieces.contains(p)) {
+				ArrayList<Integer[]> pRefinedMoves = p.getRefinedMoves();
+				possibleMoves += pRefinedMoves.size();
+			}
+		}
+		return (possibleMoves == 0);
+	}
+		
+	/**
+	 * Checks if a rook, bishop, and/or queen of the clicked piece's color
+	 * threaten(s) the opposite color's king after the clicked piece has moved;
+	 * Do not need to check pawns or knights as they can only Check 
+	 * once they move (i.e. if they are the clicked piece moving into an updated position)
+	 * @param coloredPieces - the array of pieces with the same color as the clicked piece
+	 * @param captColoredPieces - the pieces that were captured of the same color as the clicked piece
+	 */
+	public void checkIfCheckExists(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
+		boolean checkFound = false;
+			
+		for (Piece p : coloredPieces) {
+			if (p != null && !captColoredPieces.contains(p) 
+					&& (p instanceof Rook || p instanceof Bishop || p instanceof Queen))
+				checkFound = p.checksOpposingKing(p.getBoard());
+			
+			if (checkFound) break;
+		}
+	}
+
 	/** Initializes all the tiles on the chess board */
 	public void initializeTiles() {
 		for (int r = 0; r < board.length; r++) {

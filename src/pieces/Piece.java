@@ -28,6 +28,13 @@ public interface Piece {
 	public void calculateRefinedMoves(BoardSimulator board, ArrayList<Integer[]> refinedMoves, 
 				Tile currTile, ArrayList<Piece> opposingPieces, ArrayList<Piece> capturedPieces);
 	
+	/**
+	 * Checks to see if a given piece's valid moves threaten the opposite king
+	 * @param p - the piece whose valid moves are to be checked
+	 * @return true if the given piece does threaten the opposing king (Check)
+	 */
+	public boolean checksOpposingKing(BoardSimulator b);
+	
 	/** 
 	 * @param b - the board this piece is on
 	 * @return the king equal in color to this piece

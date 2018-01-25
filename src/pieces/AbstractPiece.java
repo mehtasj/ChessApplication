@@ -128,6 +128,23 @@ public abstract class AbstractPiece implements Piece {
 		else return (King) b.getWhitePieces().get(0);
 	}
 	
+	@Override
+	public boolean checksOpposingKing(BoardSimulator b) {
+		ArrayList<Integer[]> validMoves = this.getValidMoves();
+		King king = this.calculateOppositeColoredKing(b);
+		
+		for (int i = 0; i < validMoves.size(); i++) {
+			int destCol = validMoves.get(i)[0];
+			int destRow = validMoves.get(i)[1];
+			
+			if (destCol == king.getCol() && destRow == king.getRow()) {
+				king.setCheckState(true);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Allows the opposing pawn to capture diagonally below its position
 	 * to account for not flipping the board while calculating this piece's refined moves

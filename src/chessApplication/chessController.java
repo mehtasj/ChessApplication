@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -24,7 +23,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import pieces.*;
@@ -184,14 +182,15 @@ public class chessController {
 							
 							// check if moving a piece will put other color's king in check
 							// make a method
-							if (!checkIfPieceChecks(clickedPiece)) {
+							if (!clickedPiece.checksOpposingKing(model)) {
 								if (clickedPiece.isWhite())
-									checkIfCheck(model.getWhitePieces(), model.getCaptWhitePieces()); 
-								else { checkIfCheck(model.getBlackPieces(), model.getCaptBlackPieces()); }
+									model.checkIfCheckExists(model.getWhitePieces(), model.getCaptWhitePieces()); 
+								else model.checkIfCheckExists(model.getBlackPieces(), model.getCaptBlackPieces());
 							}
+							else changeTextIfCheck();
 							
 							updateBoardAppearance();
-							delayThenFlip(); // placed checkmate function in here for now
+							delayThenFlip();
 							
 							turnNumber++;
 							timesClicked = 0;
@@ -214,10 +213,8 @@ public class chessController {
 	/** 
 	 * Highlights the tiles only if a tile with a piece of 
 	 * the current turn's color is selected
-	 * @param currCol
-	 * 		The column selected on the board
-	 * @param currRow
-	 * 		The row selected on the board
+	 * @param currCol - the selected column
+	 * @param currRow - the selected row
 	 */
 	public void highlightTiles(int currCol, int currRow) {
 		clickedTile = model.getTile(currCol, currRow);
@@ -234,12 +231,12 @@ public class chessController {
 		if (turnNumber % 2 == 1) {
 			if (clickedPiece != null && clickedPiece.isWhite())
 				chessGrid.highlightReachableTiles(clickedPiece, refinedMoves);
-			else { timesClicked = 0; }
+			else timesClicked = 0;
 		}
 		else {
 			if (clickedPiece != null && !clickedPiece.isWhite())
 				chessGrid.highlightReachableTiles(clickedPiece, refinedMoves);
-			else { timesClicked = 0; }
+			else timesClicked = 0;
 		}
 	}
 	
@@ -248,93 +245,33 @@ public class chessController {
 		ScheduledExecutorService boardFlip = Executors.newSingleThreadScheduledExecutor();
 	    boardFlip.schedule(() -> {
 	        Platform.runLater(() -> {
+	        		
 	        		model.flipBoard();
 				updateBoardAppearance();
 				flipTextNumbersAndLetters();
-				
-				// check if checkmate
-				// make method
-				if (textPlayer1Check.getText().equals("CHECK!")) {
-					if (isCheckmate(model.getWhitePieces(), model.getCaptWhitePieces())) {
-						textPlayer1Check.setText("CHECKMATE!");
-					}
-				}
-				else if (textPlayer2Check.getText().equals("CHECK!")) { 
-					if (isCheckmate(model.getBlackPieces(), model.getCaptBlackPieces())) {
-						textPlayer2Check.setText("CHECKMATE!");
-					}
-				}
+				changeTextIfCheckmate();
 				
 	        });
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
 	
-	/**
-	 * Checks if there is a Checkmate, which means the game is over
-	 * @param coloredPieces
-	 * 		The pieces of the threatened king's color
-	 * @param captColoredPieces
-	 * 		The pieces that were captured of the threatened king's color
-	 * @return
-	 * 		true if there are no more possible moves for pieces with the threatened
-	 * 		king's color (a.k.a CHECKMATE)
-	 */
-	public boolean isCheckmate(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
-		int possibleMoves = 0;
-		
-		for (Piece p : coloredPieces) {
-			if (p != null && !captColoredPieces.contains(p)) {
-				ArrayList<Integer[]> pRefinedMoves = p.getRefinedMoves();
-				possibleMoves += pRefinedMoves.size();
-			}
+	/** Says "CHECKMATE!" under the losing player's name */
+	public void changeTextIfCheckmate() {
+		if (textPlayer1Check.getText().equals("CHECK!")) {
+			if (model.isCheckmate(model.getWhitePieces(), model.getCaptWhitePieces()))
+				textPlayer1Check.setText("CHECKMATE!");
 		}
-		return (possibleMoves == 0);
-	}
-	
-	/**
-	 * Checks if a rook, bishop, and/or queen of the clicked piece's color
-	 * threaten(s) the opposite color's king after the clicked piece has moved;
-	 * Do not need to check pawns or knights as they can only Check 
-	 * once they move (i.e. if they are the clicked piece moving into an updated position)
-	 * @param coloredPieces
-	 * 		The array of pieces with the same color as the clicked piece
-	 * @param captColoredPieces
-	 * 		The pieces that were captured of the same color as the clicked piece
-	 */
-	public void checkIfCheck(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
-		boolean checkFound = false;
-		
-		for (Piece p : coloredPieces) {
-			if (p != null && !captColoredPieces.contains(p) 
-					&& (p instanceof Rook || p instanceof Bishop || p instanceof Queen))
-				checkFound = checkIfPieceChecks(p);
-			if (checkFound) break;
+		else if (textPlayer2Check.getText().equals("CHECK!")) { 
+			if (model.isCheckmate(model.getBlackPieces(), model.getCaptBlackPieces()))
+				textPlayer2Check.setText("CHECKMATE!");
 		}
 	}
 	
-	/**
-	 * Checks to see if a given piece's valid moves threaten the opposite king
-	 * @param p
-	 * 		The piece whose valid moves are to be checked
-	 * @return
-	 * 		true if the given piece does threaten the opposite king (Check)
-	 */
-	public boolean checkIfPieceChecks(Piece p) {
-		ArrayList<Integer[]> validMoves = p.getValidMoves();
-		King king = clickedPiece.calculateOppositeColoredKing(model);
-		
-		for (int i = 0; i < validMoves.size(); i++) {
-			int destCol = validMoves.get(i)[0];
-			int destRow = validMoves.get(i)[1];
-			
-			if (destCol == king.getCol() && destRow == king.getRow()) {
-				if (clickedPiece.isWhite()) { textPlayer2Check.setText("CHECK!"); }
-				else { textPlayer1Check.setText("CHECK!"); }
-				king.setCheckState(true);
-				return true;
-			}
-		}
-		return false;
+	/** Says "CHECK!" under the threatened player's name */
+	public void changeTextIfCheck() {
+		if (clickedPiece.isWhite()) 
+			textPlayer2Check.setText("CHECK!");
+		else textPlayer1Check.setText("CHECK!");
 	}
 	
 	/**
