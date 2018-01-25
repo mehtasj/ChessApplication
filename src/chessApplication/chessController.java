@@ -2,7 +2,7 @@ package chessApplication;
 
 import chessboard.BoardSimulator;
 import chessboard.Tile;
-
+import pieces.*;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -25,7 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import pieces.*;
 
 /** Includes code corresponding to specific moves on the canvas / chess GUI */
 public class chessController {
