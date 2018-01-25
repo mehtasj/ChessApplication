@@ -56,6 +56,8 @@ public class chessController {
 	private Tile clickedTile;
 	private Piece clickedPiece;
 	private ArrayList<Integer[]> refinedMoves;
+	private ArrayList<Piece> whitePieces, blackPieces;
+	private ArrayList<Piece> captWhitePieces, captBlackPieces;
 	
 	private BoardSimulator model;
 	private chessGrid chessGrid;
@@ -103,6 +105,8 @@ public class chessController {
 				textPlayer2Check.setText("");
 				
 				turnNumber = 1;
+				
+				initializePieceLists();
 			}
 		});
 		
@@ -127,6 +131,8 @@ public class chessController {
 					
 					if (!text1.getText().equals("1")) 
 						flipTextNumbersAndLetters();
+					
+					initializePieceLists();
 				}
 			}
 		});
@@ -150,51 +156,23 @@ public class chessController {
 						
 					for (int i = 0; i < refinedMoves.size(); i++) {
 						if (destCol == refinedMoves.get(i)[0] && destRow == refinedMoves.get(i)[1]) {
-							if (!destTile.isEmpty()) { storeCapturedPieceAndUpdatePoints(destTile.getPiece()); }
+							if (!destTile.isEmpty()) 
+								storeCapturedPieceAndUpdatePoints(destTile.getPiece());
 							
 							clickedPiece.moveTo(destTile);
 							clickedPiece.incrementMoveNumber();
 							moved = true;
 							
-							// make method
-							if (textPlayer1Check.getText().equals("CHECK!")) { 
-								textPlayer1Check.setText("");
-								King king = (King) model.getWhitePieces().get(0);
-								king.setCheckState(false);
-							}
-							if (textPlayer2Check.getText().equals("CHECK!")) { 
-								textPlayer2Check.setText(""); 
-								King king = (King) model.getBlackPieces().get(0);
-								king.setCheckState(false);
-							}
-							
-							// check if move was a castle so the appropriate rook moves as well
-							// make a separate method for clarity and to remove comments
-							if (clickedPiece instanceof King) {
-								King king = (King) clickedPiece;
-								if (!king.isAlreadyCastled() && king.canCastle())
-									king.checkIfCastle(clickedTile, destTile);
-							} 
-							
-							// check if pawn reaches the end of the board for promotion
-							// make a separate method for clarity and to remove comments
-							
-							
-							// check if moving a piece will put other color's king in check
-							// make a method
-							if (!clickedPiece.checksOpposingKing(model)) {
-								if (clickedPiece.isWhite())
-									model.checkIfCheckExists(model.getWhitePieces(), model.getCaptWhitePieces()); 
-								else model.checkIfCheckExists(model.getBlackPieces(), model.getCaptBlackPieces());
-							}
-							else changeTextIfCheck();
+							removeAnyPreviousCheckText();
+							examineCastlingPossibility(destTile);
+							// checkPawnPromotionPossibility();
+							examineCheckPossibility();
 							
 							updateBoardAppearance();
 							delayThenFlip();
 							
 							turnNumber++;
 							timesClicked = 0;
-							
 							break;
 						}
 					}
@@ -255,23 +233,56 @@ public class chessController {
 	    }, 1000, TimeUnit.MILLISECONDS);
 	}
 	
+	/** Checks if a castling move was made if a king is moved */
+	public void examineCastlingPossibility(Tile destTile) {
+		if (clickedPiece instanceof King) {
+			King king = (King) clickedPiece;
+			if (!king.isAlreadyCastled() && king.canCastle())
+				king.checkIfCastle(clickedTile, destTile);
+		} 
+	}
+	
+	/** Check if moving a piece will put the opposing king in Check */
+	public void examineCheckPossibility() {
+		if (!clickedPiece.checksOpposingKing(model)) {
+			if (clickedPiece.isWhite())
+				model.checkIfCheckExists(whitePieces, captWhitePieces); 
+			else model.checkIfCheckExists(blackPieces, captBlackPieces);
+		}
+		else changeTextIfCheck();
+	}
+	
 	/** Says "CHECKMATE!" under the losing player's name */
 	public void changeTextIfCheckmate() {
 		if (textPlayer1Check.getText().equals("CHECK!")) {
-			if (model.isCheckmate(model.getWhitePieces(), model.getCaptWhitePieces()))
+			if (model.isCheckmate(whitePieces, captWhitePieces))
 				textPlayer1Check.setText("CHECKMATE!");
 		}
 		else if (textPlayer2Check.getText().equals("CHECK!")) { 
-			if (model.isCheckmate(model.getBlackPieces(), model.getCaptBlackPieces()))
+			if (model.isCheckmate(blackPieces, captBlackPieces))
 				textPlayer2Check.setText("CHECKMATE!");
 		}
 	}
 	
 	/** Says "CHECK!" under the threatened player's name */
 	public void changeTextIfCheck() {
-		if (clickedPiece.isWhite()) 
+		if (clickedPiece.isWhite())
 			textPlayer2Check.setText("CHECK!");
 		else textPlayer1Check.setText("CHECK!");
+	}
+	
+	/** Removes any previous "CHECK!" text before the next move */
+	public void removeAnyPreviousCheckText() {
+		if (textPlayer1Check.getText().equals("CHECK!")) { 
+			textPlayer1Check.setText("");
+			King king = (King) whitePieces.get(0);
+			king.setCheckState(false);
+		}
+		if (textPlayer2Check.getText().equals("CHECK!")) { 
+			textPlayer2Check.setText(""); 
+			King king = (King) blackPieces.get(0);
+			king.setCheckState(false);
+		}
 	}
 	
 	/**
@@ -288,7 +299,7 @@ public class chessController {
 			else if (captPiece instanceof Queen) { textWQQ.setText(String.valueOf(++captWQCounter)); blackPoints += 9; }
 			
 			updatePoints(blackPoints, textPlayer2Points);
-			model.getCaptWhitePieces().add(captPiece);
+			captWhitePieces.add(captPiece);
 		}
 		else {
 			if (captPiece instanceof Pawn) { textBPQ.setText(String.valueOf(++captBPCounter)); whitePoints++; }
@@ -298,7 +309,7 @@ public class chessController {
 			else if (captPiece instanceof Queen) { textBQQ.setText(String.valueOf(++captBQCounter)); whitePoints += 9; }
 			
 			updatePoints(whitePoints, textPlayer1Points);
-			model.getCaptBlackPieces().add(captPiece);
+			captBlackPieces.add(captPiece);
 		}
 	}
 	
@@ -311,6 +322,14 @@ public class chessController {
 		if (points < 10) 
 			textPlayerPoints.setText("0" + points);
 		else textPlayerPoints.setText(String.valueOf(points));
+	}
+	
+	/** Initializes all the colored and captured piece lists */
+	public void initializePieceLists() {
+		whitePieces = model.getWhitePieces();
+		blackPieces = model.getBlackPieces();
+		captWhitePieces = model.getCaptWhitePieces();
+		captBlackPieces = model.getCaptBlackPieces();
 	}
 	
 	/** Initializes all the captured piece counters and the point counters to 0 */

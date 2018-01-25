@@ -57,8 +57,6 @@ public class BoardSimulator {
 		}
 	}
 	
-	// Board Simulator methods for MVC 
-	
 	/**
 	 * Checks if there is a Checkmate, which means the game is over
 	 * @param coloredPieces - the pieces of the threatened king's color
