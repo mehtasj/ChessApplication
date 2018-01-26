@@ -2,8 +2,6 @@ package pieces;
 
 import java.util.ArrayList;
 import chessboard.BoardSimulator;
-import chessboard.Tile;
-import pieces.AbstractPiece.MoveDir;
 
 /** Represents a queen */
 public class Queen extends AbstractPiece {
