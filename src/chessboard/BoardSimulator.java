@@ -83,7 +83,7 @@ public class BoardSimulator {
 	 * @param coloredPieces - the array of pieces with the same color as the clicked piece
 	 * @param captColoredPieces - the pieces that were captured of the same color as the clicked piece
 	 */
-	public void checkIfCheckExists(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
+	public boolean checkExists(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
 		boolean checkFound = false;
 			
 		for (Piece p : coloredPieces) {
@@ -91,8 +91,9 @@ public class BoardSimulator {
 					&& (p instanceof Rook || p instanceof Bishop || p instanceof Queen))
 				checkFound = p.checksOpposingKing(p.getBoard());
 			
-			if (checkFound) break;
+			if (checkFound) return true;
 		}
+		return false;
 	}
 
 	/** Initializes all the tiles on the chess board */

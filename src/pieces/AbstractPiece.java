@@ -249,9 +249,11 @@ public abstract class AbstractPiece implements Piece {
 	
 	@Override
 	public void setTile(Tile t) {
-		this.col = t.getCol();
-		this.row = t.getRow();
-		t.setPiece(this);
+		if (t != null) {
+			this.col = t.getCol();
+			this.row = t.getRow();
+			t.setPiece(this);
+		}
 	}
 	
 	@Override 

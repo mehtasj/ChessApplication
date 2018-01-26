@@ -16,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -163,8 +164,13 @@ public class chessController {
 							moved = true;
 							
 							removeAnyPreviousCheckText();
-							examineCastlingPossibility(destTile);
-							// checkPawnPromotionPossibility();
+							
+							if (clickedPiece instanceof King) 
+								examineCastlingPossibility(destTile);
+							
+							if (clickedPiece instanceof Pawn)
+								examinePawnPromotionPossibility(destCol, destRow);
+							
 							examineCheckPossibility();
 							
 							updateBoardAppearance();
@@ -234,21 +240,63 @@ public class chessController {
 	
 	/** Checks if a castling move was made if a king is moved */
 	public void examineCastlingPossibility(Tile destTile) {
-		if (clickedPiece instanceof King) {
-			King king = (King) clickedPiece;
-			if (!king.isAlreadyCastled() && king.canCastle())
-				king.checkIfCastle(clickedTile, destTile);
-		} 
+		King king = (King) clickedPiece;
+		if (!king.isAlreadyCastled() && king.canCastle())
+			king.checkIfCastle(clickedTile, destTile);
 	}
 	
-	/** Check if moving a piece will put the opposing king in Check */
+	/**
+	 * Checks if a pawn reached the end of the board
+	 * @param destC - the clicked pawn's destination column coordinate
+	 * @param destR - the clicked pawn's destination row coordinate
+	 */
+	public void examinePawnPromotionPossibility(int destC, int destR) {
+		if (destR == 0) {
+			ArrayList<String> choices = new ArrayList<>();
+			choices.add("Queen");
+			choices.add("Rook");
+			choices.add("Knight");
+			choices.add("Bishop");
+			
+			ChoiceDialog<String> promotion = new ChoiceDialog<>("Queen", choices);
+			promotion.setTitle("Pawn Promotion");
+			promotion.setHeaderText("Congratulations! Your pawn can be promoted!");
+			promotion.setContentText("Choose the piece you would like your pawn to become:");
+			Optional<String> pName = promotion.showAndWait();
+			
+			if (pName.isPresent()) {
+				Piece p = null;
+				
+				switch (pName.get()) {
+					case "Queen": p = new Queen(model, clickedPiece.getColor()); break;
+					case "Rook": p = new Rook(model, clickedPiece.getColor()); break;
+					case "Knight": p = new Knight(model, clickedPiece.getColor()); break;
+					case "Bishop": p = new Bishop(model, clickedPiece.getColor()); break;
+				}
+				
+				clickedPiece.setTile(null);
+				model.getTile(destC, destR).setPiece(null);
+				p.setTile(model.getBoard()[destR][destC]);
+				
+				if (clickedPiece.isWhite()) 
+					whitePieces.add(p);
+				else blackPieces.add(p);
+			}
+		}
+	}
+	
+	/** Checks if moving a piece will put the opposing king in Check */
 	public void examineCheckPossibility() {
 		if (!clickedPiece.checksOpposingKing(model)) {
 			if (clickedPiece.isWhite())
-				model.checkIfCheckExists(whitePieces, captWhitePieces); 
-			else model.checkIfCheckExists(blackPieces, captBlackPieces);
+				if (model.checkExists(whitePieces, captWhitePieces))
+					showCheckText();
+			else {
+				if (model.checkExists(blackPieces, captBlackPieces))
+					showCheckText();
+			}
 		}
-		else changeTextIfCheck();
+		else showCheckText();
 	}
 	
 	/** Says "CHECKMATE!" under the losing player's name */
@@ -264,7 +312,7 @@ public class chessController {
 	}
 	
 	/** Says "CHECK!" under the threatened player's name */
-	public void changeTextIfCheck() {
+	public void showCheckText() {
 		if (clickedPiece.isWhite())
 			textPlayer2Check.setText("CHECK!");
 		else textPlayer1Check.setText("CHECK!");
