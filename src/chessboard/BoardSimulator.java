@@ -82,6 +82,7 @@ public class BoardSimulator {
 	 * once they move (i.e. if they are the clicked piece moving into an updated position)
 	 * @param coloredPieces - the array of pieces with the same color as the clicked piece
 	 * @param captColoredPieces - the pieces that were captured of the same color as the clicked piece
+	 * @return true if the opposing king is in Check
 	 */
 	public boolean checkExists(ArrayList<Piece> coloredPieces, ArrayList<Piece> captColoredPieces) {
 		boolean checkFound = false;
