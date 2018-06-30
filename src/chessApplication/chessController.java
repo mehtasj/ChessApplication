@@ -167,12 +167,10 @@ public class chessController {
 							
 							if (clickedPiece instanceof King) 
 								examineCastlingPossibility(destTile);
-							
 							if (clickedPiece instanceof Pawn)
 								examinePawnPromotionPossibility(destCol, destRow);
 							
 							examineCheckPossibility();
-							
 							updateBoardAppearance();
 							delayThenFlip();
 							
