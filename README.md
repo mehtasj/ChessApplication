@@ -9,7 +9,8 @@ Model / View / Controller Design Pattern
 
 ### Program Hierarchy
 
-<<Interface>> Piece
+<Interface> Piece
+  
   
   
 
