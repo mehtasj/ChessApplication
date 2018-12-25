@@ -12,8 +12,8 @@ Model / View / Controller Design Pattern
 #### Package pieces
 Handles the logic for all the pieces in a game of chess.
 
-(Interface) Piece
-(Abstact Class) Abstract Piece implements Piece
+* (Interface) Piece
+	* (Abstact Class) Abstract Piece implements Piece
 (Class) Pawn
 (Class) Knight
 (Class) Bishop
