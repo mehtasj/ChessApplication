@@ -13,13 +13,13 @@ Model / View / Controller Design Pattern
 Handles the logic for all the pieces in a game of chess.
 
 (Interface) Piece
-  (Abstact Class) Abstract Piece implements Piece
-    (Class) Pawn
-    (Class) Knight
-    (Class) Bishop
-    (Class) Rook
-    (Class) Queen
-    (Class) King 
+(Abstact Class) Abstract Piece implements Piece
+(Class) Pawn
+(Class) Knight
+(Class) Bishop
+(Class) Roook
+(Class) Queen
+(Class) King 
 
 (Enum) PieceColor 
   WHITE, BLACK
