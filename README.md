@@ -17,7 +17,7 @@ Handles the logic for all the pieces in a game of chess.
 	* (Class) Pawn
 	* (Class) Knight
 	* (Class) Bishop
-	* (Class) Roook
+	* (Class) Rook
 	* (Class) Queen
 	* (Class) King 
 
